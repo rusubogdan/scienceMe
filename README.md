@@ -1,4 +1,4 @@
-** scienceMe **
+#scienceMe
 
 Team members:
 * [Radu Constantin Cancel](https://github.com/raducc)
