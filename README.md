@@ -1,4 +1,5 @@
-# scienceMe
+** scienceMe **
+
 Team members:
 * [Radu Constantin Cancel](https://github.com/raducc)
 * [Beniamin Marcu](https://github.com/marqbeniamin)
