@@ -8,14 +8,10 @@
     
 	<http auto-config="true">
 
-
-		<intercept-url pattern="/sec/moderation.html" access="ROLE_MODERATOR" />
-		<intercept-url pattern="/admin/*" access="ROLE_ADMIN" />
-		
-		<form-login login-page="/user-login.html" 
-			default-target-url="/success-login.html"
-			authentication-failure-url="/error-login.html" />
-		<logout logout-success-url="/index.html" />
+		<form-login login-page="/login"
+			default-target-url="/wall"
+			authentication-failure-url="/moderation" />
+		<logout logout-success-url="/" />
 		
 	</http>
 	

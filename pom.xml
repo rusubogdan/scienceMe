@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com</groupId>
-    <artifactId>security-spr</artifactId>
+    <artifactId>sciencemeapp</artifactId>
 
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>security-spr Maven Webapp</name>
+    <name>sciencemeapp</name>
 
     <properties>
         <hibernate.version>4.1.7.Final</hibernate.version>
@@ -109,10 +109,33 @@
             <version>4.7</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.thiagolocatelli</groupId>
+            <artifactId>parse4j</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <finalName>security-spr</finalName>
+        <finalName>sciencemeapp</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.heroku.sdk</groupId>
+                    <artifactId>heroku-maven-plugin</artifactId>
+                    <version>0.3.5</version>
+                    <configuration>
+                        <appName>sciencemeapp</appName>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
 </project>

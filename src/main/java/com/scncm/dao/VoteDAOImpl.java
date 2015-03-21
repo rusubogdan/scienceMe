@@ -1,14 +1,11 @@
 package com.scncm.dao;
 
-import com.scncm.model.Role;
+import com.scncm.model.Vote;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class RoleDAOImpl implements RoleDAO {
-
+public class VoteDAOImpl implements VoteDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -16,9 +13,7 @@ public class RoleDAOImpl implements RoleDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public Role getRole(int id) {
-        Role role = (Role) getCurrentSession().load(Role.class, id);
-        return role;
+    public Vote getVote(Integer voteId) {
+        return (Vote) getCurrentSession().load(Vote.class, voteId);
     }
-
 }

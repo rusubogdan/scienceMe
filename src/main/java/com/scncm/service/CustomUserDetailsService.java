@@ -22,9 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserDAO userDAO;
 
-    public UserDetails loadUserByUsername(String login) {
+    public UserDetails loadUserByUsername(String username) {
 
-        com.scncm.model.User domainUser = userDAO.getUser(login);
+        com.scncm.model.User domainUser = userDAO.getUser(username);
 
         boolean enabled = true;
         boolean accountNonExpired = true;
@@ -32,13 +32,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         boolean accountNonLocked = true;
 
         return new User(
-                domainUser.getLogin(),
+                domainUser.getUsername(),
                 domainUser.getPassword(),
                 enabled,
                 accountNonExpired,
                 credentialsNonExpired,
                 accountNonLocked,
-                getAuthorities(domainUser.getRole().getId())
+                getAuthorities(domainUser.getRole().getRoleId())
         );
     }
 

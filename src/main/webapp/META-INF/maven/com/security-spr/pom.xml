@@ -2,12 +2,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com</groupId>
-	<artifactId>security-spr</artifactId>
+	<artifactId>scienceMe</artifactId>
 
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>security-spr Maven Webapp</name>
+	<name>scienceMe Maven Webapp</name>
 
 	<properties>
 		<hibernate.version>4.1.7.Final</hibernate.version>
@@ -112,6 +112,6 @@
 	</dependencies>
 
 	<build>
-		<finalName>security-spr</finalName>
+		<finalName>scienceMe</finalName>
 	</build>
 </project>

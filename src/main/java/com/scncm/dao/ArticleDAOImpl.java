@@ -1,13 +1,13 @@
 package com.scncm.dao;
 
-import com.scncm.model.Role;
+import com.scncm.model.Article;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RoleDAOImpl implements RoleDAO {
+public class ArticleDAOImpl implements ArticleDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -16,9 +16,7 @@ public class RoleDAOImpl implements RoleDAO {
         return sessionFactory.getCurrentSession();
     }
 
-    public Role getRole(int id) {
-        Role role = (Role) getCurrentSession().load(Role.class, id);
-        return role;
+    public Article getArticle(Integer articleId) {
+        return (Article) getCurrentSession().load(Article.class, articleId);
     }
-
 }
