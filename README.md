@@ -5,5 +5,5 @@ Team members:
 * [Beniamin Marcu](https://github.com/marqbeniamin)
 * [Bogdan Rusu](https://github.com/rusubogdan)
 * [Mihai Paun](https://github.com/pxmihai)
-* [Cosmin Posteuca]
+* [Cosmin Posteuca](https://github.com/pcosmin)
 
