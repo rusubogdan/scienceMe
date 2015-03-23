@@ -4,7 +4,6 @@ import com.scncm.model.Article;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
-import com.sun.security.auth.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +32,8 @@ public class WallController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        // todo redirect the infidel from the wall page to login page
+        // only vip are allowed
         if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
             try {
                 httpServletResponse.sendRedirect("/");
@@ -44,7 +45,7 @@ public class WallController {
 
         mv = new ModelAndView("wall");
 
-        User loggedInUser = userService.getUser(authentication.getName());
+        User loggedInUser = userService.getUserByUsername(authentication.getName());
 
         mv.addObject("loggedInUser", loggedInUser);
 

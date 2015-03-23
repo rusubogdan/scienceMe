@@ -1,8 +1,11 @@
 package com.scncm.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -10,9 +13,22 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView loginForm() {
-        // todo check here for admin or moderator
-        return new ModelAndView("loginForm");
+    public ModelAndView loginFormAfterRequest(
+            @RequestParam(value = "error",  required = false) String error,
+            @RequestParam(value = "logout", required = false) String logout) {
+        // todo check here for admin or moderator or use in JSP sec tag!!!
+
+        ModelAndView mv = new ModelAndView("loginForm");
+
+        if (error != null) {
+            mv.addObject("error", true);
+        }
+
+        if (logout != null) {
+            mv.addObject("msg", "You've been logged out successfully.");
+        }
+
+        return mv;
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)

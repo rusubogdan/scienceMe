@@ -15,9 +15,9 @@
 
         <form-login login-page="/login"
                     default-target-url="/wall"
-                    authentication-failure-url="/moderation"/>
+                    authentication-failure-url="/login?error"/>
 
-        <logout logout-success-url="" invalidate-session="true"/>
+        <logout logout-success-url="/login?logout" invalidate-session="true"/>
 
     </http>
 

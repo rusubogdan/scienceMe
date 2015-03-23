@@ -45,3 +45,7 @@
     background-image: url("/resources/img/cloudWallpaper2.jpg");
     background-size: cover;
 }
+
+.logout-success {
+    color: blue;
+}

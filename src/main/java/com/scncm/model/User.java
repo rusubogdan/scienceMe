@@ -15,6 +15,7 @@ public class User {
     @Column(name = "id")
     private Integer userId;
 
+    // same as email
     @Column(name = "username")
     private String username;
 
@@ -33,6 +34,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    // same
     @Column(name = "email")
     private String email;
 

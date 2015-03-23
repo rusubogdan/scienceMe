@@ -8,6 +8,11 @@ import java.util.Set;
 @Table(name = "role")
 public class Role {
 
+    public static final Integer ROLE_ADMIN        = 1;
+    public static final Integer ROLE_MODERATOR    = 2;
+    public static final Integer ROLE_USER         = 3;
+    public static final Integer ROLE_RESTRICTED   = 4;
+
     @Id
     @GeneratedValue
     @Column(name = "id")

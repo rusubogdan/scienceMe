@@ -1,5 +1,6 @@
 package com.scncm.service;
 
+import com.scncm.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,16 +21,22 @@ import com.scncm.dao.*;
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserService userService;
 
-    public UserDetails loadUserByUsername(String username) {
+    public UserDetails loadUserByUsername(String email) {
 
-        com.scncm.model.User domainUser = userDAO.getUser(username);
+        com.scncm.model.User domainUser = userService.getUserByEmail(email);
 
         boolean enabled = true;
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
+
+        // that freaking password may log you in :)
+        if (domainUser == null) {
+            return new User("anonymousUser", "5h4g534vh4bvfhsevhgovyoy",
+                    true, true, true, true, getAuthorities(Role.ROLE_RESTRICTED));
+        }
 
         return new User(
                 domainUser.getUsername(),
@@ -43,20 +50,26 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities(Integer role) {
-        List<GrantedAuthority> authList = getGrantedAuthorities(getRoles(role));
-        return authList;
+        return getGrantedAuthorities(getRoles(role));
     }
 
     public List<String> getRoles(Integer role) {
 
         List<String> roles = new ArrayList<String>();
 
-        if (role.intValue() == 1) {
+        if (role == 1) {
             roles.add("ROLE_MODERATOR");
             roles.add("ROLE_ADMIN");
-        } else if (role.intValue() == 2) {
+            roles.add("ROLE_USER");
+        } else if (role == 2) {
             roles.add("ROLE_MODERATOR");
+            roles.add("ROLE_USER");
+        } else if (role == 3) {
+            roles.add("ROLE_USER");
+        } else if (role == 4) {
+            roles.add("ROLE_RESTRICTED");
         }
+
         return roles;
     }
 

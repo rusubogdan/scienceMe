@@ -12,12 +12,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>Login page</title>
 </head>
+
+
 <body>
 <h1>Login page</h1>
 <p>
     <c:if test="${error == true}">
-        <b class="error">Invalid login or password.</b>
+        <b class="error">Invalid username or password.</b>
     </c:if>
+
+    <c:if test="${msg ne null}">
+        <b class="logout-success">${msg}</b>
+    </c:if>
+
 </p>
 
 <form method="post" action="<c:url value='j_spring_security_check'/>">
