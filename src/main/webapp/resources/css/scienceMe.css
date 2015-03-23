@@ -1,3 +1,47 @@
 .error {
     color: red;
 }
+
+.full-width {
+    width: 100%;
+}
+
+.nav.li span {
+    padding: 10px 15px;
+}
+
+.wall-content-container {
+    margin: 5% 0;
+}
+
+.wall-right-sidebar {
+    margin: 5% 2%;
+    width: 20%;
+}
+
+.wall-left-sidebar {
+    margin: 5% 2%;
+    width: 20%;
+    left: 1%;
+}
+
+.header-search {
+    width: 80%;
+}
+
+.search-input {
+    width: 80%;
+    float: right;
+}
+
+.transparent-sidebar {
+    background-image: none;
+    background-color: transparent;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.wallpaper {
+    background-image: url("/resources/img/cloudWallpaper2.jpg");
+    background-size: cover;
+}

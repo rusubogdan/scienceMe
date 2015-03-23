@@ -3,25 +3,43 @@ package com.scncm.model;
 import com.scncm.helpers.VoteType;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Vote {
 
     @Id
     @GeneratedValue
-    @Column(name = "vote_id")
+    @Column(name = "id")
     private Integer voteId;
 
-    // article voted
-//    @Column(name = "article_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", nullable = false)
-    private Article article;
+    @Column(name = "vote_name")
+    private String voteName;
 
-    //user who voted
-//    @Column(name = "user_id")
-//    private User user;
+    @OneToMany(mappedBy = "vote", fetch = FetchType.EAGER)
+    private Set<UserArticleVote> userArticleVoteSet;
 
-    @Column(name = "vote_type")
-    private VoteType voteType;
+    public Integer getVoteId() {
+        return voteId;
+    }
+
+    public void setVoteId(Integer voteId) {
+        this.voteId = voteId;
+    }
+
+    public Set<UserArticleVote> getUserArticleVoteSet() {
+        return userArticleVoteSet;
+    }
+
+    public void setUserArticleVoteSet(Set<UserArticleVote> userArticleVoteSet) {
+        this.userArticleVoteSet = userArticleVoteSet;
+    }
+
+    public String getVoteName() {
+        return voteName;
+    }
+
+    public void setVoteName(String voteName) {
+        this.voteName = voteName;
+    }
 }

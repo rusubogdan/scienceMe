@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class VoteDAOImpl implements VoteDAO {
+
     @Autowired
     private SessionFactory sessionFactory;
 

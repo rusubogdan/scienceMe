@@ -1,10 +1,11 @@
 package com.scncm.model;
 
 import javax.persistence.*;
+import java.util.Random;
 import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 public class Role {
 
     @Id
@@ -12,14 +13,17 @@ public class Role {
     @Column(name = "id")
     private Integer roleId;
 
+    @Column(name = "role")
     private String role;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles",
-            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")}
-    )
-    private Set<User> userRoles;
+    Role() {}
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "user_role",
+//            joinColumns = {@JoinColumn(name = "role_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+//    )
+//    private Set<User> userRoles;
 
     public Integer getRoleId() {
         return roleId;
@@ -29,7 +33,6 @@ public class Role {
         this.roleId = roleId;
     }
 
-    @Column(name = "role")
     public String getRole() {
         return role;
     }
@@ -38,12 +41,12 @@ public class Role {
         this.role = role;
     }
 
-    public Set<User> getUserRoles() {
-        return userRoles;
-    }
-
-    public void setUserRoles(Set<User> userRoles) {
-        this.userRoles = userRoles;
-    }
+//    public Set<User> getUserRoles() {
+//        return userRoles;
+//    }
+//
+//    public void setUserRoles(Set<User> userRoles) {
+//        this.userRoles = userRoles;
+//    }
 
 }

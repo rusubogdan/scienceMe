@@ -20,6 +20,7 @@ public class UserDAOImpl implements UserDAO {
     private SessionFactory sessionFactory;
 
     private Session openSession() {
+
         return sessionFactory.getCurrentSession();
     }
 

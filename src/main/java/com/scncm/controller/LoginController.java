@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
-/**
- * Created by bogdan on 3/19/2015.
- */
 @Controller
 public class LoginController {
 
@@ -18,9 +15,10 @@ public class LoginController {
         return new ModelAndView("loginForm");
     }
 
-    @RequestMapping(value = "/successLogin", method = RequestMethod.GET)
-    public ModelAndView successLogin() {
-        return new ModelAndView("successLogin");
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout() {
+        // todo check here for admin or moderator
+        return new ModelAndView("logout");
     }
 
     // todo delete these
@@ -29,8 +27,4 @@ public class LoginController {
         return new ModelAndView("moderation");
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public ModelAndView firstAdminPage() {
-        return new ModelAndView("admin");
-    }
 }
