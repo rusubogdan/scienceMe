@@ -15,7 +15,8 @@ public class LoginController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView loginFormAfterRequest(
             @RequestParam(value = "error",  required = false) String error,
-            @RequestParam(value = "logout", required = false) String logout) {
+            @RequestParam(value = "logout", required = false) String logout,
+            @RequestParam(value = "forbidden", required = false) String forbidden) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
         ModelAndView mv = new ModelAndView("loginForm");
@@ -26,6 +27,10 @@ public class LoginController {
 
         if (logout != null) {
             mv.addObject("msg", "You've been logged out successfully.");
+        }
+
+        if (forbidden != null) {
+            mv.addObject("notAllowed", "Please login first");
         }
 
         return mv;

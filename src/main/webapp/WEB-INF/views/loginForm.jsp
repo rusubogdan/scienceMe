@@ -25,6 +25,9 @@
         <b class="logout-success">${msg}</b>
     </c:if>
 
+    <c:if test="${notAllowed ne null}">
+        <b class="not-allowed">${notAllowed}</b>
+    </c:if>
 </p>
 
 <form method="post" action="<c:url value='j_spring_security_check'/>">

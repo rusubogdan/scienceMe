@@ -23,44 +23,6 @@
 <jsp:include page="header.jsp"/>
 <%----------------------------%>
 
-<%--header--%>
-<%--
-<div class="navbar navbar-fixed-top navbar-default">
-    <div class="container">
-        <div class="navbar-header header-search" style="width: 80%">
-            <a class="navbar-brand" href="/">home</a>
-
-            <div class="col-sm-9 col-md-9 pull-right">
-                <form class="navbar-form" role="search">
-                    <div class="input-group search-input">
-                        <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"/>
-
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="glyphicon glyphicon-bar"></span>
-                <span class="glyphicon glyphicon-bar"></span>
-                <span class="glyphicon glyphicon-bar"></span>
-            </a>
-        </div>
-        <div class="navbar-collapse pull-right">
-            <ul class="nav navbar-nav">
-                <li><a href="/user/${loggedInUser.username}">${loggedInUser.username}</a></li>
-                <li><a href="/j_spring_security_logout">logout</a></li>
-            </ul>
-        </div>
-        <!--/.navbar-collapse -->
-    </div>
-</div>
---%>
-
-
 <div class="container">
     <div class="row">
         <div class="col-md-1">
@@ -91,6 +53,8 @@
                     <br/><br/><br/><br/>
                     <br/><br/><br/><br/>
                 </p>
+
+                <p id="test1Button"><a class="btn btn-primary btn-lg">Learn more »</a></p>
             </div>
         </div>
         <!--/span-->

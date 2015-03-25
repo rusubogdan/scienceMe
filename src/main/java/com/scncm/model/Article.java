@@ -18,12 +18,15 @@ public class Article {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<UserArticleVote> userArticleVoteSet;
+
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<ArticleTag> articleTags;
 
     // calculated in minutes
     @Column(name = "reading_time")
@@ -87,6 +90,14 @@ public class Article {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Set<ArticleTag> getArticleTags() {
+        return articleTags;
+    }
+
+    public void setArticleTags(Set<ArticleTag> articleTags) {
+        this.articleTags = articleTags;
     }
 
     // todo created date
