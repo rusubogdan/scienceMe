@@ -7,7 +7,9 @@ import javax.persistence.*;
 public class UserArticleVote {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "user_article_id", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user_article_id", sequenceName = "user_article_id", allocationSize = 1)
+    @Column(name = "id")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -4,11 +4,14 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "taga")
+@Table(name = "tag")
 public class Tag {
 
+    private static final long serialVersionUID = -5527566191402296042L;
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_seq")
+    @SequenceGenerator(name = "tag_id_seq", sequenceName = "tag_id_seq", allocationSize = 1)
     @Column(name = "tag_id")
     private Integer tagId;
 

@@ -4,10 +4,13 @@ import com.scncm.model.Tag;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class TagDAOImpl implements TagDAO {
 
     @Autowired
@@ -15,7 +18,9 @@ public class TagDAOImpl implements TagDAO {
 
     @Override
     public Tag getTag(Integer tagId) {
-        return (Tag) sessionFactory.getCurrentSession().load(Tag.class, tagId);
+        // the load method wasn't good here
+        // just some proxies (uncompleted objects) were loaded
+        return (Tag) sessionFactory.getCurrentSession().get(Tag.class, tagId);
     }
 
     @Override

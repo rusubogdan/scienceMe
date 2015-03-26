@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class ArticleTag {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_tag_id")
+    @SequenceGenerator(name = "article_tag_id", sequenceName = "article_tag_id", allocationSize = 1)
     @Column(name = "id")
     private Integer articleTagId;
 
@@ -15,6 +16,8 @@ public class ArticleTag {
     @JoinColumn(name = "article_id")
     private Article article;
 
+    // annotations that ends with one will have the eager fetch strategy
+    // the ones that ends with many will have the lazy fetch strategy
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "tag_id")
     private Tag tag;

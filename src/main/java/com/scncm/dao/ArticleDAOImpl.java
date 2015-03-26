@@ -22,7 +22,7 @@ public class ArticleDAOImpl implements ArticleDAO {
     }
 
     public Article getArticle(Integer articleId) {
-        return (Article) getCurrentSession().load(Article.class, articleId);
+        return (Article) getCurrentSession().get(Article.class, articleId);
     }
 
     public List<Article> getArticlesByUser (User user) {

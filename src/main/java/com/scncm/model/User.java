@@ -11,7 +11,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
+    @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Integer userId;
 
@@ -56,7 +57,7 @@ public class User {
     @Column(name = "is_facebook", columnDefinition = "default '0'")
     private Boolean isFacebook;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Article> articles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)

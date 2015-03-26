@@ -67,18 +67,16 @@ public class WallController {
         Map map = new HashMap();
         map.put("object", "bla");
 
-       /* Article article = new Article();
-        article.setLink("asdasd");
-        article.setTitle("testtest");
-        Tag tag = tagService.getTag(1);
+        Article articleFromDb = articleService.getArticle(1);
+        Tag tagFromDb = tagService.getTag(4);
 
         ArticleTag articleTag = new ArticleTag();
-        articleTag.setArticle(article);
-        articleTag.setTag(tag);
+        articleTag.setArticle(articleFromDb);
+        articleTag.setTag(tagFromDb);
 
-        article.getArticleTags().add(articleTag);
+        articleFromDb.getArticleTags().add(articleTag);
 
-        articleService.updateArticle(article);*/
+        articleService.updateArticle(articleFromDb);
 
         return map;
     }

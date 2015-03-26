@@ -15,7 +15,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleDAO articleDAO;
-
+    @Transactional
     public Article getArticle(Integer articleId) {
         return articleDAO.getArticle(articleId);
     }
