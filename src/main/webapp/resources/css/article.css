@@ -1,0 +1,11 @@
+.container-view-article{
+    /*background-color: red;*/
+    border: 1px solid ;
+    padding: 50px;
+}
+
+.container-view-article img{
+    float: left;
+    margin: 30px;
+}
+

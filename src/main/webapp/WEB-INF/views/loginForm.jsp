@@ -27,7 +27,7 @@
 
 </p>
 
-<form method="post" action="<c:url value='j_spring_security_check'/>">
+<form method="post" action="<c:url value='/j_spring_security_check'/>">
     <table>
         <tbody>
         <tr>
