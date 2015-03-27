@@ -16,17 +16,85 @@
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/wall.js"/> " rel="stylesheet"></script>
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
+    <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
+
 </head>
 <body>
+<jsp:include page="header.jsp"></jsp:include>
+<div class="row">
 
-dasm,dna,msdnas
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="container-view-article">
+            <br><br><br>
+            <h1>
+                Add new article
+            </h1>
 
-    Autor: ${autor}
-    Date: ${date}
-    Titlu: ${title}
-    <jsp:include page="header.jsp"></jsp:include>
 
 
-sads
+            <form id="bootstrapTagsInputForm" method="post" class="form-horizontal">
+                <%--<div class="form-group">--%>
+                <%--<label class="col-xs-3 control-label">Cities</label>--%>
+                <%--<div class="col-xs-8">--%>
+                <%--<input type="text" name="cities" class="form-control"--%>
+                <%--value="Hanoi" data-role="tagsinput" />--%>
+                <%--</div>--%>
+                <%--</div>--%>
+
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">
+                        Link to article:
+                    </label>
+                    <div class="col-xs-5">
+                        <input type="text" name="link" class="form-control"
+                               placeholder="Add link to your article..." />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">
+                        Your description:
+                    </label>
+                    <div class="col-xs-5">
+                        <textarea name="description" class="form-control">
+
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">
+                        Time:
+                    </label>
+                    <div class="col-xs-5">
+                        <input type="text" name="link" class="form-control"
+                               placeholder="How long did you read the article ..." />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-3 control-label">
+                        Add Tag:
+                    </label>
+                    <div class="col-xs-8">
+                        <input type="text" name="countries" class="form-control"
+                               value="" data-role="tagsinput" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-5 col-xs-offset-3">
+                        <button type="submit" class="btn btn-default">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+
+</div>
+
 </body>
 </html>

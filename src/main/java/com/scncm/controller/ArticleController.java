@@ -48,40 +48,44 @@ public class ArticleController {
             @RequestParam(value = "article", required = false) com.scncm.model.Article article) throws JAXBException {
         ModelAndView mv = new ModelAndView("addArticle");
 
-        Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
-        try {
-            Article article_diff = diffbot.article().analyze("http://ro.wikipedia.org/wiki/Rom%C3%A2nia").execute();
-            mv.addObject("autor", article_diff.getAuthor());
-            mv.addObject("date", article_diff.getDate());
-            mv.addObject("title", article_diff.getTitle());
+//        Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
+//        try {
+//            Article article_diff = diffbot.article().analyze("http://ro.wikipedia.org/wiki/Rom%C3%A2nia").execute();
+//            mv.addObject("autor", article_diff.getAuthor());
+//            mv.addObject("date", article_diff.getDate());
+//            mv.addObject("title", article_diff.getTitle());
+//
+//
+//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//            // todo redirect the infidel from the wall page to login page
+//            // only vip are allowed
+//            if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
+//                HttpServletResponse httpServletResponse = null;
+//                httpServletResponse.sendRedirect("/");
+//                return null;
+//            }
+//
+//            User loggedInUser = userService.getUserByUsername(authentication.getName());
+//
+//            article.setDescription(article_diff.getText());
+//            article.setTitle(article_diff.getTitle());
+//            article.setLink(article_diff.getUrl());
+//            article.setOwner(loggedInUser);
+//            article.setReadingTime(10);
+//
+//            ArticleDAOImpl newArticle = new ArticleDAOImpl();
+//            newArticle.addArticle(article);
+//
+//        } catch (DiffbotException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-            // todo redirect the infidel from the wall page to login page
-            // only vip are allowed
-            if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
-                HttpServletResponse httpServletResponse = null;
-                httpServletResponse.sendRedirect("/");
-                return null;
-            }
-
-            User loggedInUser = userService.getUserByUsername(authentication.getName());
-
-            article.setDescription(article_diff.getText());
-            article.setTitle(article_diff.getTitle());
-            article.setLink(article_diff.getUrl());
-            article.setOwner(loggedInUser);
-            article.setReadingTime(10);
-
-            ArticleDAOImpl newArticle = new ArticleDAOImpl();
-            newArticle.addArticle(article);
-
-        } catch (DiffbotException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        mv.addObject("autor", "autor");
+            mv.addObject("date", "data");
+            mv.addObject("title", "titilu");
         return mv;
     }
 
