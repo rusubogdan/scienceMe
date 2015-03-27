@@ -3,9 +3,6 @@
     <p>Welcome to Science Me <br/>
         Please register or login in order to enjoy the product. <br/>
 
-
-
-        <a href="${pageContext.request.contextPath}/register">Register</a><br/>
         <a href="${pageContext.request.contextPath}/login">Login</a><br/>
 
 
