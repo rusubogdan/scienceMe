@@ -1,18 +1,22 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: mihai7
-  Date: 3/27/2015
-  Time: 11:22 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<title>Login page</title>
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <%--CSS and JS--%>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/register.css"/>">
+    <script type="application/javascript" src="<c:url value="/resources/js/firstPage.js"/> "></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <title>Register page</title>
+</head>
 
     <body>
 
     <div class="registerForm">
-        <h1>Register</h1>
+        <h1>Register page</h1>
 
         <form action="/">
 
