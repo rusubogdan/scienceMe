@@ -14,13 +14,13 @@ public class RegisterController {
     public ModelAndView registerFormAfterRequest(
 
 
-            @RequestParam(value = "email", required = true) String email,
-            @RequestParam(value = "firstName", required = true) String firstName,
-            @RequestParam(value = "firstName", required = true) String lastName,
-            @RequestParam(value = "password", required = true) String password,
-            @RequestParam(value = "gender", required = true) String gender) {
+            @RequestParam(value = "email", required = false) String email,
+            @RequestParam(value = "firstName", required = false) String firstName,
+            @RequestParam(value = "firstName", required = false) String lastName,
+            @RequestParam(value = "password", required = false) String password,
+            @RequestParam(value = "gender", required = false) String gender) {
 
-        // i don't know what i`m doing
+        //
         ModelAndView mv = new ModelAndView("registerForm");
 
         if (email == null) {
