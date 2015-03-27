@@ -1,7 +1,16 @@
 <div id="home-page-container">
-    <h1>Science Me!</h1>
+    <title>Science Me!</title>
     <p>Welcome to Science Me <br/>
-        Please login or register in order to enjoy the product. <br/>
+        Please register or login in order to enjoy the product. <br/>
+
+
+
+        <a href="${pageContext.request.contextPath}/register">Register</a><br/>
         <a href="${pageContext.request.contextPath}/login">Login</a><br/>
+
+
+
+
+
     </p>
 </div>
