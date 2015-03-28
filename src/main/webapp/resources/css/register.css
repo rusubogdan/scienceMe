@@ -37,19 +37,6 @@ html{
     background-color: #ffffff;
 }
 
-.testbox {
-    margin: 20px auto;
-    width: 343px;
-    height: 464px;
-    -webkit-border-radius: 8px/7px;
-    -moz-border-radius: 8px/7px;
-    border-radius: 8px/7px;
-    background-color: #ebebeb;
-    -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.31);
-    -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.31);
-    box-shadow: 1px 2px 5px rgba(0,0,0,.31);
-    border: solid 1px #cbc9c9;
-}
 
 
 
@@ -86,12 +73,6 @@ input[type=password]{
     margin-bottom: 25px;
 }
 
-
-
-
-
-
-
 a.button {
     font-size: 14px;
     font-weight: 600;
@@ -99,7 +80,9 @@ a.button {
     padding: 6px 25px 0px 20px;
     margin: 10px 8px 20px 0px;
     display: inline-block;
-    float: right;
+    float:left ;
+    position:relative;
+    left:10%;
     text-decoration: none;
     width: 50px; height: 27px;
     -webkit-border-radius: 5px;

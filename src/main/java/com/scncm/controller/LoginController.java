@@ -19,7 +19,7 @@ public class LoginController {
             @RequestParam(value = "forbidden", required = false) String forbidden) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
-        ModelAndView mv = new ModelAndView("loginForm");
+        ModelAndView mv = new ModelAndView("home"); // revine in home, am scos loginForm
 
         if (error != null) {
             mv.addObject("error", true);
