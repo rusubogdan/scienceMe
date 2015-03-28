@@ -1,6 +1,5 @@
 $(document).ready(function () {
     wall.test();
-<<<<<<< HEAD
 
     $('.articles-carousel').slick({
         slidesToShow: 1,
@@ -11,10 +10,8 @@ $(document).ready(function () {
         autoplaySpeed: 7000,
         arrows: false,
     });
-=======
     wall.init.timeBar();
     wall.init.buttonSideBar();
->>>>>>> 59e412b0b0e984cea49c6ac21b88ed39d70210be
 });
 
 var wall = {
