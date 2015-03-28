@@ -7,15 +7,23 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <%--main stylesheet--%>
     <link href="<c:url value="/resources/css/bootstrap.min.css"/> " rel="stylesheet"/>
     <link href="<c:url value="/resources/css/bootstrap-theme.min.css"/> " rel="stylesheet"/>
-    <link href="<c:url value="/resources/css/scienceMe.css"/> " rel="stylesheet"/>
     <link href="<c:url value="/resources/css/jquery.range.css"/> " rel="stylesheet">
+    <!-- for carousel -->
+    <link href="<c:url value="/resources/css/slick.css"/> " rel="stylesheet"/>
+    <link href="<c:url value="/resources/css/slick-theme.css"/> " rel="stylesheet"/>
+
+    <%--always the last included style !!!--%>
+    <link href="<c:url value="/resources/css/scienceMe.css"/> " rel="stylesheet"/>
 
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/jquery.range.js"/>"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js"></script>
+    <%--<script type="text/javascript" src="/resources/js/slick.min.js"></script>--%>
+
+    <%--always the last included script !!!--%>
     <script src="<c:url value="/resources/js/wall.js"/> " rel="stylesheet"></script>
 
 </head>
@@ -33,6 +41,9 @@
         <!--/span-->
         <div class="col-md-9 wall-content-container col-md-pull-1">
             <div class="jumbotron">
+                <jsp:include page="carouselInc.jsp"/>
+                <jsp:include page="newestInc.jsp"/>
+
                 <h1>Hello, world!</h1>
 
                 <p>This is a template for a simple marketing or informational website. It

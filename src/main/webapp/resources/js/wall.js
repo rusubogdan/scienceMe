@@ -2,6 +2,17 @@ $(document).ready(function () {
     wall.test();
     wall.init.timeBar();
     wall.init.buttonSideBar();
+
+
+    $('.articles-carousel').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        //adaptiveHeight: true,
+//        autoplay: true,
+        autoplaySpeed: 7000,
+        arrows: false
+    });
 });
 
 // Cosmin - schimba :hover eventul

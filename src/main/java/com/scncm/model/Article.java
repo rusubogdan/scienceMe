@@ -1,8 +1,7 @@
 package com.scncm.model;
 
-import org.springframework.beans.factory.annotation.Required;
-
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -34,6 +33,8 @@ public class Article {
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ArticleTag> articleTags;
 
+    // for rating set formula and calculate rating
+
     // calculated in minutes - required
     @Column(name = "reading_time")
     private Integer readingTime;
@@ -41,6 +42,12 @@ public class Article {
     // link to the article - required
     @Column(name = "link")
     private String link;
+
+    @Column(name = "html_content")
+    private String htmlContent;
+
+    @Column(name = "created_date")
+    private Timestamp createdDate;
 
     public User getOwner() {
         return owner;
@@ -104,6 +111,14 @@ public class Article {
 
     public void setArticleTags(Set<ArticleTag> articleTags) {
         this.articleTags = articleTags;
+    }
+
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
     }
 
     // todo created date
