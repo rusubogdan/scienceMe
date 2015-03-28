@@ -62,14 +62,14 @@
 
         <form action="/">
 
-            <label class="icon" for="j_addEmail"><i class="icon-envelope "></i></label>
-                <input type="text" name="j_addEmail" id="j_addEmail"  placeholder="Email" />
-            <label class="icon" for="j_addFirstname"><i class="icon-user"></i></label>
-                 <input type="text" name="j_addFirstname" id="j_addFirstname" placeholder="First Name" />
-            <label class="icon" for="j_addLastname"><i class="icon-user"></i></label>
-                 <input type="text" name="j_addLastname" id="j_addLastname" placeholder="Last Name" />
-            <label class="icon" for="j_addPassword"><i class="icon-shield"></i></label>
-                 <input type="password" name="j_addPassword" id="j_addPassword" placeholder="Password" />
+            <label class="icon" ><i class="icon-envelope "></i></label>
+            <input type="text" name="j_addEmail" id="j_addEmail"  placeholder="Email" />
+            <label class="icon" ><i class="icon-user">     </i></label>
+            <input type="text" name="j_addFirstname" id="j_addFirstname" placeholder="First Name" />
+            <label class="icon" ><i class="icon-user"></i></label>
+            <input type="text" name="j_addLastname" id="j_addLastname" placeholder="Last Name" />
+            <label class="icon" ><i class="icon-shield"></i></label>
+            <input type="password" name="j_addPassword" id="j_addPassword" placeholder="Password" />
             <div class="gender">
                 <input type="radio" value="None" id="male" name="gender" checked/>
                 <label for="male" class="radio"  >Male</label>
