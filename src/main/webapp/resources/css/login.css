@@ -108,7 +108,10 @@ body {
     border: solid 1px #cbc9c9;
 
 }
+#registerform {
 
+    display:none;
+}
 
 
 a.button {

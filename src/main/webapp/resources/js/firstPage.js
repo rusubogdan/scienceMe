@@ -1,8 +1,7 @@
-var firstPage = {
-    init: function () {
-        firstPage.actions();
-    },
-    actions: function () {
-        console.log('hello');
-    }
-};
+function show(){
+
+    document.getElementById("loginform").style.display="none";
+    document.getElementById("registerform").style.display="block";
+
+
+}

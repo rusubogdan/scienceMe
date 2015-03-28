@@ -20,7 +20,7 @@
     <a href="${pageContext.request.contextPath}/index.html">Home page</a><br/>
 </p>
 
-<form method="post" action="<c:url value='j_spring_security_check'/>">
+<form method="post" action="<c:url value='j_spring_security_check'/>" id="loginform">
     <div class="wrap">
 
         <div class="avatar">
@@ -34,11 +34,11 @@
 
             <input type="password" name="j_password" id="j_password" placeholer="password"/></td>
 
-           <button type="submit" value="Sign in" onclick="firstPage.init();">Sign in</button>
+           <button type="submit" value="Sign in">Sign in</button>
         <div class="bar">
             <i></i>
         </div>
-        <button type="submit">Register? </button>
+        <button onclick="show()"> Register? </button>
 
         <p>
             <c:if test="${error == true}">
@@ -55,12 +55,17 @@
         </p>
 
     </div>
-
-    <div class="register">
+</form>
+<form method="post" action="<c:url value='j_spring_security_check'/>" id="registerform">
+    <div class="register" >
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
 
         <form action="/">
+            <div class="avatar">
+                <img src="http://www.mbari.org/earth/images/atom.png">
+            </div>
+            <br>
 
             <label class="icon" ><i class="icon-envelope "></i></label>
             <input type="text" name="j_addEmail" id="j_addEmail"  placeholder="Email" />
