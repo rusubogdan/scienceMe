@@ -2,7 +2,6 @@ package com.scncm.controller;
 
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.scncm.dao.ArticleDAO;
 import com.scncm.dao.ArticleDAOImpl;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -38,54 +38,58 @@ public class ArticleController {
     private UserService userService;
 
 
-//    @RequestMapping(value = "", method = RequestMethod.GET)
-//    public ModelAndView addArticle() {
-//        return new ModelAndView("addArticle");
-//    }
-
     @RequestMapping(value = "add-article", method = RequestMethod.GET)
     public ModelAndView addArticle(
-            @RequestParam(value = "article", required = false) com.scncm.model.Article article) throws JAXBException {
+            @RequestParam(value = "article", required = false) com.scncm.model.Article article, HttpServletRequest request) throws JAXBException {
+
         ModelAndView mv = new ModelAndView("addArticle");
 
-//        Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
-//        try {
-//            Article article_diff = diffbot.article().analyze("http://ro.wikipedia.org/wiki/Rom%C3%A2nia").execute();
-//            mv.addObject("autor", article_diff.getAuthor());
-//            mv.addObject("date", article_diff.getDate());
-//            mv.addObject("title", article_diff.getTitle());
-//
-//
-//            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//            // todo redirect the infidel from the wall page to login page
-//            // only vip are allowed
-//            if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
-//                HttpServletResponse httpServletResponse = null;
-//                httpServletResponse.sendRedirect("/");
-//                return null;
-//            }
-//
-//            User loggedInUser = userService.getUserByUsername(authentication.getName());
-//
-//            article.setDescription(article_diff.getText());
-//            article.setTitle(article_diff.getTitle());
-//            article.setLink(article_diff.getUrl());
-//            article.setOwner(loggedInUser);
-//            article.setReadingTime(10);
-//
-//            ArticleDAOImpl newArticle = new ArticleDAOImpl();
-//            newArticle.addArticle(article);
-//
-//        } catch (DiffbotException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        String new_link = request.getParameter("link");
+        String new_description = request.getParameter("description");
+        String new_time = request.getParameter("time");
+        String new_tags = request.getParameter("tags");
 
-        mv.addObject("autor", "autor");
-            mv.addObject("date", "data");
-            mv.addObject("title", "titilu");
+        if(new_link != null) {
+
+            Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
+            try {
+//                aici tin informatiile de la api
+                Article article_diff = diffbot.article().analyze(new_link).execute();
+
+                System.out.println("aici");
+                mv.addObject("description", article_diff.getHtml());
+
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+                // todo redirect the infidel from the wall page to login page
+                // only vip are allowed
+            if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
+                HttpServletResponse httpServletResponse = null;
+                httpServletResponse.sendRedirect("/");
+                return null;
+            }
+
+            User loggedInUser = userService.getUserByUsername(authentication.getName());
+
+            article.setDescription(new_description);  // descrierea din formular
+            article.setTitle(article_diff.getTitle());  // titlul returnat de api
+            article.setLink(article_diff.getUrl()); // url-ul returnat de api catre articol
+            article.setOwner(loggedInUser); // userul logat
+            article.setReadingTime(Integer.parseInt(new_time)); // timpul din formular
+            article.setContent(article_diff.getHtml()); // content-ul returnat de api
+
+            ArticleDAOImpl newArticle = new ArticleDAOImpl();
+            newArticle.addArticle(article);
+
+            } catch (DiffbotException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+//        mv.addObject("description", "description");
         return mv;
     }
 
@@ -93,19 +97,17 @@ public class ArticleController {
     @RequestMapping(value = "view-article", method = RequestMethod.GET)
     public ModelAndView viewArticle(
             @RequestParam(value = "article", required = false) com.scncm.model.Article article) throws JAXBException {
+
         ModelAndView mv = new ModelAndView("viewArticle");
 
-        Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
-        try {
-            Article article_diff = diffbot.article().analyze("http://ro.wikipedia.org/wiki/Rom%C3%A2nia").execute();
-            mv.addObject("autor", article_diff.getAuthor());
-            mv.addObject("date", article_diff.getDate());
-            mv.addObject("title", article_diff.getTitle());
-            mv.addObject("title_view","View Article");
-            mv.addObject("description", article_diff.getHtml());
-        } catch (DiffbotException e) {
-            e.printStackTrace();
-        }
+        System.out.println("ajunge");
+
+        com.scncm.model.Article articol =  articleService.getArticle(0);
+
+//        in view folosesc doar title si description deocamdata
+        mv.addObject("title", articol.getTitle());
+        mv.addObject("title_view","View Article");
+        mv.addObject("description", articol.getDescription());
 
         return mv;
     }

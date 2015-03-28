@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <title>wall</title>
-
+    <meta charset="ISO-8859-1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <%--main stylesheet--%>
@@ -29,19 +29,14 @@
         <div class="container-view-article">
             <br><br><br>
             <h1>
+                ${description}
                 Add new article
             </h1>
 
 
-
-            <form id="bootstrapTagsInputForm" method="post" class="form-horizontal">
-                <%--<div class="form-group">--%>
-                <%--<label class="col-xs-3 control-label">Cities</label>--%>
-                <%--<div class="col-xs-8">--%>
-                <%--<input type="text" name="cities" class="form-control"--%>
-                <%--value="Hanoi" data-role="tagsinput" />--%>
-                <%--</div>--%>
-                <%--</div>--%>
+<%--    informatiile din aces formular trebuie trimise in articlecontroller in functia addarticle--%>
+            <%--    In aceasta functie iau informatiile de la link si le bag  in baza de date --%>
+            <form id="bootstrapTagsInputForm" method="get" action="add-article" class="form-horizontal"() ">
 
                 <div class="form-group">
                     <label class="col-xs-3 control-label">
@@ -69,7 +64,7 @@
                         Time:
                     </label>
                     <div class="col-xs-5">
-                        <input type="text" name="link" class="form-control"
+                        <input type="text" name="time" class="form-control"
                                placeholder="How long did you read the article ..." />
                     </div>
                 </div>
@@ -78,7 +73,7 @@
                         Add Tag:
                     </label>
                     <div class="col-xs-8">
-                        <input type="text" name="countries" class="form-control"
+                        <input type="text" name="tags" class="form-control"
                                value="" data-role="tagsinput" />
                     </div>
                 </div>
@@ -93,6 +88,8 @@
         </div>
     </div>
     <div class="col-md-2"></div>
+
+    ${desctiption}
 
 </div>
 

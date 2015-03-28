@@ -18,6 +18,9 @@ public class Article {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "content")
+    private String content;
+
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
@@ -71,6 +74,14 @@ public class Article {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String description) {
+        this.content = content;
     }
 
     public Integer getReadingTime() {
