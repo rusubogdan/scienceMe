@@ -1,5 +1,13 @@
 $(document).ready(function () {
     wall.test();
+    $('.articles-carousel').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        dots: true,
+        autoplay: true,
+        autoplaySpeed: 7000,
+        arrows: false
+    });
 });
 
 var wall = {

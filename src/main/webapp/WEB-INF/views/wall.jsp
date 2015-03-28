@@ -15,6 +15,10 @@
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/wall.js"/> " rel="stylesheet"></script>
+    <!-- pentru carousel -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js"></script>
+    <link href="<c:url value="/resources/css/slick.css"/> " rel="stylesheet"/>
+    <link href="<c:url value="/resources/css/slick-theme.css"/> " rel="stylesheet"/>
 
 </head>
 
@@ -41,6 +45,8 @@
         <!--/span-->
         <div class="col-md-9 wall-content-container">
             <div class="jumbotron">
+                <jsp:include page="articles/carousel.inc.jsp"/>
+                <jsp:include page="articles/newest.inc.jsp"/>
                 <h1>Hello, world!</h1>
 
                 <p>This is a template for a simple marketing or informational website. It

@@ -70,3 +70,38 @@
     border: 0;
     box-shadow: none;
 }
+.newest-articles .article-preview-container {
+    width: 100%;
+}
+.article-preview-container .article-title{
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 28px;
+    color: #bbbbbb;
+}
+.article-preview-container .article-text{
+    width: 100%;
+    padding: 10px 0;
+    font-size: 20px;
+    color: #aaa;
+    text-align: justify;
+
+}
+.article-preview-container .article-informations{
+    width: 100%;
+    text-align: right;
+}
+
+.article-informations .article-author, .article-informations .article-reference{
+    display: inline-block;
+    padding: 0 5px;
+
+}
+.article-informations .article-reference{
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+    color: #8899cc;
+
+}
