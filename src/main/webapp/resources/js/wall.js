@@ -9,7 +9,7 @@ $(document).ready(function () {
         slidesToScroll: 1,
         dots: true,
         //adaptiveHeight: true,
-//        autoplay: true,
+        autoplay: true,
         autoplaySpeed: 7000,
         arrows: false
     });

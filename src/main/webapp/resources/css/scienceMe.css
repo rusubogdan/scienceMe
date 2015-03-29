@@ -113,13 +113,28 @@
 
 .newest-articles .article-preview-container {
     width: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    -webkit-box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.6);
+    box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.6);
+    padding: 0 16px 5px 16px;
+}
+.newest-articles .article-preview-container:hover {
+    -webkit-box-shadow: 0 0 15px 0px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 15px 0px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.3);
+    -webkit-transition: all 0.075s ease-in;
+    -moz-transition: all 0.075s ease-in;
+    -o-transition: all 0.075s ease-in;
+    transition: all 0.075s ease-in;
 }
 .article-preview-container .article-title{
     width: 100%;
     padding: 10px 0;
     text-align: center;
     font-size: 28px;
-    color: #bbbbbb;
 }
 .article-preview-container .article-text{
     width: 100%;
@@ -132,6 +147,8 @@
 .article-preview-container .article-informations{
     width: 100%;
     text-align: right;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .article-informations .article-author, .article-informations .article-reference{
@@ -146,39 +163,11 @@
     color: #8899cc;
 
 }
-
-.newest-articles .article-preview-container {
-    width: 100%;
-}
-.article-preview-container .article-title{
-    width: 100%;
-    padding: 10px 0;
-    text-align: center;
-    font-size: 28px;
-    color: #bbbbbb;
-}
-.article-preview-container .article-text{
-    width: 100%;
-    padding: 10px 0;
-    font-size: 20px;
-    color: #aaa;
-    text-align: justify;
-
-}
-.article-preview-container .article-informations{
-    width: 100%;
-    text-align: right;
-}
-
-.article-informations .article-author, .article-informations .article-reference{
-    display: inline-block;
-    padding: 0 5px;
-
-}
-.article-informations .article-reference{
-    text-decoration: none;
-    outline: none;
-    cursor: pointer;
-    color: #8899cc;
-
+.articles-carousel{
+    margin: -48px -60px 60px -60px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 5px 20px;
+    background: #ffffff;
+    border-bottom: 1px solid #333;
 }
