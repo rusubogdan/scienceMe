@@ -34,7 +34,7 @@
         <div class="bar">
             <i></i>
         </div>
-        <button type="button" onclick="show()"> Register? </button>
+        <button type="button" onclick="show();"> Register </button>
 
         <p>
             <c:if test="${error == true}">
@@ -83,7 +83,7 @@
             </div>
 
             <a href="#" class="button">Register</a>
-            <a href="#" class="button" onclick="hide()">Log in?</a>
+            <a href="#" class="button" onclick="hide();">Login</a>
 
         </form>
     </div>
