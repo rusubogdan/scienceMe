@@ -121,5 +121,13 @@ public class Article {
         this.htmlContent = htmlContent;
     }
 
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
     // todo created date
 }
