@@ -14,8 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.scncm.dao.*;
-
 @Service
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
@@ -39,7 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         return new User(
-                domainUser.getUsername(),
+                domainUser.getEmail(),
                 domainUser.getPassword(),
                 enabled,
                 accountNonExpired,

@@ -7,18 +7,20 @@ import javax.persistence.*;
 public class UserArticleVote {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "user_article_id", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user_article_id", sequenceName = "user_article_id", allocationSize = 1)
+    @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vote_id", nullable = false)
     private Vote vote;
 

@@ -1,10 +1,12 @@
 package com.scncm.init;
 
+import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -48,6 +50,16 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return dataSource;
     }
 
+//    @Bean
+//    public SessionFactory sessionFactory() {
+//        LocalSessionFactoryBuilder builder =
+//                new LocalSessionFactoryBuilder(dataSource());
+//        builder.scanPackages("com.scncm.model")
+//                .addProperties(getHibernateProperties());
+//
+//        return builder.buildSessionFactory();
+//    }
+
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
@@ -66,6 +78,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         return properties;
     }
 
+    // @Transaction manager
     @Bean
     public HibernateTransactionManager transactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();

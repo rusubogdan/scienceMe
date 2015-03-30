@@ -1,6 +1,7 @@
 package com.scncm.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
@@ -8,33 +9,45 @@ import java.util.Set;
 public class Article {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_id_seq")
+    @SequenceGenerator(name = "article_id_seq", sequenceName = "article_id_seq", allocationSize = 1)
     @Column(name = "article_id")
     private Integer articleId;
 
+    // required - unique ?
     @Column(name = "title")
     private String title;
 
+    // required
     @Column(name = "description")
     private String description;
 
-    @Column(name = "html_content")
-    private String content;
-
-    @ManyToOne
+    // required
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<UserArticleVote> userArticleVoteSet;
 
-    // calculated in minutes
+    @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<ArticleTag> articleTags;
+
+    // for rating set formula and calculate rating
+
+    // calculated in minutes - required
     @Column(name = "reading_time")
     private Integer readingTime;
 
-    // link to the article
+    // link to the article - required
     @Column(name = "link")
     private String link;
+
+    @Column(name = "html_content")
+    private String htmlContent;
+
+    @Column(name = "created_date")
+    private Timestamp createdDate;
 
     public User getOwner() {
         return owner;
@@ -76,14 +89,6 @@ public class Article {
         this.description = description;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String description) {
-        this.content = content;
-    }
-
     public Integer getReadingTime() {
         return readingTime;
     }
@@ -98,6 +103,30 @@ public class Article {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Set<ArticleTag> getArticleTags() {
+        return articleTags;
+    }
+
+    public void setArticleTags(Set<ArticleTag> articleTags) {
+        this.articleTags = articleTags;
+    }
+
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent;
+    }
+
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
     }
 
     // todo created date
