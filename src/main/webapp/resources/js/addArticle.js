@@ -1,5 +1,10 @@
+
 var addArticle = {
     init: function () {
-        console.log('hello');
+        console.log("ajunge");
+    },
+
+   addArticleFromForm: function(){
+        console.log("send info");
     }
 };

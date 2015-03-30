@@ -97,7 +97,7 @@ var wall = {
     test: function () {
         $('#test1Button').on({
             click: function () {
-                $.get('wall/ajax/testArticle', function (response) {
+                $.get('wall/ajax/testArticle',  function (response) {
                     console.log(response);
                 });
             }
