@@ -18,7 +18,7 @@ public class Article {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "content")
+    @Column(name = "html_content")
     private String content;
 
     @ManyToOne

@@ -72,15 +72,17 @@ public class ArticleController {
 
             User loggedInUser = userService.getUserByUsername(authentication.getName());
 
-            article.setDescription(new_description);  // descrierea din formular
-            article.setTitle(article_diff.getTitle());  // titlul returnat de api
-            article.setLink(article_diff.getUrl()); // url-ul returnat de api catre articol
-            article.setOwner(loggedInUser); // userul logat
-            article.setReadingTime(Integer.parseInt(new_time)); // timpul din formular
-            article.setContent(article_diff.getHtml()); // content-ul returnat de api
+                com.scncm.model.Article art = new com.scncm.model.Article();
 
-            ArticleDAOImpl newArticle = new ArticleDAOImpl();
-            newArticle.addArticle(article);
+            art.setArticleId(100);
+            art.setDescription(new_description);  // descrierea din formular
+            art.setTitle(article_diff.getTitle());  // titlul returnat de api
+            art.setLink(article_diff.getUrl()); // url-ul returnat de api catre articol
+            art.setOwner(loggedInUser); // userul logat
+            art.setReadingTime(Integer.parseInt(new_time)); // timpul din formular
+            art.setContent(article_diff.getHtml()); // content-ul returnat de api
+
+            articleService.addArticle(art);
 
             } catch (DiffbotException e) {
                 e.printStackTrace();
