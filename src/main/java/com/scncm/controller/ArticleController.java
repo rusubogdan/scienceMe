@@ -2,13 +2,11 @@ package com.scncm.controller;
 
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
-import com.scncm.dao.ArticleDAOImpl;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
 import com.syncthemall.diffbot.Diffbot;
 import com.syncthemall.diffbot.exception.DiffbotException;
-import com.syncthemall.diffbot.model.article.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,9 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
-/**
- * Created by marcubeniamin on 25/03/15.
- */
 
 @Controller
 @RequestMapping(value = "/article", method = RequestMethod.GET)
@@ -54,7 +49,7 @@ public class ArticleController {
             Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
             try {
 //                aici tin informatiile de la api
-                Article article_diff = diffbot.article().analyze(new_link).execute();
+                com.syncthemall.diffbot.model.article.Article article_diff = diffbot.article().analyze(new_link).execute();
 
                 System.out.println("aici");
                 mv.addObject("description", article_diff.getHtml());
@@ -80,7 +75,7 @@ public class ArticleController {
             art.setLink(article_diff.getUrl()); // url-ul returnat de api catre articol
             art.setOwner(loggedInUser); // userul logat
             art.setReadingTime(Integer.parseInt(new_time)); // timpul din formular
-            art.setContent(article_diff.getHtml()); // content-ul returnat de api
+            art.setHtmlContent(article_diff.getHtml()); // content-ul returnat de api
 
             articleService.addArticle(art);
 
