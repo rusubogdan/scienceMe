@@ -3,6 +3,7 @@ package com.scncm.model;
 import com.scncm.helpers.VoteType;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity

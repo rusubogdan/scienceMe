@@ -43,6 +43,33 @@ public class ArticleDAOImpl implements ArticleDAO {
         }
     }
 
+    public List<Article> getArticleFiltered(boolean news, boolean rating, int startTime, int endTime) {
+        List<Article> articles = new ArrayList<Article>();
+        Query query;
+        if (!news && !rating) {
+            query = getCurrentSession().createQuery("from Article a where a.readingTime between :startTime and :endTime");
+            query.setParameter("startTime", startTime);
+            query.setParameter("endTime", endTime);
+            query.setMaxResults(2);
+            query.setCacheable(false);
+        } else {
+            query = getCurrentSession().createQuery("from Article a join fetch a.owner");
+            query.setMaxResults(2);
+        }
+        try {
+            articles = query.list();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        if (articles.size() > 0) {
+            return articles;
+        } else {
+            return null;
+        }
+
+    }
+
     public Article addArticle (Article article) {
         Article addedArcticle = (Article) getCurrentSession().save(article);
         getCurrentSession().getTransaction().commit();

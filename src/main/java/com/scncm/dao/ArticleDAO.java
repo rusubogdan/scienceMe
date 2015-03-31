@@ -11,6 +11,8 @@ public interface ArticleDAO {
 
     List<Article> getArticlesByUser(User user);
 
+    List<Article> getArticleFiltered(boolean news, boolean rating, int startTime, int endTime);
+
     Article addArticle (Article article);
 
     Boolean updateArticle (Article article);

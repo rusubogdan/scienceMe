@@ -44,21 +44,6 @@
                 <jsp:include page="carouselInc.jsp"/>
                 <jsp:include page="newestInc.jsp"/>
 
-                <h1>Hello, world!</h1>
-
-                <p>This is a template for a simple marketing or informational website. It
-                    includes a large callout called the hero unit and three supporting pieces
-                    of content. Use it<br/><br/><br/><br/><br/><br/><br/>
-
-                    <br/><br/><br/><br/><br/><br/><br/> as a starting point to create something more unique.
-                    <br/><br/><br/><br/>
-                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-                    <br/><br/><br/><br/>
-                    <br/><br/><br/><br/>
-                    <br/><br/><br/><br/>
-                </p>
-
-
                 <p id="test1Button"><a class="btn btn-primary btn-lg">Learn more »</a></p>
             </div>
         </div>

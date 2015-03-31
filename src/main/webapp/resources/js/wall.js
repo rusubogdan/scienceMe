@@ -34,7 +34,26 @@ var wall = {
                 width: 150,
                 theme: "theme-blue",
                 showLabels: true,
-                isRange: true
+                isRange: true,
+                onstatechange: function () {
+                    news = false;
+                    rating = false;
+                    startTime = $(".range-slider").val().split(",")[0];
+                    endTime = $(".range-slider").val().split(",")[1];
+
+                    if (endTime == null) {
+                        endTime = startTime;
+                        startTime = 0;
+                    }
+
+                    if ($('#news-button-sidebar').css('background-color') == "rgb(81, 176, 74)") {
+                        news = true;
+                    }
+                    if ($('#rating-button-sidebar').css('background-color') == "rgb(81, 176, 74)") {
+                        rating = true;
+                    }
+//                    wall.filterArticles(news, rating, startTime, endTime);
+                }
             });
         },
         buttonSideBar: function () {
@@ -46,14 +65,10 @@ var wall = {
                     if (wall.filterByNews) {
                         newsFilter.css('background-color', 'transparent');
                         wall.filterByNews = false;
-                        wall.filterByRating = true;
-                        ratingFilter.css({
-                            'background-color': 'green'
-                        });
                     }
                     else {
                         newsFilter.css({
-                            'background-color': 'green'
+                            'background-color': 'rgb(81, 176, 74)'
                         });
                         wall.filterByNews = true;
                         wall.filterByRating = false;
@@ -64,6 +79,19 @@ var wall = {
 
                     // ajax to server for filtering the articles
                     wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound);
+                },
+
+                mouseover: function () {
+                    if (!wall.filterByNews) {
+                        newsFilter.css('background-color', 'rgb(195, 195, 195)');
+                        newsFilter.css('cursor', 'pointer');
+                    }
+                },
+                mouseout: function () {
+                    if (!wall.filterByNews) {
+                        newsFilter.css('background-color', 'transparent');
+                        newsFilter.css('cursor', 'default');
+                    }
                 }
             });
 
@@ -72,14 +100,10 @@ var wall = {
                     if (wall.filterByRating) {
                         ratingFilter.css('background-color', 'transparent');
                         wall.filterByRating = false;
-                        wall.filterByNews = true;
-                        newsFilter.css({
-                            'background-color': 'green'
-                        });
                     }
                     else {
                         ratingFilter.css({
-                            'background-color': 'green'
+                            'background-color': 'rgb(81, 176, 74)'
                         });
                         wall.filterByRating = true;
                         wall.filterByNews = false;
@@ -90,6 +114,19 @@ var wall = {
 
                     // ajax to server for filtering the articles
                     wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound);
+                },
+
+                mouseover: function () {
+                    if (!wall.filterByRating) {
+                        ratingFilter.css('background-color', 'rgb(195, 195, 195)');
+                        ratingFilter.css('cursor', 'pointer');
+                    }
+                },
+                mouseout: function () {
+                    if (!wall.filterByRating) {
+                        ratingFilter.css('background-color', 'transparent');
+                        ratingFilter.css('cursor', 'default');
+                    }
                 }
             });
         }
@@ -104,8 +141,18 @@ var wall = {
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval) {
-        $.get('wall/ajax/filterArticles', function (response) {
-            console.log(response.message);
-        });
+        console.log(news);
+        console.log(rating);
+        console.log(lowerBoundInterval);
+        console.log(upperBoundInterval);
+        $.get('wall/ajax/filterArticles',{"news": news,
+                                          "rating": rating,
+                                          "startTime": lowerBoundInterval,
+                                          "endTime": upperBoundInterval},
+            function (response) {
+            console.log(response);
+        })
+
+
     }
 };
