@@ -7,6 +7,7 @@
 <head>
     <%--CSS and JS--%>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/login.css"/>">
+    <script type="application/javascript" src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/resources/js/firstPage.js"/> "></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
@@ -20,7 +21,7 @@
     <div class="wrap">
 
         <div class="avatar">
-            <img src="http://www.mbari.org/earth/images/atom.png">
+            <img alt="logo" src="http://www.mbari.org/earth/images/atom.png">
         </div>
 
         <input type="text" name="j_username" id="j_username" placeholder="username"/></td>
@@ -34,7 +35,7 @@
         <div class="bar">
             <i></i>
         </div>
-        <button type="button" onclick="show()"> Register? </button>
+        <button type="button"  id="registerMe"> Register? </button>
 
         <p>
             <c:if test="${error == true}">
@@ -83,7 +84,7 @@
             </div>
 
             <a href="#" class="button">Register</a>
-            <a href="#" class="button" onclick="hide()">Log in?</a>
+            <a href="#" class="button" id="logmeIn">Log in?</a>
 
         </form>
     </div>
