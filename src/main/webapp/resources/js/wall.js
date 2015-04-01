@@ -156,7 +156,11 @@ var wall = {
                                           "startingSearchPoint": startingSearchPoint},
             function (response) {
             console.log(response);
-        })
+        });
+
+        $.post('search/ajax/filterArticles', {"searchQuery": "Romania"}, function (response) {
+           console.log(response);
+        });
 
 
     }

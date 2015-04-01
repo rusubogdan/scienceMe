@@ -1,6 +1,7 @@
 package com.scncm.controller;
 
 import com.scncm.model.Article;
+import com.scncm.model.User;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
 
@@ -55,6 +56,8 @@ public class SearchController {
     public Map search(
             @RequestParam String searchQuery) {
         Map response = new HashMap();
+
+        User user = userService.getUser(1);
 
         response.put("msg", "bla");
 
