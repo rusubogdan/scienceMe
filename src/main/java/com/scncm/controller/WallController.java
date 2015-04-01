@@ -1,9 +1,7 @@
 package com.scncm.controller;
 
-import com.scncm.model.Article;
-import com.scncm.model.ArticleTag;
-import com.scncm.model.Tag;
-import com.scncm.model.User;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.scncm.model.*;
 import com.scncm.service.ArticleService;
 import com.scncm.service.TagService;
 import com.scncm.service.UserService;
@@ -20,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -59,6 +58,36 @@ public class WallController {
         mv.addObject("loggedInUser", loggedInUser);
 
         return mv;
+    }
+
+    @RequestMapping(value = "ajax/filterArticles", method = RequestMethod.GET)
+    @ResponseBody
+    public String filterArticles(
+            @RequestParam(value = "news") Boolean news,
+            @RequestParam(value = "rating") Boolean rating,
+            @RequestParam(value = "barLowerBound") Integer barLowerBound,
+            @RequestParam(value = "upperBoundInterval") Integer upperBoundInterval,
+            @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint
+    ) {
+        Map map = new HashMap();
+//        Map<Integer,Article> map = new HashMap<Integer,Article>();
+        List<Article> articles = articleService.getArticleFiltered(news,rating,barLowerBound,upperBoundInterval,startingSearchPoint);
+//        for(int i = 0 ; i < articles.size() ; i++){
+//            map.put(i,articles.get(i));
+//        }
+//        articles.get(0).setOwner(null);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String articlesAsJson = "";
+//        map.put("articol",articles);
+//The input argument of the writeValueAsString() function can be a bean, array, list, map or a set.
+        try {
+            articlesAsJson = objectMapper.writeValueAsString(articles);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        articles.get(0).getOwner().
+//        map.put("articol",articles.get(0).setUserArticleVoteSet(null););
+        return articlesAsJson;
     }
 
     @RequestMapping(value = "ajax/testArticle", method = RequestMethod.GET)

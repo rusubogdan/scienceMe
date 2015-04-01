@@ -14,6 +14,8 @@ public interface ArticleDAO {
 
     Set<Article> searchArticles (String searchQuery);
 
+    List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
+
     Article addArticle (Article article);
 
     Boolean updateArticle (Article article);

@@ -2,6 +2,9 @@ package com.scncm.model;
 
 import com.scncm.helpers.GenderType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.scncm.helpers.GenderType;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -58,9 +61,11 @@ public class User {
     private Boolean isFacebook;
 
     @OneToMany(mappedBy = "owner")
+    @JsonBackReference("Article-OwnerId")
     private Set<Article> articles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonManagedReference("UserArticleVote-UserId")
     private Set<UserArticleVote> userArticleVotesSet;
 
     public String getFirstName() {
