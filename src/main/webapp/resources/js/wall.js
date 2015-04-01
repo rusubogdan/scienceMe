@@ -1,7 +1,6 @@
 $(document).ready(function () {
     wall.test();
-    wall.init.timeBar();
-    wall.init.buttonSideBar();
+    wall.init.leftSideBar();
 
 
     $('.articles-carousel').slick({
@@ -19,10 +18,10 @@ $(document).ready(function () {
 // apeleaza ajax-ul cand se schimba intervalul
 
 var wall = {
-    filterByNews: false,
+    filterByNews: false ,
     filterByRating: false,
     barLowerBound: 0,
-    barUpperBound: 20,
+    barUpperBound: 23,
     startingSearchPoint: 0,
     init: {
         timeBar: function () {
@@ -37,23 +36,10 @@ var wall = {
                 showLabels: true,
                 isRange: true,
                 onstatechange: function () {
-                    news = false;
-                    rating = false;
-                    startTime = $(".range-slider").val().split(",")[0];
-                    endTime = $(".range-slider").val().split(",")[1];
+                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
+                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
 
-                    if (endTime == null) {
-                        endTime = startTime;
-                        startTime = 0;
-                    }
-
-                    if ($('#news-button-sidebar').css('background-color') == "rgb(81, 176, 74)") {
-                        news = true;
-                    }
-                    if ($('#rating-button-sidebar').css('background-color') == "rgb(81, 176, 74)") {
-                        rating = true;
-                    }
-//                    wall.filterArticles(news, rating, startTime, endTime);
                 }
             });
         },
@@ -79,6 +65,8 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
+                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
+                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
                     wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
                 },
 
@@ -114,6 +102,8 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
+                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
+                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
                     wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
                 },
 
@@ -130,6 +120,11 @@ var wall = {
                     }
                 }
             });
+        },
+        leftSideBar: function () {
+            wall.init.buttonSideBar();
+            wall.init.timeBar();
+            wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
         }
     },
     test: function () {

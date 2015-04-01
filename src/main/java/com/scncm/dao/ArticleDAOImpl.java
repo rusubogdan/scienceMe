@@ -74,7 +74,7 @@ public class ArticleDAOImpl implements ArticleDAO {
             query.setParameter("barLowerBound", barLowerBound);
             query.setParameter("barUpperBound", barUpperBound);
             query.setFirstResult(startingSearchPoint);
-            query.setMaxResults(1);
+            query.setMaxResults(10);
         } else {
             if(!news && rating){
                   query = getCurrentSession().createQuery("SELECT A ,coalesce((SELECT sum (case UAV.vote.voteName " +
@@ -85,7 +85,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                 query.setParameter("barLowerBound", barLowerBound);
                 query.setParameter("barUpperBound", barUpperBound);
                 query.setFirstResult(startingSearchPoint);
-                query.setMaxResults(1);
+                query.setMaxResults(10);
             }
             else{
                 if(news && !rating) {
@@ -94,7 +94,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
-                    query.setMaxResults(1);
+                    query.setMaxResults(10);
                 }
                 else{
                     query = null;
