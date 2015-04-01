@@ -1,5 +1,6 @@
 package com.scncm.model;
 
+import com.scncm.helpers.GenderType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements java.io.Serializable {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
@@ -59,7 +60,7 @@ public class User implements java.io.Serializable {
     @Column(name = "is_facebook", columnDefinition = "default '0'")
     private Boolean isFacebook;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner")
     @JsonBackReference("Article-OwnerId")
     private Set<Article> articles;
 
@@ -180,7 +181,11 @@ public class User implements java.io.Serializable {
         this.articles = articles;
     }
 
-    public Set<UserArticleVote> getUseruserArticleVotesSet(){ return userArticleVotesSet;}
+    public Set<UserArticleVote> getUserArticleVotesSet() {
+        return userArticleVotesSet;
+    }
 
-    public void setUserArticleVotesSet(Set<UserArticleVote> userArticleVotesSet){this.userArticleVotesSet = userArticleVotesSet;}
+    public void setUserArticleVotesSet(Set<UserArticleVote> userArticleVotesSet) {
+        this.userArticleVotesSet = userArticleVotesSet;
+    }
 }

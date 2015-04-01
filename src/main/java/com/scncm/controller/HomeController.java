@@ -11,12 +11,6 @@ public class HomeController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView homePage() {
-        return new ModelAndView("home");
-    }
-
-    // after logout
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public ModelAndView indexPage() {
-        return new ModelAndView("home");
+        return new ModelAndView("redirect:/login");
     }
 }

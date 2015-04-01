@@ -135,8 +135,16 @@ var wall = {
     test: function () {
         $('#test1Button').on({
             click: function () {
-                $.get('wall/ajax/testArticle',  function (response) {
-                    console.log(response);
+                /*$.get('wall/ajax/testArticle',  function (response) {
+                    console.log(response.object);
+                });*/
+                $.ajax({
+                    url: 'wall/ajax/testArticle',
+                    method: 'get',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response.user.email);
+                    }
                 });
             }
         });

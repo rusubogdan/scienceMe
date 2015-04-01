@@ -5,6 +5,8 @@
 <head>
     <title>wall</title>
 
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/atom.png"/> " />
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <link href="<c:url value="/resources/css/bootstrap.min.css"/> " rel="stylesheet"/>
@@ -20,8 +22,7 @@
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/jquery.range.js"/>"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
-    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.4.1/slick.min.js"></script>
-    <%--<script type="text/javascript" src="/resources/js/slick.min.js"></script>--%>
+    <script src="<c:url value="/resources/js/slick.min.js"/>" type="text/javascript" rel="stylesheet"></script>
 
     <%--always the last included script !!!--%>
     <script src="<c:url value="/resources/js/wall.js"/> " rel="stylesheet"></script>
@@ -38,7 +39,6 @@
         <%-----------leftSideBar-----------%>
         <jsp:include page="leftSideBar.jsp"/>
         <%---------------------------------%>
-        <!--/span-->
         <div class="col-md-9 wall-content-container col-md-pull-1">
             <div class="jumbotron">
                 <jsp:include page="carouselInc.jsp"/>
@@ -47,28 +47,8 @@
                 <p id="test1Button"><a class="btn btn-primary btn-lg">Learn more »</a></p>
             </div>
         </div>
-        <!--/span-->
-        <%--<div class="col-md-2">--%>
-        <%--<div class="sidebar-nav-fixed pull-right affix wall-right-sidebar">--%>
-        <%--<div class="well transparent-sidebar">--%>
-        <%--<ul class="nav ">--%>
-        <%--<li class="nav-header">Sidebar</li>--%>
-        <%--<li class="active"><a href="#">Link</a>--%>
-        <%--</li>--%>
-        <%--<li><a href="#">Link</a>--%>
-        <%--</li>--%>
-        <%--</ul>--%>
-        <%--</div>--%>
-        <%--<!--/.well -->--%>
-        <%--</div>--%>
-        <%--<!--/sidebar-nav-fixed -->--%>
-        <%--</div>--%>
-        <!--/span-->
     </div>
-    <!--/row-->
 </div>
-<!--/.fluid-container-->
-
 
 <%-----------footer-----------%>
 <jsp:include page="footer.jsp"/>

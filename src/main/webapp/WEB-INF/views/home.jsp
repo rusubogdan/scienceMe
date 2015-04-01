@@ -5,6 +5,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/atom.png"/> " />
     <%--CSS and JS--%>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/login.css"/>">
     <script type="application/javascript" src="<c:url value="/resources/js/firstPage.js"/> "></script>
@@ -20,7 +22,7 @@
     <div class="wrap">
 
         <div class="avatar">
-            <img src="http://www.mbari.org/earth/images/atom.png">
+            <img src="<c:url value="/resources/img/atom.png"/> ">
         </div>
 
         <input type="text" name="j_username" id="j_username" placeholder="username"/></td>
@@ -63,7 +65,7 @@
 
         <form action="/">
             <div class="avatar">
-                <img src="http://www.mbari.org/earth/images/atom.png">
+                <img src="<c:url value="/resources/img/atom.png"/> ">
             </div>
             <br>
 

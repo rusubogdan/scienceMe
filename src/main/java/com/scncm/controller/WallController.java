@@ -94,18 +94,11 @@ public class WallController {
     @ResponseBody
     public Map testArticle() {
         Map map = new HashMap();
-        map.put("object", "bla");
 
-        Article articleFromDb = articleService.getArticle(1);
-        Tag tagFromDb = tagService.getTag(4);
 
-        ArticleTag articleTag = new ArticleTag();
-        articleTag.setArticle(articleFromDb);
-        articleTag.setTag(tagFromDb);
+        User dbUser = userService.getUser(1);
+        map.put("user", dbUser);
 
-        articleFromDb.getArticleTags().add(articleTag);
-
-        articleService.updateArticle(articleFromDb);
 
         return map;
     }

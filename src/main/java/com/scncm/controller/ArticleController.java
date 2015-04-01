@@ -48,7 +48,7 @@ public class ArticleController {
 
             Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
             try {
-//                aici tin informatiile de la api
+                // in the article_diff we keep all the data received from the diffBoot api
                 com.syncthemall.diffbot.model.article.Article article_diff = diffbot.article().analyze(new_link).execute();
 
                 System.out.println("aici");
@@ -85,6 +85,9 @@ public class ArticleController {
                 e.printStackTrace();
             }
         }
+        int ok  = 1;
+        if (ok == 1)
+            throw new NullPointerException();
 
 //        mv.addObject("description", "description");
         return mv;

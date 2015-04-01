@@ -4,6 +4,7 @@ import com.scncm.model.Article;
 import com.scncm.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ArticleService {
     Article getArticle(Integer articleId);
@@ -11,6 +12,8 @@ public interface ArticleService {
     List<Article> getArticlesByUser (User user);
 
     Article addArticle (Article article);
+
+    Set<Article> searchArticles (String searchQuery);
 
     Boolean updateArticle (Article article);
 
