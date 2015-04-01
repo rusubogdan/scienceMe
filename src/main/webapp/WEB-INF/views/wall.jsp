@@ -43,7 +43,8 @@
             <div class="jumbotron">
                 <jsp:include page="carouselInc.jsp"/>
                 <jsp:include page="newestInc.jsp"/>
-                <p id="test1Button"><a class="btn btn-primary btn-lg">Test</a></p>
+
+                <p id="test1Button"><a class="btn btn-primary btn-lg">Learn more »</a></p>
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 package com.scncm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
 
 @Entity
@@ -14,14 +15,17 @@ public class UserArticleVote {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference("UserArticleVote-UserId")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "article_id", nullable = false)
+    @JsonBackReference("Article-OwnerId")
     private Article article;
 
     @ManyToOne
     @JoinColumn(name = "vote_id", nullable = false)
+    @JsonBackReference("Vote-UserArticleVote")
     private Vote vote;
 
     public User getUser() {

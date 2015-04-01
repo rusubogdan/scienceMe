@@ -21,7 +21,7 @@ public class Role {
     @Column(name = "role")
     private String role;
 
-    Role() {}
+    public Role() {}
 
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name = "user_role",

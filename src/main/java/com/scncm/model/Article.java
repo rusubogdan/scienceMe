@@ -1,12 +1,15 @@
 package com.scncm.model;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
 @Table(name = "article")
-public class Article {
+public class Article implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_id_seq")
@@ -25,6 +28,7 @@ public class Article {
     // required
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonManagedReference("Article-OwnerId")
     private User owner;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
@@ -49,6 +53,7 @@ public class Article {
     @Column(name = "created_date")
     private Timestamp createdDate;
 
+
     public User getOwner() {
         return owner;
     }
@@ -58,7 +63,7 @@ public class Article {
     }
 
     public Set<UserArticleVote> getUserArticleVoteSet() {
-        return userArticleVoteSet;
+            return userArticleVoteSet;
     }
 
     public void setUserArticleVoteSet(Set<UserArticleVote> userArticleVoteSet) {
@@ -128,6 +133,4 @@ public class Article {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
-
-    // todo created date
 }
