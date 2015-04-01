@@ -65,12 +65,13 @@ public class WallController {
     public String filterArticles(
             @RequestParam(value = "news") Boolean news,
             @RequestParam(value = "rating") Boolean rating,
-            @RequestParam(value = "startTime") int startTime,
-            @RequestParam(value = "endTime") int endTime
+            @RequestParam(value = "barLowerBound") Integer barLowerBound,
+            @RequestParam(value = "upperBoundInterval") Integer upperBoundInterval,
+            @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint
     ) {
         Map map = new HashMap();
 //        Map<Integer,Article> map = new HashMap<Integer,Article>();
-        List<Article> articles = articleService.getArticleFiltered(news,rating,startTime,endTime);
+        List<Article> articles = articleService.getArticleFiltered(news,rating,barLowerBound,upperBoundInterval,startingSearchPoint);
 //        for(int i = 0 ; i < articles.size() ; i++){
 //            map.put(i,articles.get(i));
 //        }

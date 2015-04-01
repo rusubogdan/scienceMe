@@ -1,20 +1,15 @@
 package com.scncm.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "article")
 public class Article implements java.io.Serializable {
-
-    @Transient
-    private int articleRating;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_id_seq")
@@ -29,12 +24,11 @@ public class Article implements java.io.Serializable {
     // required
     @Column(name = "description")
     private String description;
-//    @JsonIdentityInfo(generator=ObjectIdGenerators.IntSequenceGenerator.class, property="@id")
 
     // required
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id")
-    @JsonManagedReference("ARTICLE")
+    @JsonManagedReference("Article-OwnerId")
     private User owner;
 
     @OneToMany(mappedBy = "article", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -69,7 +63,7 @@ public class Article implements java.io.Serializable {
     }
 
     public Set<UserArticleVote> getUserArticleVoteSet() {
-        return userArticleVoteSet;
+            return userArticleVoteSet;
     }
 
     public void setUserArticleVoteSet(Set<UserArticleVote> userArticleVoteSet) {
@@ -139,10 +133,4 @@ public class Article implements java.io.Serializable {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
-
-    public int getArticleRating(){ return articleRating;}
-
-    public void setArticleRating(int articleRating){this.articleRating  = articleRating;}
-
-    // todo created date
 }

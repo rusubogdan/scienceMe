@@ -37,7 +37,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDAO.deleteArticle(article);
     }
 
-    public List<Article> getArticleFiltered(boolean news, boolean rating, int startTime, int endTime) {
-        return articleDAO.getArticleFiltered(news, rating, startTime, endTime);
+    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint) {
+        return articleDAO.getArticleFiltered(news, rating, startTime, endTime, startingSearchPoint);
     }
 }

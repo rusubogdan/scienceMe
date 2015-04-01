@@ -16,5 +16,5 @@ public interface ArticleService {
 
     Boolean deleteArticle (Article article);
 
-    List<Article> getArticleFiltered(boolean news, boolean rating, int startTime, int endTime);
+    List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 }

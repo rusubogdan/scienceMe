@@ -43,18 +43,41 @@ public class ArticleDAOImpl implements ArticleDAO {
         }
     }
 
-    public List<Article> getArticleFiltered(boolean news, boolean rating, int startTime, int endTime) {
+    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound, Integer barUpperBound, Integer startingSearchPoint) {
         List<Article> articles = new ArrayList<Article>();
         Query query;
         if (!news && !rating) {
-            query = getCurrentSession().createQuery("from Article a where a.readingTime between :startTime and :endTime");
-            query.setParameter("startTime", startTime);
-            query.setParameter("endTime", endTime);
-            query.setMaxResults(2);
-            query.setCacheable(false);
+            query = getCurrentSession().createQuery("from Article a where a.readingTime between :barLowerBound and :barUpperBound");
+            query.setParameter("barLowerBound", barLowerBound);
+            query.setParameter("barUpperBound", barUpperBound);
+            query.setFirstResult(startingSearchPoint);
+            query.setMaxResults(1);
         } else {
-            query = getCurrentSession().createQuery("from Article a join fetch a.owner");
-            query.setMaxResults(2);
+            if(!news && rating){
+                  query = getCurrentSession().createQuery("SELECT A ,coalesce((SELECT sum (case UAV.vote.voteName " +
+                        "when 'LIKE' then 1 when 'DISLIKE' then -1 else 0 end)" +
+                        " from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
+                        " group by UAV.article.articleId),0)from Article A where A.readingTime between" +
+                        " :barLowerBound and :barUpperBound order by 2 desc");
+                query.setParameter("barLowerBound", barLowerBound);
+                query.setParameter("barUpperBound", barUpperBound);
+                query.setFirstResult(startingSearchPoint);
+                query.setMaxResults(1);
+            }
+            else{
+                if(news && !rating) {
+                    query = getCurrentSession().createQuery("from Article a where a.readingTime between" +
+                            " :barLowerBound and :barUpperBound order by a.createdDate asc");
+                    query.setParameter("barLowerBound", barLowerBound);
+                    query.setParameter("barUpperBound", barUpperBound);
+                    query.setFirstResult(startingSearchPoint);
+                    query.setMaxResults(1);
+                }
+                else{
+                    query = null;
+                }
+            }
+
         }
         try {
             articles = query.list();

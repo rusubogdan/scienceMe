@@ -22,7 +22,8 @@ var wall = {
     filterByNews: false,
     filterByRating: false,
     barLowerBound: 0,
-    barUpperBound: 60,
+    barUpperBound: 20,
+    startingSearchPoint: 0,
     init: {
         timeBar: function () {
             $('.range-slider').jRange({
@@ -78,7 +79,7 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound);
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
                 },
 
                 mouseover: function () {
@@ -113,7 +114,7 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound);
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
                 },
 
                 mouseover: function () {
@@ -140,15 +141,16 @@ var wall = {
             }
         });
     },
-    filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval) {
+    filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
         console.log(news);
         console.log(rating);
         console.log(lowerBoundInterval);
         console.log(upperBoundInterval);
         $.get('wall/ajax/filterArticles',{"news": news,
                                           "rating": rating,
-                                          "startTime": lowerBoundInterval,
-                                          "endTime": upperBoundInterval},
+                                          "barLowerBound": lowerBoundInterval,
+                                          "upperBoundInterval": upperBoundInterval,
+                                          "startingSearchPoint": startingSearchPoint},
             function (response) {
             console.log(response);
         })
