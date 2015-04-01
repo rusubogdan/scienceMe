@@ -10,10 +10,10 @@
     <name>sciencemeapp</name>
 
     <properties>
-        <hibernate.version>4.1.7.Final</hibernate.version>
-        <mysql.connector.version>5.1.21</mysql.connector.version>
+        <hibernate.version>4.3.8.Final</hibernate.version>
         <slf4j.version>1.6.6</slf4j.version>
-        <spring.version>3.1.3.RELEASE</spring.version>
+        <spring.version>4.0.1.RELEASE</spring.version>
+        <spring.security.version>3.2.3.RELEASE</spring.security.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -30,27 +30,34 @@
             <version>${hibernate.version}</version>
         </dependency>
 
-        <!--<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.connector.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.4</version>
         </dependency>
+
         <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
             <version>3.12.1.GA</version>
         </dependency>
 
-        <!-- SPRING -->
+        <!-- SPRING CORE -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-context</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -67,28 +74,46 @@
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+
+        <!--to integrate spring-security with spring 4-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-framework-bom</artifactId>
+            <version>4.0.0.RELEASE</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+
         <!-- CGLIB is required to process @Configuration classes -->
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>2.2.2</version>
         </dependency>
+
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring.version}</version>
+            <version>4.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring.version}</version>
+            <version>4.0.0.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring.version}</version>
+            <version>3.2.3.RELEASE</version>
         </dependency>
+
         <!-- Other -->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -103,23 +128,21 @@
         </dependency>
 
         <!-- Test -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.7</version>
-            <scope>test</scope>
-        </dependency>
-        <!--<dependency>
-            <groupId>com.github.thiagolocatelli</groupId>
-            <artifactId>parse4j</artifactId>
-            <version>1.4</version>
-        </dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>junit</groupId>-->
+            <!--<artifactId>junit</artifactId>-->
+            <!--<version>4.7</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
+
+        <!--postgresql dependencies-->
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.1-901.jdbc3</version>
         </dependency>
 
+        <!--diffbot dependencies-->
         <dependency>
             <groupId>com.syncthemall</groupId>
             <artifactId>diffbot-java-sdk</artifactId>
@@ -132,37 +155,27 @@
             <version>1.17.0-rc</version>
         </dependency>
 
+        <!--parse object to JSON format to client-->
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-gson</artifactId>
             <version>1.17.0-rc</version>
         </dependency>
-
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
             <version>1.17.0-rc</version>
         </dependency>
-        <dependency>
-            <groupId>com.syncthemall</groupId>
-            <artifactId>diffbot-java-sdk</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-config</artifactId>
-            <version>3.1.2.RELEASE</version>
-        </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.7.4</version>
+            <version>1.9.13</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
-            <version>1.7.4</version>
-        </dependency>
+            <version>1.9.13</version>
+        </dependency>-->
         <!--<dependency>-->
             <!--<groupId>org.springframework</groupId>-->
             <!--<artifactId>spring-web</artifactId>-->
@@ -203,6 +216,13 @@
                     <version>0.3.5</version>
                     <configuration>
                         <appName>sciencemeapp</appName>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
             </plugins>

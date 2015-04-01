@@ -79,7 +79,7 @@ public class User {
     private Set<Article> articles;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     @JsonManagedReference("UserArticleVote-UserId")
     private Set<UserArticleVote> userArticleVotesSet;
 

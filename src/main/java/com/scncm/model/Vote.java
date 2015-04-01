@@ -15,7 +15,7 @@ public class Vote {
     @Column(name = "vote_name")
     private String voteName;
 
-    @OneToMany(mappedBy = "vote", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "vote")
     @JsonManagedReference("Vote-UserArticleVote")
     private Set<UserArticleVote> userArticleVoteSet;
 
