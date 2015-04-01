@@ -14,13 +14,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Service
+@Service("userDetailsService")
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserService userService;
 
+    @Override
     public UserDetails loadUserByUsername(String email) {
 
         com.scncm.model.User domainUser = userService.getUserByEmail(email);

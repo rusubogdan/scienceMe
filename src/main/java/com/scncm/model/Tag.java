@@ -18,7 +18,7 @@ public class Tag {
     @Column(name = "tag_name")
     private String tagName;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private Set<ArticleTag> articleTags;
 
     public Integer getTagId() {

@@ -1,12 +1,10 @@
 package com.scncm.controller;
 
-import com.scncm.model.Article;
-import com.scncm.model.ArticleTag;
-import com.scncm.model.Tag;
-import com.scncm.model.User;
+import com.scncm.model.*;
 import com.scncm.service.ArticleService;
 import com.scncm.service.TagService;
 import com.scncm.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -66,10 +64,8 @@ public class WallController {
     public Map testArticle() {
         Map map = new HashMap();
 
-
         User dbUser = userService.getUser(1);
         map.put("user", dbUser);
-
 
         return map;
     }

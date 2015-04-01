@@ -3,18 +3,13 @@ package com.scncm.controller;
 import com.scncm.model.Article;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/search")
@@ -45,25 +40,23 @@ public class SearchController {
             @RequestParam(value = "searchQuery") String searchQuery) {
         ModelAndView mv = new ModelAndView("searchPage");
 
+        Set<Article> articles = articleService.searchArticles(searchQuery);
+
+        List<Article> articleList = new ArrayList<Article>(articles);
+
         mv.addObject("searchQuery", searchQuery);
+        mv.addObject("articleList", articleList);
 
         return mv;
     }
 
-    @RequestMapping(value = "/ajax/filterArticles", method = RequestMethod.POST)
+    @RequestMapping(value = "ajax/filterArticles", method = RequestMethod.POST)
+    @ResponseBody
     public Map search(
-            @RequestParam(value = "searchQuery") String queryString) {
+            @RequestParam String searchQuery) {
         Map response = new HashMap();
 
-        if (queryString == null) {
-            response.put("error", true);
-
-            return response;
-        }
-
-        Set<Article> articles = articleService.searchArticles(queryString);
-
-        response.put("articles", articles);
+        response.put("msg", "bla");
 
         return response;
     }

@@ -60,7 +60,7 @@ public class User {
     @OneToMany(mappedBy = "owner")
     private Set<Article> articles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private Set<UserArticleVote> userArticleVotesSet;
 
     public String getFirstName() {

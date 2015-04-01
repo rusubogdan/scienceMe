@@ -112,8 +112,8 @@ var wall = {
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval) {
-        $.get('wall/ajax/filterArticles', function (response) {
-            console.log(response.message);
+        $.post('search/ajax/filterArticles', {"searchQuery": "Romania"}, function (response) {
+            console.log(response.msg);
         });
     }
 };
