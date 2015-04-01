@@ -99,11 +99,11 @@
 			this.clickableBar.click($.proxy(this.barClicked, this));
 			this.pointers.on('mousedown touchstart', $.proxy(this.onDragStart, this));
 			this.pointers.bind('dragstart', function(event) {
-				event.preventDefault();
+                event.preventDefault();
 			});
 		},
 		onDragStart: function(e) {
-			if ( this.options.disable || (e.type === 'mousedown' && e.which !== 1)) {
+            if ( this.options.disable || (e.type === 'mousedown' && e.which !== 1)) {
 				return;
 			}
 			e.stopPropagation();
@@ -124,7 +124,6 @@
 			} else if (e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
 				e = e.originalEvent.changedTouches[0];
 			}
-
 			var position = e.clientX - this.domNode.offset().left;
 			this.domNode.trigger('change', [this, pointer, position]);
 		},
@@ -132,18 +131,34 @@
 			this.pointers.removeClass('focused');
 			this.labels.removeClass('focused');
 			$(document).off('.slider');
-		},
+            //---------------------------------------------
+            // By Cosmin
+            if (this.inputNode.val() !== this.options.value) {
+                this.inputNode.val(this.options.value);
+                this.options.onstatechange.call(this, this.options.value);
+            }
+            //---------------------------------------------
+
+        },
 		barClicked: function(e) {
-			if(this.options.disable) return;
+            if(this.options.disable) return;
 			var x = e.pageX - this.clickableBar.offset().left;
 			if (this.isSingle())
 				this.setPosition(this.pointers.last(), x, true, true);
 			else {
 				var pointer = Math.abs(parseInt(this.pointers.first().css('left'), 10) - x + this.pointers.first().width() / 2) < Math.abs(parseInt(this.pointers.last().css('left'), 10) - x + this.pointers.first().width() / 2) ?
 					this.pointers.first() : this.pointers.last();
-				this.setPosition(pointer, x, true, true);
-			}
-		},
+                this.setPosition(pointer, x, true, true);
+            }
+            //---------------------------------------------
+            // By Cosmin
+            if (this.inputNode.val() !== this.options.value) {
+                this.inputNode.val(this.options.value);
+                this.options.onstatechange.call(this, this.options.value);
+            }
+            //---------------------------------------------
+
+        },
 		onChange: function(e, self, pointer, position) {
 			var min, max;
 			if (self.isSingle()) {
@@ -157,7 +172,7 @@
 			self.setPosition(pointer, value, true);
 		},
 		setPosition: function(pointer, position, isPx, animate) {
-			var leftPos,
+            var leftPos,
 				lowPos = this.lowPointer.position().left,
 				highPos = this.highPointer.position().left,
 				circleWidth = this.highPointer.width() / 2;
@@ -172,7 +187,7 @@
 			pointer[animate ? 'animate' : 'css']({
 				'left': Math.round(position - circleWidth)
 			});
-			if (this.isSingle()) {
+            if (this.isSingle()) {
 				leftPos = 0;
 			} else {
 				leftPos = lowPos + circleWidth;
@@ -181,9 +196,9 @@
 				'width': Math.round(highPos + circleWidth - leftPos),
 				'left': leftPos
 			});
-			this.showPointerValue(pointer, position, animate);
-			this.isReadonly();
-		},
+            this.showPointerValue(pointer, position, animate);
+            this.isReadonly();
+        },
 		// will be called from outside
 		setValue: function(value) {
 			var values = value.toString().split(',');
@@ -220,7 +235,7 @@
 			}
 		},
 		showPointerValue: function(pointer, position, animate) {
-			var label = $('.pointer-label', this.domNode)[pointer.hasClass('low') ? 'first' : 'last']();
+            var label = $('.pointer-label', this.domNode)[pointer.hasClass('low') ? 'first' : 'last']();
 			var text;
 			var value = this.positionToValue(position);
 			if ($.isFunction(this.options.format)) {
@@ -229,15 +244,14 @@
 			} else {
 				text = this.options.format.replace('%s', value);
 			}
-
-			var width = label.html(text).width(),
+            var width = label.html(text).width(),
 				left = position - width / 2;
 			left = Math.min(Math.max(left, 0), this.options.width - width);
 			label[animate ? 'animate' : 'css']({
 				left: left
 			});
-			this.setInputValue(pointer, value);
-		},
+            this.setInputValue(pointer, value);
+        },
 		valuesToPrc: function(values) {
 			var lowPrc = ((values[0] - this.options.from) * 100 / this.interval),
 				highPrc = ((values[1] - this.options.from) * 100 / this.interval);
@@ -263,11 +277,15 @@
 					this.options.value = values[0] + ',' + v;
 				}
 			}
-			if (this.inputNode.val() !== this.options.value) {
-				this.inputNode.val(this.options.value);
-				this.options.onstatechange.call(this, this.options.value);
-			}
-		},
+//---------------------------------------------
+//          By Cosmin
+//			if (this.inputNode.val() !== this.options.value) {
+//				this.inputNode.val(this.options.value);
+//				this.options.onstatechange.call(this, this.options.value);
+//			}
+//---------------------------------------------
+
+        },
 		getValue: function() {
 			return this.options.value;
 		},
