@@ -23,7 +23,7 @@ public class Article {
     private String description;
 
     // required
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
 

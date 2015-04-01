@@ -57,7 +57,7 @@ public class User {
     @Column(name = "is_facebook", columnDefinition = "default '0'")
     private Boolean isFacebook;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "owner")
     private Set<Article> articles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
@@ -174,5 +174,13 @@ public class User {
 
     public void setArticles(Set<Article> articles) {
         this.articles = articles;
+    }
+
+    public Set<UserArticleVote> getUserArticleVotesSet() {
+        return userArticleVotesSet;
+    }
+
+    public void setUserArticleVotesSet(Set<UserArticleVote> userArticleVotesSet) {
+        this.userArticleVotesSet = userArticleVotesSet;
     }
 }

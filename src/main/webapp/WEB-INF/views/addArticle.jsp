@@ -7,6 +7,8 @@
     <meta charset="ISO-8859-1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/atom.png"/> " />
+
     <%--main stylesheet--%>
     <link href="<c:url value="/resources/css/bootstrap.min.css"/> " rel="stylesheet"/>
     <link href="<c:url value="/resources/css/bootstrap-theme.min.css"/> " rel="stylesheet"/>

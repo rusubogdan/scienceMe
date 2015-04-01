@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
@@ -41,6 +43,28 @@ public class ArticleDAOImpl implements ArticleDAO {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Set<Article> searchArticles(String searchQuery) {
+        List<Article> articles = new ArrayList<Article>();
+        Query query = null;
+
+        try {
+            query = getCurrentSession().createQuery("from Article a where a.title like :searchQuery " +
+                    "or a.description like :searchQuery");
+            query.setParameter("searchQuery", '%' + searchQuery + '%');
+            articles = query.list();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        Set<Article> articleSet = new HashSet<Article>(articles);
+
+        if (articleSet.size() > 0)
+            return articleSet;
+        else
+            return null;
     }
 
     public Article addArticle (Article article) {

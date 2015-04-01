@@ -33,17 +33,4 @@ public class LoginController {
 
         return mv;
     }
-
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ModelAndView logout() {
-        // todo check here for admin or moderator
-        return new ModelAndView("logout");
-    }
-
-    // todo delete these
-    @RequestMapping(value = "/moderator", method = RequestMethod.GET)
-    public ModelAndView moderatorPage() {
-        return new ModelAndView("moderation");
-    }
-
 }
