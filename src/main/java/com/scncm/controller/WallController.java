@@ -97,6 +97,12 @@ public class WallController {
         Map map = new HashMap();
 
         User dbUser = userService.getUser(1);
+        dbUser.setFirstName("MATAAAAAA");
+
+        userService.updateUser(dbUser);
+
+//        dbUser.setPassword("456456");
+
         map.put("user", dbUser);
 
         return map;

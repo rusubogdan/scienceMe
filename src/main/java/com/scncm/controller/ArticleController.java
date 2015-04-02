@@ -2,6 +2,7 @@ package com.scncm.controller;
 
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.scncm.model.Article;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 
 @Controller
@@ -35,57 +38,74 @@ public class ArticleController {
 
     @RequestMapping(value = "add-article", method = RequestMethod.GET)
     public ModelAndView addArticle(
-            @RequestParam(value = "article", required = false) com.scncm.model.Article article, HttpServletRequest request) throws JAXBException {
+            HttpServletRequest request) throws JAXBException {
 
         ModelAndView mv = new ModelAndView("addArticle");
 
-        String new_link = request.getParameter("link");
-        String new_description = request.getParameter("description");
-        String new_time = request.getParameter("time");
-        String new_tags = request.getParameter("tags");
 
-        if (new_link != null) {
+//        mv.addObject("description", "description");
+        return mv;
+    }
 
-            Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
-            try {
+    @RequestMapping(value = "add-article-in-database", method = RequestMethod.POST)
+    public ModelAndView addArticleInDataBase(
+            HttpServletRequest request) throws JAXBException {
+
+        ModelAndView mv = new ModelAndView("addArticle");
+
+        if(request != null ){
+
+            String new_link = request.getParameter("link");
+            String new_description = request.getParameter("description");
+            String new_time = request.getParameter("time");
+            String new_tags = request.getParameter("tags");
+
+            if (new_link != null) {
+
+                Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
+                try {
                 /*in the article_diff we keep all the data received from the diffBoot api*/
-                com.syncthemall.diffbot.model.article.Article article_diff = diffbot.article().analyze(new_link).execute();
+                    com.syncthemall.diffbot.model.article.Article article_diff = diffbot.article().analyze(new_link).execute();
 
-                System.out.println("aici");
-                mv.addObject("description", article_diff.getHtml());
+                    System.out.println("aici");
+                    mv.addObject("description", article_diff.getHtml());
 
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-                if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
-                    HttpServletResponse httpServletResponse = null;
-                    httpServletResponse.sendRedirect("/");
-                    return null;
+                    if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
+                        HttpServletResponse httpServletResponse = null;
+                        httpServletResponse.sendRedirect("/");
+                        return null;
+                    }
+
+                    User loggedInUser = userService.getUserByUsername(authentication.getName());
+
+                    com.scncm.model.Article art = new com.scncm.model.Article();
+
+//                art.setArticleId(100);
+                    art.setDescription(new_description);
+                    art.setTitle(article_diff.getTitle());
+                    art.setLink(article_diff.getUrl());
+                    art.setOwner(loggedInUser);
+                    art.setCreatedDate(new Timestamp(new Date().getTime()));
+                    art.setReadingTime(Integer.parseInt(new_time));
+                    art.setHtmlContent(article_diff.getHtml());
+
+                    Article articlol = articleService.addArticle(art);
+
+                    mv.addObject("loggedInUser", loggedInUser);
+
+                } catch (DiffbotException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-
-                User loggedInUser = userService.getUserByUsername(authentication.getName());
-
-                com.scncm.model.Article art = new com.scncm.model.Article();
-
-                art.setArticleId(100);
-                art.setDescription(new_description);
-                art.setTitle(article_diff.getTitle());
-                art.setLink(article_diff.getUrl());
-                art.setOwner(loggedInUser);
-                art.setReadingTime(Integer.parseInt(new_time));
-                art.setHtmlContent(article_diff.getHtml());
-
-                articleService.addArticle(art);
-
-                mv.addObject("loggedInUser", loggedInUser);
-
-            } catch (DiffbotException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
 
 //        mv.addObject("description", "description");
+
+        mv = new ModelAndView("redirect:/article/add-article");
         return mv;
     }
 

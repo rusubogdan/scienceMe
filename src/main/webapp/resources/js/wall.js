@@ -20,16 +20,16 @@ $(document).ready(function () {
 var wall = {
     filterByNews: false ,
     filterByRating: false,
-    barLowerBound: 0,
+    barLowerBound: 1,
     barUpperBound: 23,
     startingSearchPoint: 0,
     init: {
         timeBar: function () {
             $('.range-slider').jRange({
-                from: 0,
+                from: 1,
                 to: 60,
                 step: 1,
-                scale: [0, 15, 30, 45, 60],
+                scale: [1, 15, 30, 45, 60],
                 format: '%s',
                 width: 150,
                 theme: "theme-blue",
