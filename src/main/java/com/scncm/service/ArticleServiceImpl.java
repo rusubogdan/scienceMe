@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -29,11 +30,20 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDAO.addArticle(article);
     }
 
+    @Override
+    public Set<Article> searchArticles(String searchQuery) {
+        return articleDAO.searchArticles(searchQuery);
+    }
+
     public Boolean updateArticle (Article article) {
         return articleDAO.updateArticle(article);
     }
 
     public Boolean deleteArticle (Article article) {
         return articleDAO.deleteArticle(article);
+    }
+
+    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint) {
+        return articleDAO.getArticleFiltered(news, rating, startTime, endTime, startingSearchPoint);
     }
 }

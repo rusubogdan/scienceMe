@@ -1,7 +1,6 @@
 package com.scncm.model;
 
-import com.scncm.helpers.VoteType;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -16,7 +15,8 @@ public class Vote {
     @Column(name = "vote_name")
     private String voteName;
 
-    @OneToMany(mappedBy = "vote", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "vote")
+    @JsonManagedReference("Vote-UserArticleVote")
     private Set<UserArticleVote> userArticleVoteSet;
 
     public Integer getVoteId() {

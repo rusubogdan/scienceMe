@@ -44,40 +44,39 @@ public class ArticleController {
         String new_time = request.getParameter("time");
         String new_tags = request.getParameter("tags");
 
-        if(new_link != null) {
+        if (new_link != null) {
 
             Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
             try {
-//                aici tin informatiile de la api
+                /*in the article_diff we keep all the data received from the diffBoot api*/
                 com.syncthemall.diffbot.model.article.Article article_diff = diffbot.article().analyze(new_link).execute();
 
                 System.out.println("aici");
                 mv.addObject("description", article_diff.getHtml());
 
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
+                    HttpServletResponse httpServletResponse = null;
+                    httpServletResponse.sendRedirect("/");
+                    return null;
+                }
 
-                // todo redirect the infidel from the wall page to login page
-                // only vip are allowed
-            if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
-                HttpServletResponse httpServletResponse = null;
-                httpServletResponse.sendRedirect("/");
-                return null;
-            }
-
-            User loggedInUser = userService.getUserByUsername(authentication.getName());
+                User loggedInUser = userService.getUserByUsername(authentication.getName());
 
                 com.scncm.model.Article art = new com.scncm.model.Article();
 
-            art.setArticleId(100);
-            art.setDescription(new_description);  // descrierea din formular
-            art.setTitle(article_diff.getTitle());  // titlul returnat de api
-            art.setLink(article_diff.getUrl()); // url-ul returnat de api catre articol
-            art.setOwner(loggedInUser); // userul logat
-            art.setReadingTime(Integer.parseInt(new_time)); // timpul din formular
-            art.setHtmlContent(article_diff.getHtml()); // content-ul returnat de api
+                art.setArticleId(100);
+                art.setDescription(new_description);
+                art.setTitle(article_diff.getTitle());
+                art.setLink(article_diff.getUrl());
+                art.setOwner(loggedInUser);
+                art.setReadingTime(Integer.parseInt(new_time));
+                art.setHtmlContent(article_diff.getHtml());
 
-            articleService.addArticle(art);
+                articleService.addArticle(art);
+
+                mv.addObject("loggedInUser", loggedInUser);
 
             } catch (DiffbotException e) {
                 e.printStackTrace();
@@ -99,18 +98,18 @@ public class ArticleController {
 
         System.out.println("ajunge");
 
-        com.scncm.model.Article articol =  articleService.getArticle(0);
+        com.scncm.model.Article articol = articleService.getArticle(0);
 
 //        in view folosesc doar title si description deocamdata
         mv.addObject("title", articol.getTitle());
-        mv.addObject("title_view","View Article");
+        mv.addObject("title_view", "View Article");
         mv.addObject("description", articol.getDescription());
 
         return mv;
     }
 
 
-    public void testRequest(){
+    public void testRequest() {
 
     }
 

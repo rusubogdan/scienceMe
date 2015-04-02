@@ -7,6 +7,8 @@
     <meta charset="ISO-8859-1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/atom.png"/> " />
+
     <%--main stylesheet--%>
     <link href="<c:url value="/resources/css/bootstrap.min.css"/> " rel="stylesheet"/>
     <link href="<c:url value="/resources/css/bootstrap-theme.min.css"/> " rel="stylesheet"/>
@@ -14,14 +16,13 @@
 
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
-    <script src="<c:url value="/resources/js/wall.js"/> " rel="stylesheet"></script>
 
     <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
     <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
 
 </head>
 <body>
-<jsp:include page="header.jsp"></jsp:include>
+<jsp:include page="header.jsp"/>
 <div class="row">
 
     <div class="col-md-2"></div>
@@ -36,7 +37,7 @@
 
 <%--    informatiile din aces formular trebuie trimise in articlecontroller in functia addarticle--%>
             <%--    In aceasta functie iau informatiile de la link si le bag  in baza de date --%>
-            <form id="bootstrapTagsInputForm" method="get" action="add-article" class="form-horizontal" ">
+            <form id="bootstrapTagsInputForm" method="get" action="add-article" class="form-horizontal">
 
                 <div class="form-group">
                     <label class="col-xs-3 control-label">
