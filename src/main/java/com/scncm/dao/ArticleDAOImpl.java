@@ -117,10 +117,10 @@ public class ArticleDAOImpl implements ArticleDAO {
     }
 
     public Article addArticle (Article article) {
-        Article addedArcticle = (Article) getCurrentSession().save(article);
-        getCurrentSession().getTransaction().commit();
+        Integer addedArcticle = (Integer) getCurrentSession().save(article);
+//        getCurrentSession().getTransaction().commit();
 
-        return addedArcticle;
+        return article;
     }
 
     public Boolean updateArticle (Article article) {
