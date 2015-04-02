@@ -22,7 +22,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/user/${loggedInUser.email}">${loggedInUser.email}</a></li>
+                <li><a href="/user/${loggedInUser.email}">${loggedInUser.email}</a></li>
                 <li><a href="/j_spring_security_logout">logout</a></li>
             </ul>
         </div>
