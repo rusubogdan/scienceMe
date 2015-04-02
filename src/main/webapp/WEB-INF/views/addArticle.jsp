@@ -3,7 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>wall</title>
+    <title>
+        Add Article
+    </title>
     <meta charset="ISO-8859-1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -17,6 +19,15 @@
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
 
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>
+    <script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>
+
+    <script src="<c:url value="/resources/js/addArticle.js"/> " rel="stylesheet"></script>
+
+
+
+
     <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.css" />
     <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
 
@@ -29,10 +40,15 @@
     <div class="col-md-8">
         <div class="container-view-article">
             <br><br><br>
-            <h1>
-                ${description}
-                Add new article
-            </h1>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1>
+                    Add new article
+                </h1>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="clearfix"></div>
+
 
 
 <%--    informatiile din aces formular trebuie trimise in articlecontroller in functia addarticle--%>
@@ -54,43 +70,45 @@
                         Your description:
                     </label>
                     <div class="col-xs-5">
-                        <textarea name="description" class="form-control">
-
-                        </textarea>
+                        <textarea name="description" class="form-control"></textarea>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-xs-3 control-label">
-                        Time:
-                    </label>
-                    <div class="col-xs-5">
-                        <input type="text" name="time" class="form-control"
-                               placeholder="How long did you read the article ..." />
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="col-xs-3 control-label">
                         Add Tag:
                     </label>
-                    <div class="col-xs-8">
+                    <div class="col-md-5">
                         <input type="text" name="tags" class="form-control"
                                value="" data-role="tagsinput" />
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <div class="col-xs-5 col-xs-offset-3">
-                        <button type="submit" class="btn btn-default">
-                            Save
+                    <label class="col-xs-3 control-label">
+                        How long did you read the article?
+                    </label>
+                    <div class="col-xs-5">
+                        <input type="text" name="time" class="form-control" placeholder="minutes"/>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-xs-5 col-xs-offset-5">
+                        <button type="button" id="saveArticleBtn" class="btn btn-success">
+                            Save &nbsp; <img id="loadingmessage" src="/resources/img/add-article-loading.gif" class="hidden">
                         </button>
                     </div>
                 </div>
+
+
+
             </form>
         </div>
     </div>
     <div class="col-md-2"></div>
-
-    ${desctiption}
 
 </div>
 

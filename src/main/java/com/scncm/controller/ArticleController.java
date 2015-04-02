@@ -53,6 +53,7 @@ public class ArticleController {
 
         ModelAndView mv = new ModelAndView("addArticle");
 
+        mv.addObject("ok","0");
         if(request != null ){
 
             String new_link = request.getParameter("link");
@@ -60,7 +61,10 @@ public class ArticleController {
             String new_time = request.getParameter("time");
             String new_tags = request.getParameter("tags");
 
-            if (new_link != null) {
+            if (new_link != null &&
+                new_description != null &&
+                new_tags != null &&
+                new_time != null) {
 
                 Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
                 try {
@@ -105,7 +109,7 @@ public class ArticleController {
 
 //        mv.addObject("description", "description");
 
-        mv = new ModelAndView("redirect:/article/add-article");
+
         return mv;
     }
 
