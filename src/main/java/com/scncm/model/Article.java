@@ -25,59 +25,6 @@ public class Article implements java.io.Serializable {
 
     public Article(){}
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "articleId=" + articleId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", owner=" + owner +
-                ", userArticleVoteSet=" + userArticleVoteSet +
-                ", articleTags=" + articleTags +
-                ", readingTime=" + readingTime +
-                ", link='" + link + '\'' +
-                ", htmlContent='" + htmlContent + '\'' +
-                ", createdDate=" + createdDate +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Article article = (Article) o;
-
-        if (articleId != null ? !articleId.equals(article.articleId) : article.articleId != null) return false;
-        if (articleTags != null ? !articleTags.equals(article.articleTags) : article.articleTags != null) return false;
-        if (createdDate != null ? !createdDate.equals(article.createdDate) : article.createdDate != null) return false;
-        if (description != null ? !description.equals(article.description) : article.description != null) return false;
-        if (htmlContent != null ? !htmlContent.equals(article.htmlContent) : article.htmlContent != null) return false;
-        if (link != null ? !link.equals(article.link) : article.link != null) return false;
-        if (owner != null ? !owner.equals(article.owner) : article.owner != null) return false;
-        if (readingTime != null ? !readingTime.equals(article.readingTime) : article.readingTime != null) return false;
-        if (title != null ? !title.equals(article.title) : article.title != null) return false;
-        if (userArticleVoteSet != null ? !userArticleVoteSet.equals(article.userArticleVoteSet) : article.userArticleVoteSet != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = articleId != null ? articleId.hashCode() : 0;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (owner != null ? owner.hashCode() : 0);
-        result = 31 * result + (userArticleVoteSet != null ? userArticleVoteSet.hashCode() : 0);
-        result = 31 * result + (articleTags != null ? articleTags.hashCode() : 0);
-        result = 31 * result + (readingTime != null ? readingTime.hashCode() : 0);
-        result = 31 * result + (link != null ? link.hashCode() : 0);
-        result = 31 * result + (htmlContent != null ? htmlContent.hashCode() : 0);
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        return result;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_id_seq")
     @SequenceGenerator(name = "article_id_seq", sequenceName = "article_id_seq", allocationSize = 1)
@@ -200,4 +147,5 @@ public class Article implements java.io.Serializable {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
+
 }

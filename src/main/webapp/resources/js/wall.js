@@ -169,10 +169,6 @@ var wall = {
             console.log(response);
         });
 
-        $.post('search/ajax/filterArticles', {"searchQuery": "Romania"}, function (response) {
-           console.log(response);
-        });
-
 
     }
 };
