@@ -1,5 +1,8 @@
 package com.scncm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,10 +17,12 @@ public class ArticleTag {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "article_id")
+    @JsonBackReference("article-articleTags")
     private Article article;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tag_id")
+    @JsonManagedReference("tags-articleTags")
     private Tag tag;
 
     public Integer getArticleTagId() {

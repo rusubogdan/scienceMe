@@ -79,7 +79,7 @@ public class User {
     private Set<Article> articles;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference("UserArticleVote-UserId")
     private Set<UserArticleVote> userArticleVotesSet;
 
