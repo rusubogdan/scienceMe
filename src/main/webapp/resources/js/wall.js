@@ -18,7 +18,7 @@ $(document).ready(function () {
 // apeleaza ajax-ul cand se schimba intervalul
 
 var wall = {
-    filterByNews: false ,
+    filterByNews: true ,
     filterByRating: false,
     barLowerBound: 0,
     barUpperBound: 23,
@@ -67,6 +67,10 @@ var wall = {
                     // ajax to server for filtering the articles
                     wall.barLowerBound = $(".range-slider").val().split(",")[0];
                     wall.barUpperBound = $(".range-slider").val().split(",")[1];
+                    if(wall.barUpperBound == null){
+                        wall.barUpperBound = wall.barLowerBound;
+                        wall.barLowerBound = 0;
+                    }
                     wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
                 },
 
@@ -104,6 +108,10 @@ var wall = {
                     // ajax to server for filtering the articles
                     wall.barLowerBound = $(".range-slider").val().split(",")[0];
                     wall.barUpperBound = $(".range-slider").val().split(",")[1];
+                    if(wall.barUpperBound == null){
+                        wall.barUpperBound = wall.barLowerBound;
+                        wall.barLowerBound = 0;
+                    }
                     wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
                 },
 
@@ -124,6 +132,9 @@ var wall = {
         leftSideBar: function () {
             wall.init.buttonSideBar();
             wall.init.timeBar();
+            $('#news-button-sidebar').css({
+                'background-color': 'rgb(81, 176, 74)'
+            });
             wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
         }
     },

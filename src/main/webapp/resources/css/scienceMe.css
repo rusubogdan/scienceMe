@@ -82,7 +82,7 @@
 }
 
 .wallpaper {
-    background-image: url("/resources/img/cloudWallpaper2.jpg");
+    background: url("/resources/img/background.jpg") no-repeat center fixed;
     background-size: cover;
 }
 
