@@ -5,10 +5,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/atom.png"/> " />
     <%--CSS and JS--%>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/login.css"/>">
+    <script  src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/resources/js/firstPage.js"/> "></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
@@ -22,7 +21,7 @@
     <div class="wrap">
 
         <div class="avatar">
-            <img src="<c:url value="/resources/img/atom.png"/> ">
+            <img alt="logo" src="<c:url value="/resources/img/atom.png"/> ">
         </div>
 
         <input type="text" name="j_username" id="j_username" placeholder="username"/></td>
@@ -36,7 +35,7 @@
         <div class="bar">
             <i></i>
         </div>
-        <button type="button" onclick="show();"> Register </button>
+        <button type="button"  id="registerMe"> Register </button>
 
         <p>
             <c:if test="${error == true}">
@@ -78,19 +77,34 @@
             <label class="icon" ><i class="icon-shield"></i></label>
             <input type="password" name="j_addPassword" id="j_addPassword" placeholder="Password"   />
             <div class="gender">
-                    <input type="radio" value="None" id="male" name="gender" checked/>
-                    <label for="male" class="radio"  >Male</label>
-                    <input type="radio" value="None" id="female" name="gender" />
-                    <label for="female" class="radio">Female</label>
+                <input type="radio" value="None" id="male" name="gender" checked/>
+                <label for="male" class="radio"  >Male</label>
+                <input type="radio" value="None" id="female" name="gender" />
+                <label for="female" class="radio">Female</label>
             </div>
 
             <a href="#" class="button">Register</a>
-            <a href="#" class="button" onclick="hide();">Login</a>
+            <a href="#" class="button" id="logmeIn">Log in</a>
 
         </form>
     </div>
 
 
 </form>
+
+<div class="desc" id="description">
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
 </body>
 </html>
