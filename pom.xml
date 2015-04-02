@@ -120,11 +120,7 @@
             <version>9.1-901.jdbc3</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.syncthemall</groupId>
-            <artifactId>diffbot-java-sdk</artifactId>
-            <version>1.2.2</version>
-        </dependency>
+
 
         <dependency>
             <groupId>com.google.http-client</groupId>
@@ -148,7 +144,6 @@
             <artifactId>diffbot-java-sdk</artifactId>
             <version>1.2.2</version>
         </dependency>
-
     </dependencies>
 
     <build>
