@@ -1,13 +1,12 @@
-function show(){
+$(document).ready(function(){
+    $("#registerMe").click(function(){
+        $("#loginform").hide();
+        $("#registerform").show();
+    });
 
-    document.getElementById("loginform").style.display="none";
-    document.getElementById("registerform").style.display="block";
 
-}
-
-function hide(){
-
-    document.getElementById("loginform").style.display="block";
-    document.getElementById("registerform").style.display="none";
-
-}
+    $("#logmeIn").click(function(){
+        $("#loginform").show();
+        $("#registerform").hide();
+    })
+});

@@ -55,17 +55,17 @@ public class UserArticleVote {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @JsonBackReference("UserArticleVote-UserId")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "article_id", nullable = false)
     @JsonBackReference("Article-OwnerId")
     private Article article;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "vote_id", nullable = false)
     @JsonBackReference("Vote-UserArticleVote")
     private Vote vote;

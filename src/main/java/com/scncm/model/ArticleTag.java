@@ -49,13 +49,11 @@ public class ArticleTag {
     @Column(name = "id")
     private Integer articleTagId;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "article_id")
     private Article article;
 
-    // annotations that ends with one will have the eager fetch strategy
-    // the ones that ends with many will have the lazy fetch strategy
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tag_id")
     private Tag tag;
 

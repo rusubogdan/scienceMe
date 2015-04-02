@@ -1,10 +1,11 @@
 package com.scncm.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scncm.model.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scncm.service.ArticleService;
 import com.scncm.service.TagService;
 import com.scncm.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -95,10 +96,14 @@ public class WallController {
     public Map testArticle() {
         Map map = new HashMap();
 
-
         User dbUser = userService.getUser(1);
-        map.put("user", dbUser);
+        dbUser.setFirstName("MATAAAAAA");
 
+        userService.updateUser(dbUser);
+
+//        dbUser.setPassword("456456");
+
+        map.put("user", dbUser);
 
         return map;
     }
