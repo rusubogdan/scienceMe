@@ -41,8 +41,6 @@ public class WallController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // todo redirect the infidel from the wall page to login page
-        // only vip are allowed
         if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
             try {
                 httpServletResponse.sendRedirect("/login?forbidden");
@@ -70,24 +68,16 @@ public class WallController {
             @RequestParam(value = "upperBoundInterval") Integer upperBoundInterval,
             @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint
     ) {
-        Map map = new HashMap();
-//        Map<Integer,Article> map = new HashMap<Integer,Article>();
-        List<Article> articles = articleService.getArticleFiltered(news,rating,barLowerBound,upperBoundInterval,startingSearchPoint);
-//        for(int i = 0 ; i < articles.size() ; i++){
-//            map.put(i,articles.get(i));
-//        }
-//        articles.get(0).setOwner(null);
+        List<Article> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval, startingSearchPoint);
         ObjectMapper objectMapper = new ObjectMapper();
         String articlesAsJson = "";
-//        map.put("articol",articles);
-//The input argument of the writeValueAsString() function can be a bean, array, list, map or a set.
+        //The input argument of the writeValueAsString() function can be a bean, array, list, map or a set.
         try {
             articlesAsJson = objectMapper.writeValueAsString(articles);
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        articles.get(0).getOwner().
-//        map.put("articol",articles.get(0).setUserArticleVoteSet(null););
+
         return articlesAsJson;
     }
 
@@ -96,14 +86,7 @@ public class WallController {
     public Map testArticle() {
         Map map = new HashMap();
 
-        User dbUser = userService.getUser(1);
-        dbUser.setFirstName("MATAAAAAA");
-
-        userService.updateUser(dbUser);
-
-//        dbUser.setPassword("456456");
-
-        map.put("user", dbUser);
+        map.put("message", "message");
 
         return map;
     }

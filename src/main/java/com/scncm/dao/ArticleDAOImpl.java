@@ -27,7 +27,7 @@ public class ArticleDAOImpl implements ArticleDAO {
         return (Article) getCurrentSession().get(Article.class, articleId);
     }
 
-    public List<Article> getArticlesByUser (User user) {
+    public List<Article> getArticlesByUser(User user) {
         List<Article> articles = new ArrayList<Article>();
         Query query;
         try {
@@ -76,8 +76,8 @@ public class ArticleDAOImpl implements ArticleDAO {
             query.setFirstResult(startingSearchPoint);
             query.setMaxResults(10);
         } else {
-            if(!news && rating){
-                  query = getCurrentSession().createQuery("SELECT A ,coalesce((SELECT sum (case UAV.vote.voteName " +
+            if (!news && rating) {
+                query = getCurrentSession().createQuery("SELECT A ,coalesce((SELECT sum (case UAV.vote.voteName " +
                         "when 'LIKE' then 1 when 'DISLIKE' then -1 else 0 end)" +
                         " from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
                         " group by UAV.article.articleId),0)from Article A where A.readingTime between" +
@@ -86,17 +86,15 @@ public class ArticleDAOImpl implements ArticleDAO {
                 query.setParameter("barUpperBound", barUpperBound);
                 query.setFirstResult(startingSearchPoint);
                 query.setMaxResults(10);
-            }
-            else{
-                if(news && !rating) {
+            } else {
+                if (news && !rating) {
                     query = getCurrentSession().createQuery("from Article a where a.readingTime between" +
                             " :barLowerBound and :barUpperBound order by a.createdDate asc");
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
                     query.setMaxResults(10);
-                }
-                else{
+                } else {
                     query = null;
                 }
             }
@@ -116,14 +114,14 @@ public class ArticleDAOImpl implements ArticleDAO {
 
     }
 
-    public Article addArticle (Article article) {
+    public Article addArticle(Article article) {
         Integer addedArcticle = (Integer) getCurrentSession().save(article);
 //        getCurrentSession().getTransaction().commit();
 
         return article;
     }
 
-    public Boolean updateArticle (Article article) {
+    public Boolean updateArticle(Article article) {
         try {
             getCurrentSession().update(article);
             getCurrentSession().getTransaction().commit();
@@ -134,7 +132,7 @@ public class ArticleDAOImpl implements ArticleDAO {
         }
     }
 
-    public Boolean deleteArticle (Article article) {
+    public Boolean deleteArticle(Article article) {
         try {
             getCurrentSession().delete(article);
             getCurrentSession().getTransaction().commit();
