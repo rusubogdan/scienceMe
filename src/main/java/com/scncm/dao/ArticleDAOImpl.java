@@ -70,14 +70,14 @@ public class ArticleDAOImpl implements ArticleDAO {
         List<Article> articles = new ArrayList<Article>();
         Query query;
         if (!news && !rating) {
-            query = getCurrentSession().createQuery("from Article a where a.readingTime between :barLowerBound and :barUpperBound");
+            query = getCurrentSession().createQuery("SELECT A.articleId,A.title,A.description,A.owner.username,A.readingTime,A.createdDate,A.articleTags from Article A where A.readingTime between :barLowerBound and :barUpperBound");
             query.setParameter("barLowerBound", barLowerBound);
             query.setParameter("barUpperBound", barUpperBound);
             query.setFirstResult(startingSearchPoint);
             query.setMaxResults(10);
         } else {
             if (!news && rating) {
-                query = getCurrentSession().createQuery("SELECT A ,coalesce((SELECT sum (case UAV.vote.voteName " +
+                query = getCurrentSession().createQuery("SELECT A.articleId,A.title,A.description,A.owner.username,A.readingTime,A.createdDate,A.articleTags ,coalesce((SELECT sum (case UAV.vote.voteName " +
                         "when 'LIKE' then 1 when 'DISLIKE' then -1 else 0 end)" +
                         " from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
                         " group by UAV.article.articleId),0)from Article A where A.readingTime between" +
@@ -88,8 +88,9 @@ public class ArticleDAOImpl implements ArticleDAO {
                 query.setMaxResults(10);
             } else {
                 if (news && !rating) {
-                    query = getCurrentSession().createQuery("from Article a where a.readingTime between" +
-                            " :barLowerBound and :barUpperBound order by a.createdDate asc");
+                    query = getCurrentSession().createQuery("SELECT A.articleId,A.title,A.description,A.owner," +
+                            "A.readingTime,A.createdDate,A.articleTags from Article A where A.readingTime between" +
+                            " :barLowerBound and :barUpperBound order by A.createdDate asc");
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
