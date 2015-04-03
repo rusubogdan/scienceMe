@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -37,10 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("favicon.ico", "/resources/**", "/j_spring_security_check")
                         .permitAll()
-                /*.and()
+                .and()
                     .authorizeRequests()
                         .anyRequest()
-                            .hasAnyRole("ROLE_USER", "ROLE_ADMIN", "ROLE_MODERATOR")*/
+//                            .hasAnyRole("ROLE_USER", "ROLE_ADMIN", "ROLE_MODERATOR")
+                            .permitAll()
                 .and()
                     .exceptionHandling()
                             .accessDeniedPage("/login?session_expired")
@@ -55,12 +59,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .permitAll()
                 .and()
                     .logout()
-                    .logoutSuccessUrl("/login?logout")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/j_spring_security_logout"))
+                        .deleteCookies("remove")
+                        .invalidateHttpSession(true)
+                        .logoutUrl("/j_spring_security_logout")
+                        .logoutSuccessUrl("/login?logout")
+                            .permitAll()
                 .and()
                     .csrf()
                         .disable()
-                    .exceptionHandling()
-                        .accessDeniedPage("/403");
+                    /*.exceptionHandling()
+                        .accessDeniedPage("/403")*/;
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        SimpleUrlLogoutSuccessHandler logoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
+        logoutSuccessHandler.setTargetUrlParameter("redirect");
+        logoutSuccessHandler.setDefaultTargetUrl("/login?logout");
+        return logoutSuccessHandler;
     }
 
     @Bean

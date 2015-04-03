@@ -1,5 +1,8 @@
 package com.scncm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +29,8 @@ public class Tag {
     @Column(name = "tag_name")
     private String tagName;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tag")
+    @JsonBackReference("tags-articleTags")
     private Set<ArticleTag> articleTags;
 
     public Integer getTagId() {

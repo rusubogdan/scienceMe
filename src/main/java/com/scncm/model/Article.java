@@ -49,6 +49,7 @@ public class Article implements java.io.Serializable {
     private Set<UserArticleVote> userArticleVoteSet;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @JsonManagedReference("article-articleTags")
     private Set<ArticleTag> articleTags;
 
     // for rating set formula and calculate rating
