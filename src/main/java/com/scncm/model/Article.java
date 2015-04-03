@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "article")
 public class Article implements java.io.Serializable {
 
-    public Article(String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet, Set<ArticleTag> articleTags, Integer readingTime, String link, String htmlContent, Timestamp createdDate) {
+    public Article(int articleId,String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet, Set<ArticleTag> articleTags, int readingTime, String link, String htmlContent, Date createdDate) {
+        this.articleId = articleId;
         this.title = title;
         this.description = description;
         this.owner = owner;
@@ -20,7 +22,16 @@ public class Article implements java.io.Serializable {
         this.readingTime = readingTime;
         this.link = link;
         this.htmlContent = htmlContent;
-        this.createdDate = createdDate;
+        this.createdDate.setTime(createdDate.getTime());
+    }
+
+    public Article(String title, String description, User owner, Set<ArticleTag> articleTags, int readingTime, Date createdDate) {
+        this.title = title;
+        this.description = description;
+        this.owner = owner;
+        this.articleTags = articleTags;
+        this.readingTime = readingTime;
+        this.createdDate.setTime(createdDate.getTime());
     }
 
     public Article(){}

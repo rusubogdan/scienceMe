@@ -77,7 +77,6 @@ public class WallController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return articlesAsJson;
     }
 
