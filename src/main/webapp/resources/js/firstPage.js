@@ -1,12 +1,12 @@
 $(document).ready(function(){
     $("#registerMe").click(function(){
-        $("#loginform").hide();
-        $("#registerform").show();
+        $("#login-form").hide();
+        $("#register-form").show();
     });
 
 
     $("#logmeIn").click(function(){
-        $("#loginform").show();
-        $("#registerform").hide();
+        $("#login-form").show();
+        $("#register-form").hide();
     })
 });

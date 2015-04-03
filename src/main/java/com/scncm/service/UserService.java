@@ -1,5 +1,6 @@
 package com.scncm.service;
 
+import com.scncm.helpers.SignUpForm;
 import com.scncm.model.User;
 
 public interface UserService {
@@ -10,9 +11,15 @@ public interface UserService {
 
     User getUserByEmail (String email);
 
-    User addUser (User user);
+    User getUserByToken (String token);
+
+    Integer addUser (User user);
 
     Boolean updateUser (User user);
 
     Boolean deleteUser (User user);
+
+    User fromSignUpForm (SignUpForm signUpForm, Boolean b);
+
+    Boolean sendSignUpEmail (User user);
 }
