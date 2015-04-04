@@ -7,11 +7,6 @@ import java.util.Set;
 @Entity
 public class Vote {
 
-    public Vote(String voteName, Set<UserArticleVote> userArticleVoteSet) {
-        this.voteName = voteName;
-        this.userArticleVoteSet = userArticleVoteSet;
-    }
-
     public Vote(){}
 
     @Id

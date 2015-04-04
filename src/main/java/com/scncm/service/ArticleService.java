@@ -9,6 +9,8 @@ import java.util.Set;
 public interface ArticleService {
     Article getArticle(Integer articleId);
 
+    Article getSimpleArticle (Integer articleId);
+
     List<Article> getArticlesByUser (User user);
 
     Article addArticle (Article article);

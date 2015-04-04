@@ -2,20 +2,17 @@ $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
 
-
     $('.articles-carousel').slick({
         slidesToShow: 1,
         slidesToScroll: 1,
         dots: true,
-        //adaptiveHeight: true,
         autoplay: true,
         autoplaySpeed: 7000,
         arrows: false
     });
 });
 
-// Cosmin - schimba :hover eventul
-// apeleaza ajax-ul cand se schimba intervalul
+var articles;
 
 var wall = {
     filterByNews: true ,
@@ -36,9 +33,12 @@ var wall = {
                 showLabels: true,
                 isRange: true,
                 onstatechange: function () {
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+                    var $range = $(".range-slider");
+                    wall.barLowerBound = $range.val().split(",")[0];
+                    wall.barUpperBound = $range.val().split(",")[1];
+
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                        wall.barUpperBound, wall.startingSearchPoint);
 
                 }
             });
@@ -65,13 +65,16 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
+                    var $range = $(".range-slider");
+                    wall.barLowerBound = $range.val().split(",")[0];
+                    wall.barUpperBound = $range.val().split(",")[1];
                     if(wall.barUpperBound == null){
                         wall.barUpperBound = wall.barLowerBound;
                         wall.barLowerBound = 0;
                     }
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                        wall.barUpperBound, wall.startingSearchPoint);
                 },
 
                 mouseover: function () {
@@ -106,13 +109,16 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
+                    var $range = $(".range-slider");
+                    wall.barLowerBound = $range.val().split(",")[0];
+                    wall.barUpperBound = $range.val().split(",")[1];
                     if(wall.barUpperBound == null){
                         wall.barUpperBound = wall.barLowerBound;
                         wall.barLowerBound = 0;
                     }
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                        wall.barUpperBound, wall.startingSearchPoint);
                 },
 
                 mouseover: function () {
@@ -135,40 +141,41 @@ var wall = {
             $('#news-button-sidebar').css({
                 'background-color': 'rgb(81, 176, 74)'
             });
-            wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+
+            wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound,
+                wall.startingSearchPoint);
         }
     },
     test: function () {
         $('#test1Button').on({
             click: function () {
-                /*$.get('wall/ajax/testArticle',  function (response) {
-                    console.log(response.object);
-                });*/
                 $.ajax({
                     url: 'wall/ajax/testArticle',
                     method: 'get',
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response.user.email);
                     }
                 });
             }
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
-        console.log(news);
-        console.log(rating);
-        console.log(lowerBoundInterval);
-        console.log(upperBoundInterval);
         $.get('wall/ajax/filterArticles',{"news": news,
                                           "rating": rating,
                                           "barLowerBound": lowerBoundInterval,
                                           "upperBoundInterval": upperBoundInterval,
                                           "startingSearchPoint": startingSearchPoint},
             function (response) {
-            console.log(response);
+                articles = response.articles;
+                wall.createArticles(response.articles);
+                console.log(articles);
+
+                // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
         });
 
+
+    },
+    createArticles: function (articles) {
 
     }
 };

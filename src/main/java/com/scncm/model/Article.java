@@ -1,6 +1,6 @@
 package com.scncm.model;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -10,10 +10,24 @@ import java.util.Set;
 
 @Entity
 @Table(name = "article")
-public class Article implements java.io.Serializable {
+public class Article {
 
-    public Article(int articleId,String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet, Set<ArticleTag> articleTags, int readingTime, String link, String htmlContent, Date createdDate) {
+    /*no html content constructor*/
+    public Article(int articleId, String title, String description, User owner,
+                   int readingTime, String link, Date createdDate, long rating) {
         this.articleId = articleId;
+        this.title = title;
+        this.description = description;
+        this.owner = owner;
+        this.readingTime = readingTime;
+        this.link = link;
+        this.createdDate = (Timestamp) createdDate;
+    }
+
+    /* auto generated constructor will all the arguments */
+    public Article(String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet,
+                   Set<ArticleTag> articleTags, Integer readingTime, String link,
+                   String htmlContent, Timestamp createdDate) {
         this.title = title;
         this.description = description;
         this.owner = owner;
@@ -22,16 +36,7 @@ public class Article implements java.io.Serializable {
         this.readingTime = readingTime;
         this.link = link;
         this.htmlContent = htmlContent;
-        this.createdDate.setTime(createdDate.getTime());
-    }
-
-    public Article(String title, String description, User owner, Set<ArticleTag> articleTags, int readingTime, Date createdDate) {
-        this.title = title;
-        this.description = description;
-        this.owner = owner;
-        this.articleTags = articleTags;
-        this.readingTime = readingTime;
-        this.createdDate.setTime(createdDate.getTime());
+        this.createdDate = createdDate;
     }
 
     public Article(){}
@@ -56,6 +61,7 @@ public class Article implements java.io.Serializable {
     @JsonManagedReference("Article-OwnerId")
     private User owner;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private Set<UserArticleVote> userArticleVoteSet;
 
@@ -74,11 +80,12 @@ public class Article implements java.io.Serializable {
     private String link;
 
     @Column(name = "html_content")
+    @JsonIgnore
+    @Basic(fetch = FetchType.LAZY)
     private String htmlContent;
 
     @Column(name = "created_date")
     private Timestamp createdDate;
-
 
     public User getOwner() {
         return owner;
@@ -89,7 +96,7 @@ public class Article implements java.io.Serializable {
     }
 
     public Set<UserArticleVote> getUserArticleVoteSet() {
-            return userArticleVoteSet;
+        return userArticleVoteSet;
     }
 
     public void setUserArticleVoteSet(Set<UserArticleVote> userArticleVoteSet) {
@@ -159,5 +166,4 @@ public class Article implements java.io.Serializable {
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
-
 }
