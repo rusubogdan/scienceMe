@@ -2,23 +2,13 @@ $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
     carousel.init();
-
-
-    $('.articles-carousel').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        //adaptiveHeight: true,
-        autoplay: true,
-        autoplaySpeed: 7000,
-        arrows: false
-    });
 });
 
 var carousel = {
     obj: null,
     init: function(){
         carousel.obj = $('.articles-carousel');
+
         carousel.obj.slick({
             slidesToShow: 1,
             slidesToScroll: 1,
@@ -206,9 +196,9 @@ var wall = {
 
                 carousel.addArticle(template);
                 console.log(obj[0].link);
-                articles = response.articles;
+                /*articles = response.articles;
                 wall.createArticles(response.articles);
-                console.log(articles);
+                console.log(articles);*/
 
                 // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
         });
