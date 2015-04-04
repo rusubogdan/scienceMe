@@ -61,30 +61,40 @@ public class WallController {
 
     @RequestMapping(value = "ajax/filterArticles", method = RequestMethod.GET)
     @ResponseBody
-    public String filterArticles(
-            @RequestParam(value = "news") Boolean news,
-            @RequestParam(value = "rating") Boolean rating,
-            @RequestParam(value = "barLowerBound") Integer barLowerBound,
-            @RequestParam(value = "upperBoundInterval") Integer upperBoundInterval,
-            @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint
-    ) {
-        List<Article> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval, startingSearchPoint);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String articlesAsJson = "";
-        //The input argument of the writeValueAsString() function can be a bean, array, list, map or a set.
-        try {
-            articlesAsJson = objectMapper.writeValueAsString(articles);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Map filterArticles(
+            @RequestParam(value = "news")                   Boolean news,
+            @RequestParam(value = "rating")                 Boolean rating,
+            @RequestParam(value = "barLowerBound")          Integer barLowerBound,
+            @RequestParam(value = "upperBoundInterval")     Integer upperBoundInterval,
+            @RequestParam(value = "startingSearchPoint")    Integer startingSearchPoint) {
 
-        return articlesAsJson;
+        Map map = new HashMap();
+        List<Article> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval,
+                startingSearchPoint);
+       /* ObjectMapper objectMapper = new ObjectMapper();
+            String articlesAsJson = "";
+            //The input argument of the writeValueAsString() function can be a bean, array, list, map or a set.
+            try {
+                articlesAsJson = objectMapper.writeValueAsString(articles);
+            } catch (IOException e) {
+                e.printStackTrace();
+        }*/
+        map.put("articles", articles);
+
+        return map;
     }
 
     @RequestMapping(value = "ajax/testArticle", method = RequestMethod.GET)
     @ResponseBody
     public Map testArticle() {
         Map map = new HashMap();
+
+        Article article = articleService.getArticle(10);
+
+        Article simpleArticle = articleService.getSimpleArticle(10);
+
+        map.put("article", article);
+        map.put("simpleArticle", simpleArticle);
 
         map.put("message", "message");
 

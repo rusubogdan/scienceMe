@@ -2,12 +2,18 @@ package com.scncm.controller;
 
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+
 import com.scncm.model.Article;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
+
 import com.syncthemall.diffbot.Diffbot;
 import com.syncthemall.diffbot.exception.DiffbotException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +35,8 @@ import java.util.Date;
 @RequestMapping(value = "/article", method = RequestMethod.GET)
 public class ArticleController {
 
+    Logger logger = LoggerFactory.getLogger(ArticleController.class);
+
     @Autowired
     private ArticleService articleService;
 
@@ -42,14 +50,12 @@ public class ArticleController {
 
         ModelAndView mv = new ModelAndView("addArticle");
 
-
-//        mv.addObject("description", "description");
         return mv;
     }
 
     @RequestMapping(value = "add-article-in-database", method = RequestMethod.POST)
     public ModelAndView addArticleInDataBase(
-            HttpServletRequest request) throws JAXBException {
+            HttpServletRequest request) {
 
         ModelAndView mv = new ModelAndView("addArticle");
 
@@ -62,8 +68,10 @@ public class ArticleController {
 
             if (new_link != null) {
 
-                Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
+                Diffbot diffbot = null;
                 try {
+
+                    diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
                 /*in the article_diff we keep all the data received from the diffBoot api*/
                     com.syncthemall.diffbot.model.article.Article article_diff = diffbot.article().analyze(new_link).execute();
 
@@ -99,6 +107,8 @@ public class ArticleController {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JAXBException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -112,18 +122,18 @@ public class ArticleController {
 
     @RequestMapping(value = "view-article", method = RequestMethod.GET)
     public ModelAndView viewArticle(
-            @RequestParam(value = "article", required = false) com.scncm.model.Article article) throws JAXBException {
+            @RequestParam(value = "article", required = false) com.scncm.model.Article article) {
 
         ModelAndView mv = new ModelAndView("viewArticle");
 
-        System.out.println("ajunge");
-
-        com.scncm.model.Article articol = articleService.getArticle(0);
+        com.scncm.model.Article articleDB = articleService.getArticle(20);
 
 //        in view folosesc doar title si description deocamdata
-        mv.addObject("title", articol.getTitle());
-        mv.addObject("title_view", "View Article");
-        mv.addObject("description", articol.getDescription());
+//        mv.addObject("title", articol.getTitle());
+//        mv.addObject("title_view", "View Article");
+//        mv.addObject("description", articol.getDescription());
+
+        mv.addObject("article", articleDB);
 
         return mv;
     }

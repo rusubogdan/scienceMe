@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,6 +11,13 @@ import java.util.Set;
 public class Tag {
 
     private static final long serialVersionUID = -5527566191402296042L;
+
+    public Tag(String tagName, Set<ArticleTag> articleTags) {
+        this.tagName = tagName;
+        this.articleTags = articleTags;
+    }
+
+    public  Tag(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_id_seq")

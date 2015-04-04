@@ -7,6 +7,8 @@ import java.util.Set;
 @Entity
 public class Vote {
 
+    public Vote(){}
+
     @Id
     @GeneratedValue
     @Column(name = "id")

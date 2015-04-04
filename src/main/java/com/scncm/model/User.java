@@ -8,12 +8,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.scncm.helpers.GenderType;
 import javax.persistence.*;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
+
+    public User(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
@@ -26,6 +29,7 @@ public class User {
     private String username;
 
     @JsonIgnore
+    @Column(name = "password")
     private String password;
 
     @JsonIgnore
@@ -117,7 +121,6 @@ public class User {
         this.username = username;
     }
 
-    @Column(name = "password")
     @JsonIgnore
     public String getPassword() {
         return password;

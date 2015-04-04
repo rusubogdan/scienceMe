@@ -7,6 +7,14 @@ import javax.persistence.*;
 @Table(name = "user_article")
 public class UserArticleVote {
 
+    public UserArticleVote(User user, Article article, Vote vote) {
+        this.user = user;
+        this.article = article;
+        this.vote = vote;
+    }
+
+    public UserArticleVote(){}
+
     @Id
     @GeneratedValue(generator = "user_article_id", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "user_article_id", sequenceName = "user_article_id", allocationSize = 1)

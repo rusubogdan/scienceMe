@@ -8,6 +8,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "article_tag")
 public class ArticleTag {
+    public ArticleTag(Article article, Tag tag) {
+        this.article = article;
+        this.tag = tag;
+    }
+
+    public ArticleTag(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_tag_id")
