@@ -14,10 +14,11 @@ public class LoginController {
     public ModelAndView loginFormAfterRequest(
             @RequestParam(value = "error",  required = false) String error,
             @RequestParam(value = "logout", required = false) String logout,
-            @RequestParam(value = "forbidden", required = false) String forbidden) {
+            @RequestParam(value = "forbidden", required = false) String forbidden,
+            @RequestParam(value = "register-successful", required = false) String registerSuccessful) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
-        ModelAndView mv = new ModelAndView("home"); // revine in home, am scos loginForm
+        ModelAndView mv = new ModelAndView("home");
 
         if (error != null) {
             mv.addObject("error", true);
@@ -29,6 +30,10 @@ public class LoginController {
 
         if (forbidden != null) {
             mv.addObject("notAllowed", "Please login first");
+        }
+
+        if (registerSuccessful != null) {
+            mv.addObject("registerSuccessful", "Register successfully");
         }
 
         return mv;

@@ -47,7 +47,7 @@ public class Article {
     @Column(name = "article_id")
     private Integer articleId;
 
-    // required - unique ?
+    // required - but not unique !!!
     @Column(name = "title")
     private String title;
 
@@ -75,7 +75,7 @@ public class Article {
     @Column(name = "reading_time")
     private Integer readingTime;
 
-    // link to the article - required
+    // link to the article - required - unique
     @Column(name = "link")
     private String link;
 

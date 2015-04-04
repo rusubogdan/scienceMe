@@ -38,13 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("favicon.ico", "/resources/**", "/j_spring_security_check")
+                    .antMatchers("favicon.ico", "/resources/**", "/j_spring_security_check", "/register/**")
                         .permitAll()
                 .and()
                     .authorizeRequests()
                         .anyRequest()
-//                            .hasAnyRole("ROLE_USER", "ROLE_ADMIN", "ROLE_MODERATOR")
-                            .permitAll()
+                            .hasAnyRole("ADMIN", "USER", "MODERATOR")
                 .and()
                     .exceptionHandling()
                             .accessDeniedPage("/login?session_expired")

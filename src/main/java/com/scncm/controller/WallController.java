@@ -41,14 +41,14 @@ public class WallController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
+        /*if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
             try {
                 httpServletResponse.sendRedirect("/login?forbidden");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;
-        }
+        }*/
 
         mv = new ModelAndView("wall");
 
