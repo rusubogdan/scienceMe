@@ -1,18 +1,36 @@
 $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
+    carousel.init();
 
-
-    $('.articles-carousel').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        //adaptiveHeight: true,
-        autoplay: true,
-        autoplaySpeed: 7000,
-        arrows: false
-    });
 });
+
+var carousel = {
+    obj: null,
+    init: function(){
+        carousel.obj = $('.articles-carousel');
+        carousel.obj.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+            //adaptiveHeight: true,
+            autoplay: true,
+            autoplaySpeed: 6000,
+            arrows: false
+        });
+    },
+    addArticle: function(html){
+        carousel.obj.slick('slickAdd',html);
+    },
+    removeFirstArticle: function(){
+        carousel.obj.slick('slickRemove',true);
+    },
+    destroy: function(){
+        carousel.obj.slick('unslick');
+    }
+
+}
+
 
 // Cosmin - schimba :hover eventul
 // apeleaza ajax-ul cand se schimba intervalul
@@ -155,7 +173,18 @@ var wall = {
                                           "upperBoundInterval": upperBoundInterval,
                                           "startingSearchPoint": startingSearchPoint},
             function (response) {
-            console.log(response);
+
+                var obj = jQuery.parseJSON(response);
+                var template = $('#sample-article-container').clone();
+                template.removeAttr("id");
+                template.removeAttr("style");
+                template.find('.article-title').html(obj[0].title);
+                template.find('.article-text').html(obj[0].description);
+                template.find('.article-reference').attr('href',obj[0].link);
+                template.find('.article-author').html(obj[0].owner.username);
+
+                carousel.addArticle(template);
+                console.log(obj[0].link);
         });
 
         $.post('search/ajax/filterArticles', {"searchQuery": "Romania"}, function (response) {
