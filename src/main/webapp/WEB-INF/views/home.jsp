@@ -17,8 +17,46 @@
 
 <body>
 
+
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '801865369905189',
+            xfbml      : true,
+            version    : 'v2.3'
+        });
+
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                console.log('Logged in.');
+            }
+            else {
+                FB.login();
+            }
+
+            FB.api('/me', function(response) {
+                console.log(JSON.stringify(response));
+            });
+        });
+
+    };
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+
 <form method="post" action="<c:url value='j_spring_security_check'/>" id="loginform">
     <div class="wrap">
+
+
 
         <div class="avatar">
             <img alt="logo" src="<c:url value="/resources/img/atom.png"/> ">
@@ -37,6 +75,11 @@
         </div>
         <button type="button"  id="registerMe"> Register </button>
 
+        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">  </fb:login-button>
+
+
+
+
         <p>
             <c:if test="${error == true}">
                 <b class="error">Invalid username or password.</b>
@@ -53,6 +96,9 @@
 
     </div>
 </form>
+
+
+
 <form method="post" action="<c:url value='j_spring_security_check'/>" id="registerform">
     <br>
     <br>
@@ -87,6 +133,8 @@
             <a href="#" class="button" id="logmeIn">Log in</a>
 
         </form>
+
+
     </div>
 
 
@@ -94,17 +142,7 @@
 
 <div class="desc" id="description">
 
-
-
-
-
-
-
 </div>
-
-
-
-
 
 </body>
 </html>
