@@ -10,6 +10,8 @@ public interface ArticleDAO {
 
     Article getArticle(Integer articleId);
 
+    Article getSimpleArticle(Integer articleId);
+
     List<Article> getArticlesByUser(User user);
 
     Set<Article> searchArticles (String searchQuery);

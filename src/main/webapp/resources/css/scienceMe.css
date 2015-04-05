@@ -97,7 +97,7 @@
 }
 
 .wallpaper {
-    background-image: url("/resources/img/cloudWallpaper2.jpg");
+    background: url("/resources/img/background.jpg") no-repeat center fixed;
     background-size: cover;
 }
 
@@ -159,19 +159,19 @@
     text-align: justify;
 
 }
-.article-preview-container .article-informations{
+.article-preview-container .article-information {
     width: 100%;
     text-align: right;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-.article-informations .article-author, .article-informations .article-reference{
+.article-information .article-author, .article-information .article-reference{
     display: inline-block;
     padding: 0 5px;
 
 }
-.article-informations .article-reference{
+.article-information .article-reference{
     text-decoration: none;
     outline: none;
     cursor: pointer;
@@ -185,4 +185,16 @@
     padding: 5px 20px;
     background: #ffffff;
     border-bottom: 1px solid #333;
+}
+
+.fixed-loader-newest {
+    width: 100px;
+    height: 100px;
+    margin: 10% 50%;
+}
+
+.fixed-loader-carousel {
+    width: 100px;
+    height: 100px;
+    margin: 10% 50%;
 }

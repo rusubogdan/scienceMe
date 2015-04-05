@@ -17,12 +17,10 @@
 
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
-    <script src="<c:url value="/resources/js/wall.js"/> " rel="stylesheet"></script>
-    <
 
 </head>
 <body>
-    <jsp:include page="header.jsp"></jsp:include>
+    <jsp:include page="header.jsp"/>
 
     <div class="row">
         <div class="col-md-2"></div>
@@ -31,11 +29,15 @@
                 <br><br>
 
                 <h1 class="text-center">
-                    ${title}
+                    ${article.title}
                 </h1>
 
                 <br> <br>
-                ${description}
+                ${article.description}
+
+                <div>
+                    ${article.htmlContent}
+                </div>
             </div>
         </div>
         <div class="col-md-2"></div>

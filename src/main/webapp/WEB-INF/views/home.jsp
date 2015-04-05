@@ -7,35 +7,40 @@
 <head>
     <%--CSS and JS--%>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/login.css"/>">
-    <script  src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
+          type='text/css'>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+    <script type="application/javascript" src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>
     <script type="application/javascript" src="<c:url value="/resources/js/firstPage.js"/> "></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>Welcome to Science Me !</title>
 </head>
 
-
 <body>
 
-<form method="post" action="<c:url value='j_spring_security_check'/>" id="loginform">
+<form method="post" action="<c:url value='j_spring_security_check'/>" id="login-form">
     <div class="wrap">
 
         <div class="avatar">
             <img alt="logo" src="<c:url value="/resources/img/atom.png"/> ">
         </div>
 
-        <input type="text" name="j_username" id="j_username" placeholder="username"/></td>
+        <input type="text" name="j_username" id="j_username"/>
+
         <div class="bar">
             <i></i>
         </div>
 
-        <input type="password" name="j_password" id="j_password" placeholer="password"/></td>
+        <input type="password" name="j_password" id="j_password"/>
 
         <button type="submit" value="Sign in">Sign in</button>
+
         <div class="bar">
             <i></i>
         </div>
-        <button type="button"  id="registerMe"> Register </button>
+
+        <button type="button" id="registerMe">Register</button>
 
         <p>
             <c:if test="${error == true}">
@@ -53,58 +58,37 @@
 
     </div>
 </form>
-<form method="post" action="<c:url value='j_spring_security_check'/>" id="registerform">
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="register" >
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
 
-        <form action="/">
+<form method="post" action="/register" id="register-form">
+    <div class="register">
+        <%--<form action="/register">--%>
             <div class="avatar">
-                <img src="<c:url value="/resources/img/atom.png"/> ">
+                <img alt="atom" src="<c:url value="/resources/img/atom.png"/> ">
             </div>
-            <br>
 
-            <label class="icon" ><i class="icon-envelope "></i></label>
-            <input type="text" name="j_addEmail" id="j_addEmail"  placeholder="Email"  />
-            <label class="icon" ><i class="icon-user">     </i></label>
-            <input type="text" name="j_addFirstname" id="j_addFirstname" placeholder="First Name"  />
-            <label class="icon" ><i class="icon-user"></i></label>
-            <input type="text" name="j_addLastname" id="j_addLastname" placeholder="Last Name"  />
-            <label class="icon" ><i class="icon-shield"></i></label>
-            <input type="password" name="j_addPassword" id="j_addPassword" placeholder="Password"   />
-            <div class="gender">
+            <label for="email" class="icon"><i class="icon-envelope "></i>email</label>
+            <input type="text" name="email" id="email" value="email"/>
+
+            <label for="username" class="icon"><i class="icon-user"></i>username</label>
+            <input type="text" name="username" id="username" value="username"/>
+
+            <label for="password" class="icon"><i class="icon-shield"></i>password</label>
+            <input type="password" name="password" id="password" value="password"/>
+
+            <%--<div class="gender">
                 <input type="radio" value="None" id="male" name="gender" checked/>
-                <label for="male" class="radio"  >Male</label>
-                <input type="radio" value="None" id="female" name="gender" />
+                <label for="male" class="radio">Male</label>
+                <input type="radio" value="None" id="female" name="gender"/>
                 <label for="female" class="radio">Female</label>
-            </div>
+            </div>--%>
 
-            <a href="#" class="button">Register</a>
+            <button class="button" type="submit" value="register">register</button>
             <a href="#" class="button" id="logmeIn">Log in</a>
-
-        </form>
+        <%--</form>--%>
     </div>
-
-
 </form>
 
 <div class="desc" id="description">
-
-
-
-
-
-
-
 </div>
-
-
-
-
-
 </body>
 </html>

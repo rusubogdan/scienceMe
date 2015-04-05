@@ -1,9 +1,9 @@
 package com.scncm.init;
 
 import org.hibernate.SessionFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
@@ -23,7 +23,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("com")
 @PropertySource("classpath:application.properties")
-//@ImportResource("classpath:spring-security.xml")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
@@ -49,19 +48,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         dataSource.setUrl(env.getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
         dataSource.setUsername(env.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
         dataSource.setPassword(env.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
-        // setConnectionProperties
+
         return dataSource;
     }
-
-//    @Bean
-//    public SessionFactory sessionFactory() {
-//        LocalSessionFactoryBuilder builder =
-//                new LocalSessionFactoryBuilder(dataSource());
-//        builder.scanPackages("com.scncm.model")
-//                .addProperties(getHibernateProperties());
-//
-//        return builder.buildSessionFactory();
-//    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

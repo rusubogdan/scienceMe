@@ -2,9 +2,11 @@ package com.scncm.dao;
 
 import com.scncm.model.Article;
 import com.scncm.model.User;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
+import org.hibernate.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +17,8 @@ import java.util.Set;
 
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
+
+    private Logger logger = LoggerFactory.getLogger(ArticleDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -27,6 +31,30 @@ public class ArticleDAOImpl implements ArticleDAO {
         return (Article) getCurrentSession().get(Article.class, articleId);
     }
 
+    public Article getSimpleArticle(Integer articleId) {
+        List<Article> simpleArticles = new ArrayList<Article>();
+        Query query;
+
+        try {
+            query = getCurrentSession().createQuery(
+                    "select new Article(a.articleId, a.title, a.description, a.owner, a.readingTime, " +
+                            "a.link, a.createdDate)" +
+                            "from Article a " +
+                            "where a.articleId = :articleId"
+            );
+            query.setParameter("articleId", articleId);
+            simpleArticles = query.list();
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+
+        if (simpleArticles.size() > 0) {
+            return simpleArticles.get(0);
+        } else {
+            return null;
+        }
+    }
+
     public List<Article> getArticlesByUser(User user) {
         List<Article> articles = new ArrayList<Article>();
         Query query;
@@ -35,7 +63,7 @@ public class ArticleDAOImpl implements ArticleDAO {
             query.setParameter("user", user);
             articles = query.list();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
         }
 
         if (articles.size() > 0) {
@@ -55,7 +83,7 @@ public class ArticleDAOImpl implements ArticleDAO {
             query.setParameter("searchQuery", '%' + searchQuery + '%');
             articles = query.list();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
         }
 
         Set<Article> articleSet = new HashSet<Article>(articles);
@@ -66,11 +94,16 @@ public class ArticleDAOImpl implements ArticleDAO {
             return null;
     }
 
-    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound, Integer barUpperBound, Integer startingSearchPoint) {
+    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound,
+                                            Integer barUpperBound, Integer startingSearchPoint) {
         List<Article> articles = new ArrayList<Article>();
-        Query query;
+        Query query = null;
         if (!news && !rating) {
-            query = getCurrentSession().createQuery("from Article a where a.readingTime between :barLowerBound and :barUpperBound");
+            query = getCurrentSession().createQuery(
+                    "SELECT new Article(A.articleId, A.title, A.description, A.owner, " +
+                            "A.readingTime, A.link, A.createdDate, 1) " +
+                    "from Article A " +
+                    "where A.readingTime between :barLowerBound and :barUpperBound");
             query.setParameter("barLowerBound", barLowerBound);
             query.setParameter("barUpperBound", barUpperBound);
             query.setFirstResult(startingSearchPoint);
@@ -87,8 +120,11 @@ public class ArticleDAOImpl implements ArticleDAO {
                 query.setMaxResults(10);
             } else {
                 if (news && !rating) {
-                    query = getCurrentSession().createQuery("from Article a where a.readingTime between" +
-                            " :barLowerBound and :barUpperBound order by a.createdDate asc");
+                    query = getCurrentSession().createQuery(
+                            "from Article a " +
+                                    "where a.readingTime between :barLowerBound and :barUpperBound " +
+                                    "order by a.createdDate"
+                    );
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
@@ -102,7 +138,7 @@ public class ArticleDAOImpl implements ArticleDAO {
         try {
             articles = query.list();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            logger.warn(e.getMessage());
         }
 
         if (articles.size() > 0) {
@@ -135,7 +171,7 @@ public class ArticleDAOImpl implements ArticleDAO {
     public Boolean updateArticle(Article article) {
         try {
             getCurrentSession().update(article);
-            getCurrentSession().getTransaction().commit();
+//            getCurrentSession().getTransaction().commit();
 
             return true;
         } catch (Exception e) {
@@ -146,7 +182,7 @@ public class ArticleDAOImpl implements ArticleDAO {
     public Boolean deleteArticle(Article article) {
         try {
             getCurrentSession().delete(article);
-            getCurrentSession().getTransaction().commit();
+//            getCurrentSession().getTransaction().commit();
 
             return true;
         } catch (Exception e) {

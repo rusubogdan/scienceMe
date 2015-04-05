@@ -21,6 +21,10 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDAO.getArticle(articleId);
     }
 
+    public Article getSimpleArticle(Integer articleId) {
+        return articleDAO.getSimpleArticle(articleId);
+    }
+
     // useless, get them directly from user object !!!
     public List<Article> getArticlesByUser (User user) {
         return articleDAO.getArticlesByUser(user);

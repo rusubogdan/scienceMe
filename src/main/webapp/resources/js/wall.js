@@ -1,24 +1,40 @@
 $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
+    carousel.init();
     wall.recommendArticles();
-
-    $('.articles-carousel').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        //adaptiveHeight: true,
-        autoplay: true,
-        autoplaySpeed: 7000,
-        arrows: false
-    });
 });
 
-// Cosmin - schimba :hover eventul
-// apeleaza ajax-ul cand se schimba intervalul
+var carousel = {
+    obj: null,
+    init: function () {
+        carousel.obj = $('#articles-carousel');
 
+        carousel.obj.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+            //adaptiveHeight: true,
+            autoplay: true,
+            autoplaySpeed: 6000,
+            arrows: false
+        });
+    },
+    addArticle: function (html) {
+        carousel.obj.slick('slickAdd', html);
+    },
+    removeFirstArticle: function () {
+        carousel.obj.slick('slickRemove', true);
+    },
+    destroy: function () {
+        carousel.obj.slick('unslick');
+    }
+
+};
+
+var articles;
 var wall = {
-    filterByNews: false ,
+    filterByNews: true,
     filterByRating: false,
     barLowerBound: 1,
     barUpperBound: 23,
@@ -36,9 +52,12 @@ var wall = {
                 showLabels: true,
                 isRange: true,
                 onstatechange: function () {
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+                    var $range = $(".range-slider");
+                    wall.barLowerBound = $range.val().split(",")[0];
+                    wall.barUpperBound = $range.val().split(",")[1];
+
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                        wall.barUpperBound, wall.startingSearchPoint);
 
                 }
             });
@@ -65,9 +84,16 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+                    var $range = $(".range-slider");
+                    wall.barLowerBound = $range.val().split(",")[0];
+                    wall.barUpperBound = $range.val().split(",")[1];
+                    if (wall.barUpperBound == null) {
+                        wall.barUpperBound = wall.barLowerBound;
+                        wall.barLowerBound = 0;
+                    }
+
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                        wall.barUpperBound, wall.startingSearchPoint);
                 },
 
                 mouseover: function () {
@@ -102,9 +128,16 @@ var wall = {
                     }
 
                     // ajax to server for filtering the articles
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+                    var $range = $(".range-slider");
+                    wall.barLowerBound = $range.val().split(",")[0];
+                    wall.barUpperBound = $range.val().split(",")[1];
+                    if (wall.barUpperBound == null) {
+                        wall.barUpperBound = wall.barLowerBound;
+                        wall.barLowerBound = 0;
+                    }
+
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                        wall.barUpperBound, wall.startingSearchPoint);
                 },
 
                 mouseover: function () {
@@ -124,41 +157,86 @@ var wall = {
         leftSideBar: function () {
             wall.init.buttonSideBar();
             wall.init.timeBar();
-            wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+            $('#news-button-sidebar').css({
+                'background-color': 'rgb(81, 176, 74)'
+            });
+
+            wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound,
+                wall.startingSearchPoint);
         }
     },
     test: function () {
         $('#test1Button').on({
             click: function () {
-                /*$.get('wall/ajax/testArticle',  function (response) {
-                    console.log(response.object);
-                });*/
                 $.ajax({
                     url: 'wall/ajax/testArticle',
                     method: 'get',
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response.user.email);
                     }
                 });
             }
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
-        console.log(news);
-        console.log(rating);
-        console.log(lowerBoundInterval);
-        console.log(upperBoundInterval);
-        $.get('wall/ajax/filterArticles',{"news": news,
-                                          "rating": rating,
-                                          "barLowerBound": lowerBoundInterval,
-                                          "upperBoundInterval": upperBoundInterval,
-                                          "startingSearchPoint": startingSearchPoint},
+        $.get('/wall/ajax/filterArticles', {"news": news,
+                "rating": rating,
+                "barLowerBound": lowerBoundInterval,
+                "upperBoundInterval": upperBoundInterval,
+                "startingSearchPoint": startingSearchPoint},
             function (response) {
-            console.log(response);
-        });
-    },
+                var articles = response.articles;
 
+                wall.createNewestArticles(articles, null, $('#sample-article-container'), false);
+                wall.createNewestArticles(articles, $('#newest-article-container'), $('#sample-article-preview'), true);
+
+                // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
+            });
+
+    },
+    createNewestArticles: function (articles, container, sample, newest) {
+        var $newArticle;
+
+        if (newest) {
+            $('#fixed-loader-newest').show();
+//            container.empty();
+            container.find('*').not('#fixed-loader-newest').remove();
+        } else {
+//            carousel.obj.empty();
+            carousel.obj.find('*').not('#fixed-loader-carousel').remove();
+            carousel.destroy();
+            carousel.init();
+            $('#fixed-loader-carousel').show();
+        }
+
+        for (var i = 0; i < articles.length; i++) {
+            $newArticle = sample.clone();
+            $newArticle.attr('id', $newArticle.attr('id').substr(7) + '-' + i);
+            $newArticle.find('.article-title').html(articles[i].title);
+            $newArticle.find('.article-text').html(articles[i].description);
+            $newArticle.find('.article-reference').attr('href', articles[i].link);
+            $newArticle.find('.article-author')
+                .html(articles[i].owner.username)
+                .on({
+                    click: function () {
+                        location.href('/user/' + articles[i].owner.username);
+                    }
+                });
+
+            $newArticle.show();
+
+            if (newest) {
+                container.append($newArticle);
+            } else {
+                carousel.addArticle($newArticle);
+            }
+        }
+
+        if (newest) {
+            $('#fixed-loader-newest').hide();
+        } else {
+            $('#fixed-loader-carousel').hide();
+        }
     recommendArticles: function () {
         $.get('wall/ajax/getRecommendation',
             function(response){

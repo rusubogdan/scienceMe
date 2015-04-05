@@ -10,7 +10,9 @@ public interface UserDAO {
 
     User getUserByEmail (String email);
 
-    User addUser(User user);
+    User getUserByToken (String token);
+
+    Integer addUser(User user);
 
     Boolean updateUser (User user);
 

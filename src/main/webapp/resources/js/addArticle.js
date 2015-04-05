@@ -1,4 +1,3 @@
-
 var addArticle = {
     init: function () {
         console.log("ajunge");

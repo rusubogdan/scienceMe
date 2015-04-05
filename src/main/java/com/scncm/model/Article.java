@@ -1,15 +1,45 @@
 package com.scncm.model;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "article")
-public class Article implements java.io.Serializable {
+public class Article {
+
+    /*no html content constructor*/
+    public Article(int articleId, String title, String description, User owner,
+                   int readingTime, String link, Date createdDate, long rating) {
+        this.articleId = articleId;
+        this.title = title;
+        this.description = description;
+        this.owner = owner;
+        this.readingTime = readingTime;
+        this.link = link;
+        this.createdDate = (Timestamp) createdDate;
+    }
+
+    /* auto generated constructor will all the arguments */
+    public Article(String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet,
+                   Set<ArticleTag> articleTags, Integer readingTime, String link,
+                   String htmlContent, Timestamp createdDate) {
+        this.title = title;
+        this.description = description;
+        this.owner = owner;
+        this.userArticleVoteSet = userArticleVoteSet;
+        this.articleTags = articleTags;
+        this.readingTime = readingTime;
+        this.link = link;
+        this.htmlContent = htmlContent;
+        this.createdDate = createdDate;
+    }
+
+    public Article(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_id_seq")
@@ -17,7 +47,7 @@ public class Article implements java.io.Serializable {
     @Column(name = "article_id")
     private Integer articleId;
 
-    // required - unique ?
+    // required - but not unique !!!
     @Column(name = "title")
     private String title;
 
@@ -31,6 +61,7 @@ public class Article implements java.io.Serializable {
     @JsonManagedReference("Article-OwnerId")
     private User owner;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private Set<UserArticleVote> userArticleVoteSet;
 
@@ -44,16 +75,17 @@ public class Article implements java.io.Serializable {
     @Column(name = "reading_time")
     private Integer readingTime;
 
-    // link to the article - required
+    // link to the article - required - unique
     @Column(name = "link")
     private String link;
 
     @Column(name = "html_content")
+    @JsonIgnore
+    @Basic(fetch = FetchType.LAZY)
     private String htmlContent;
 
     @Column(name = "created_date")
     private Timestamp createdDate;
-
 
     public User getOwner() {
         return owner;
@@ -64,7 +96,7 @@ public class Article implements java.io.Serializable {
     }
 
     public Set<UserArticleVote> getUserArticleVoteSet() {
-            return userArticleVoteSet;
+        return userArticleVoteSet;
     }
 
     public void setUserArticleVoteSet(Set<UserArticleVote> userArticleVoteSet) {

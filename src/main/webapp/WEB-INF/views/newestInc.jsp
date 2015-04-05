@@ -1,11 +1,15 @@
-<div class="newest-articles" id="newest-article-container">
-    <div class="article-preview-container" id="sample-article-preview">
-        <div class="article-title">titlu</div>
-        <div class="article-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa laborum libero nam obcaecati officiis, quo sunt unde? Autem beatae, consectetur, illum in iure iusto laborum, magnam nemo praesentium saepe ullam?</div>
-        <div class="article-informations">
-            <div class="article-author">autor</div>
-            <a href="" class="article-reference">Read the full article</a>
-        </div>
-    </div>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<div class="newest-articles" id="newest-article-container">
+    <div id="fixed-loader-newest" class="fixed-loader-newest">
+        <img src="<c:url value="/resources/img/ajax-loader.gif"/>"/></div>
+</div>
+
+<div id="sample-article-preview" class="article-preview-container" style="display: none;">
+    <div class="article-title"></div>
+    <div class="article-text"></div>
+    <div class="article-information">
+        <div class="article-author"></div>
+        <a href="" class="article-reference">Read the full article</a>
+    </div>
 </div>
