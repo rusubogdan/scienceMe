@@ -1,5 +1,6 @@
 package com.scncm.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +18,12 @@ public class LoginController {
             @RequestParam(value = "forbidden", required = false) String forbidden,
             @RequestParam(value = "register-successful", required = false) String registerSuccessful) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
+
+        // if authenticated, return to the wall page
+        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+            return new ModelAndView("redirect:/wall");
+        }
+
 
         ModelAndView mv = new ModelAndView("home");
 

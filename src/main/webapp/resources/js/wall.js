@@ -6,8 +6,8 @@ $(document).ready(function () {
 
 var carousel = {
     obj: null,
-    init: function(){
-        carousel.obj = $('.articles-carousel');
+    init: function () {
+        carousel.obj = $('#articles-carousel');
 
         carousel.obj.slick({
             slidesToShow: 1,
@@ -19,13 +19,13 @@ var carousel = {
             arrows: false
         });
     },
-    addArticle: function(html){
-        carousel.obj.slick('slickAdd',html);
+    addArticle: function (html) {
+        carousel.obj.slick('slickAdd', html);
     },
-    removeFirstArticle: function(){
-        carousel.obj.slick('slickRemove',true);
+    removeFirstArticle: function () {
+        carousel.obj.slick('slickRemove', true);
     },
-    destroy: function(){
+    destroy: function () {
         carousel.obj.slick('unslick');
     }
 
@@ -86,7 +86,7 @@ var wall = {
                     var $range = $(".range-slider");
                     wall.barLowerBound = $range.val().split(",")[0];
                     wall.barUpperBound = $range.val().split(",")[1];
-                    if(wall.barUpperBound == null){
+                    if (wall.barUpperBound == null) {
                         wall.barUpperBound = wall.barLowerBound;
                         wall.barLowerBound = 0;
                     }
@@ -130,7 +130,7 @@ var wall = {
                     var $range = $(".range-slider");
                     wall.barLowerBound = $range.val().split(",")[0];
                     wall.barUpperBound = $range.val().split(",")[1];
-                    if(wall.barUpperBound == null){
+                    if (wall.barUpperBound == null) {
                         wall.barUpperBound = wall.barLowerBound;
                         wall.barLowerBound = 0;
                     }
@@ -178,34 +178,63 @@ var wall = {
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
-        $.get('wall/ajax/filterArticles',{"news": news,
-                                          "rating": rating,
-                                          "barLowerBound": lowerBoundInterval,
-                                          "upperBoundInterval": upperBoundInterval,
-                                          "startingSearchPoint": startingSearchPoint},
+        $.get('ajax/filterArticles', {"news": news,
+                "rating": rating,
+                "barLowerBound": lowerBoundInterval,
+                "upperBoundInterval": upperBoundInterval,
+                "startingSearchPoint": startingSearchPoint},
             function (response) {
+                var articles = response.articles;
 
-                var obj = jQuery.parseJSON(response);
-                var template = $('#sample-article-container').clone();
-                template.removeAttr("id");
-                template.removeAttr("style");
-                template.find('.article-title').html(obj[0].title);
-                template.find('.article-text').html(obj[0].description);
-                template.find('.article-reference').attr('href',obj[0].link);
-                template.find('.article-author').html(obj[0].owner.username);
-
-                carousel.addArticle(template);
-                console.log(obj[0].link);
-                /*articles = response.articles;
-                wall.createArticles(response.articles);
-                console.log(articles);*/
+                wall.createNewestArticles(articles, null, $('#sample-article-container'), false);
+                wall.createNewestArticles(articles, $('#newest-article-container'), $('#sample-article-preview'), true);
 
                 // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
-        });
-
+            });
 
     },
-    createArticles: function (articles) {
+    createNewestArticles: function (articles, container, sample, newest) {
+        var $newArticle;
 
+        if (newest) {
+            $('#fixed-loader-newest').show();
+//            container.empty();
+            container.find('*').not('#fixed-loader-newest').remove();
+        } else {
+//            carousel.obj.empty();
+            carousel.obj.find('*').not('#fixed-loader-carousel').remove();
+            carousel.destroy();
+            carousel.init();
+            $('#fixed-loader-carousel').show();
+        }
+
+        for (var i = 0; i < articles.length; i++) {
+            $newArticle = sample.clone();
+            $newArticle.attr('id', $newArticle.attr('id').substr(7) + '-' + i);
+            $newArticle.find('.article-title').html(articles[i].title);
+            $newArticle.find('.article-text').html(articles[i].description);
+            $newArticle.find('.article-reference').attr('href', articles[i].link);
+            $newArticle.find('.article-author')
+                .html(articles[i].owner.username)
+                .on({
+                    click: function () {
+                        location.href('/user/' + articles[i].owner.username);
+                    }
+                });
+
+            $newArticle.show();
+
+            if (newest) {
+                container.append($newArticle);
+            } else {
+                carousel.addArticle($newArticle);
+            }
+        }
+
+        if (newest) {
+            $('#fixed-loader-newest').hide();
+        } else {
+            $('#fixed-loader-carousel').hide();
+        }
     }
 };

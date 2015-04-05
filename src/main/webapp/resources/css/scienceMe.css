@@ -186,3 +186,15 @@
     background: #ffffff;
     border-bottom: 1px solid #333;
 }
+
+.fixed-loader-newest {
+    width: 100px;
+    height: 100px;
+    margin: 10% 50%;
+}
+
+.fixed-loader-carousel {
+    width: 100px;
+    height: 100px;
+    margin: 10% 50%;
+}
