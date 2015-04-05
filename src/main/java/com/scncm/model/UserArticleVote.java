@@ -2,16 +2,11 @@ package com.scncm.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "user_article")
 public class UserArticleVote {
-
-    public UserArticleVote(User user, Article article, Vote vote) {
-        this.user = user;
-        this.article = article;
-        this.vote = vote;
-    }
 
     public UserArticleVote(){}
 
@@ -31,10 +26,16 @@ public class UserArticleVote {
     @JsonBackReference("Article-OwnerId")
     private Article article;
 
-    @ManyToOne
+    @Column(name = "rating")
+    private Integer rating;
+
+    @Column(name = "timestamp")
+    private Timestamp timestamp;
+
+/*    @ManyToOne
     @JoinColumn(name = "vote_id", nullable = false)
     @JsonBackReference("Vote-UserArticleVote")
-    private Vote vote;
+    private Vote vote;*/
 
     public User getUser() {
         return user;
@@ -52,13 +53,13 @@ public class UserArticleVote {
         this.article = article;
     }
 
-    public Vote getVote() {
-        return vote;
-    }
+//    public Vote getVote() {
+//        return vote;
+//    }
 
-    public void setVote(Vote vote) {
-        this.vote = vote;
-    }
+//    public void setVote(Vote vote) {
+//        this.vote = vote;
+//    }
 
     public Integer getId() {
         return id;
@@ -66,5 +67,21 @@ public class UserArticleVote {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

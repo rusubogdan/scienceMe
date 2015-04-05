@@ -1,7 +1,6 @@
 package com.scncm.controller;
 
 import com.scncm.model.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scncm.service.ArticleService;
 import com.scncm.service.TagService;
 import com.scncm.service.UserService;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,23 +30,11 @@ public class WallController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private TagService tagService;
-
     @RequestMapping(value = "")
     public ModelAndView wall(HttpServletResponse httpServletResponse) {
         ModelAndView mv;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        /*if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
-            try {
-                httpServletResponse.sendRedirect("/login?forbidden");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }*/
 
         mv = new ModelAndView("wall");
 

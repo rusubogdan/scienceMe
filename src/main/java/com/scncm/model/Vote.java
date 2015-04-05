@@ -16,10 +16,11 @@ public class Vote {
 
     @Column(name = "vote_name")
     private String voteName;
-
+/*
     @OneToMany(mappedBy = "vote")
     @JsonManagedReference("Vote-UserArticleVote")
     private Set<UserArticleVote> userArticleVoteSet;
+*/
 
     public Integer getVoteId() {
         return voteId;
@@ -29,13 +30,13 @@ public class Vote {
         this.voteId = voteId;
     }
 
-    public Set<UserArticleVote> getUserArticleVoteSet() {
-        return userArticleVoteSet;
-    }
+//    public Set<UserArticleVote> getUserArticleVoteSet() {
+//        return userArticleVoteSet;
+//    }
 
-    public void setUserArticleVoteSet(Set<UserArticleVote> userArticleVoteSet) {
-        this.userArticleVoteSet = userArticleVoteSet;
-    }
+//    public void setUserArticleVoteSet(Set<UserArticleVote> userArticleVoteSet) {
+//        this.userArticleVoteSet = userArticleVoteSet;
+//    }
 
     public String getVoteName() {
         return voteName;

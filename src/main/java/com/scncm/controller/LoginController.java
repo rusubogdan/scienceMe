@@ -1,5 +1,6 @@
 package com.scncm.controller;
 
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class LoginController {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
         // if authenticated, return to the wall page
-        if (SecurityContextHolder.getContext().getAuthentication().isAuthenticated()) {
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             return new ModelAndView("redirect:/wall");
         }
 

@@ -178,7 +178,7 @@ var wall = {
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
-        $.get('ajax/filterArticles', {"news": news,
+        $.get('/wall/ajax/filterArticles', {"news": news,
                 "rating": rating,
                 "barLowerBound": lowerBoundInterval,
                 "upperBoundInterval": upperBoundInterval,
