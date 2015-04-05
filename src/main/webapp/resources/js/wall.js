@@ -237,6 +237,8 @@ var wall = {
         } else {
             $('#fixed-loader-carousel').hide();
         }
+    },
+
     recommendArticles: function () {
         $.get('wall/ajax/getRecommendation',
             function(response){
