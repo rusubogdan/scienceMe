@@ -1,7 +1,7 @@
 $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
-
+    wall.recommendArticles();
 
     $('.articles-carousel').slick({
         slidesToShow: 1,
@@ -157,11 +157,12 @@ var wall = {
             function (response) {
             console.log(response);
         });
+    },
 
-        $.post('search/ajax/filterArticles', {"searchQuery": "Romania"}, function (response) {
-           console.log(response);
-        });
-
-
+    recommendArticles: function () {
+        $.get('wall/ajax/getRecommendation',
+            function(response){
+                console.log(response);
+            });
     }
 };
