@@ -126,9 +126,10 @@ public class ArticleController {
 
         ModelAndView mv = new ModelAndView("viewArticle");
 
-        com.scncm.model.Article articleDB = articleService.getArticle(20);
+        com.scncm.model.Article articleDB = articleService.getArticle(0);
 
-//        in view folosesc doar title si description deocamdata
+        mv.addObject("articleId", article.getArticleId());
+
 //        mv.addObject("title", articol.getTitle());
 //        mv.addObject("title_view", "View Article");
 //        mv.addObject("description", articol.getDescription());
