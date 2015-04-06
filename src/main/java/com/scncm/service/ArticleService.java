@@ -4,6 +4,7 @@ import com.scncm.model.Article;
 import com.scncm.model.User;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface ArticleService {
@@ -23,5 +24,5 @@ public interface ArticleService {
 
     List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
 
-    List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
+    List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 }

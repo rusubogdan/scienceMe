@@ -56,15 +56,14 @@ public class WallController {
 
     @RequestMapping(value = "ajax/filterArticles", method = RequestMethod.GET)
     @ResponseBody
-    public Map filterArticles(
+    public List<Map> filterArticles(
             @RequestParam(value = "news")                   Boolean news,
             @RequestParam(value = "rating")                 Boolean rating,
             @RequestParam(value = "barLowerBound")          Integer barLowerBound,
             @RequestParam(value = "upperBoundInterval")     Integer upperBoundInterval,
             @RequestParam(value = "startingSearchPoint")    Integer startingSearchPoint) {
 
-        Map map = new HashMap();
-        List<Article> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval,
+        List<Map> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval,
                 startingSearchPoint);
        /* ObjectMapper objectMapper = new ObjectMapper();
             String articlesAsJson = "";
@@ -74,9 +73,8 @@ public class WallController {
             } catch (IOException e) {
                 e.printStackTrace();
         }*/
-        map.put("articles", articles);
 
-        return map;
+        return articles;
     }
 
     @RequestMapping(value = "ajax/testArticle", method = RequestMethod.GET)

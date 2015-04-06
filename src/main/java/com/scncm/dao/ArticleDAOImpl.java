@@ -10,12 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Repository
+    @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 
     private Logger logger = LoggerFactory.getLogger(ArticleDAOImpl.class);
@@ -94,23 +91,12 @@ public class ArticleDAOImpl implements ArticleDAO {
             return null;
     }
 
-    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound,
+    public List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound,
                                             Integer barUpperBound, Integer startingSearchPoint) {
-        List<Article> articles = new ArrayList<Article>();
+        List<Map> articles = new ArrayList<Map>();
         List<Object[]> temporaryArticles;
         Query query = null;
-        if (!news && !rating) {
-            query = getCurrentSession().createQuery(
-                    "from Article A " +
-                    "where A.readingTime between :barLowerBound and :barUpperBound");
-            query.setParameter("barLowerBound", barLowerBound);
-            query.setParameter("barUpperBound", barUpperBound);
-            query.setFirstResult(startingSearchPoint);
-            query.setMaxResults(10);
-            articles = query.list();
-        }
-        else {
-            if (!news && rating) {
+        if (!news && rating) {
                 query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
                         "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
                         "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
@@ -121,16 +107,18 @@ public class ArticleDAOImpl implements ArticleDAO {
                 query.setMaxResults(10);
                 temporaryArticles = query.list();
                 for(int i = 0 ; i < temporaryArticles.size() ; i++) {
-                    articles.add((Article) temporaryArticles.get(i)[0]);
+                    Map temporaryMap = new HashMap<>();
+                    temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
+                    temporaryMap.put("rating",(Integer) temporaryArticles.get(i)[1]);
+                    articles.add(temporaryMap);
                 }
             }
             else {
                 if (news && !rating) {
-                    query = getCurrentSession().createQuery(
-                            "from Article a " +
-                                    "where a.readingTime between :barLowerBound and :barUpperBound " +
-                                    "order by a.createdDate"
-                    );
+                    query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
+                            "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
+                            "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
+                            "group by 1 order by UAV.article.createdDate asc");
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
@@ -139,7 +127,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                 }
             }
 
-        }
+
         try {
         } catch (Exception e) {
             logger.warn(e.getMessage());
