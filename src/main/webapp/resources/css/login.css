@@ -1,9 +1,8 @@
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6,
 pre, form, fieldset, input, textarea, p, blockquote, th, td {
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
 }
-
 
 @font-face {
     font-family: 'Lato';
@@ -13,62 +12,70 @@ pre, form, fieldset, input, textarea, p, blockquote, th, td {
 }
 
 body {
-    background: #448ed3 ;
-    font-family: "Lato" ;
+    background: #448ed3;
+    font-family: "Lato";
 }
+
 .wrap {
-    width:250px;
+    width: 250px;
     height: auto;
     margin: auto;
     margin-top: 10%;
 }
+
 .avatar {
     width: 100%;
     margin: auto;
     width: 65px;
     border-radius: 100px;
     height: 65px;
-    background: #448ed3 ;
+    background: #448ed3;
     position: relative;
     bottom: -15px;
 }
+
 .avatar img {
     width: 55px;
     height: 55px;
     border-radius: 100px;
     margin: auto;
-    border:3px solid #fff;
+    border: 3px solid #fff;
     display: block;
 }
+
 .wrap input {
     border: none;
     background: #fff;
-    font-family:Lato ;
-    font-weight:700 ;
+    font-family: Lato;
+    font-weight: 700;
     display: block;
     height: 40px;
     outline: none;
-    width: calc(100% - 24px) ;
+    width: calc(100% - 24px);
     margin: auto;
     padding: 6px 12px 6px 12px;
 }
+
 .bar {
     width: 100%;
     height: 1px;
-    background: #fff ;
+    background: #fff;
 }
+
 .bar i {
     width: 95%;
     margin: auto;
-    height: 2px ;
+    height: 2px;
     display: block;
     background: #d1d1d1;
 }
+
 .wrap input[type="text"] {
-    border-radius: 7px 7px 0px 0px ;
+    border-radius: 7px 7px 0px 0px;
 }
+
 .wrap input[type="password"] {
-    border-radius: 0px 0px 7px 7px ;
+    border-radius: 0px 0px 7px 7px;
 }
 
 .wrap button {
@@ -78,7 +85,7 @@ body {
     text-decoration: center;
     border: none;
     color: #51771a;
-    margin-top:-5px;
+    margin-top: -5px;
     padding-top: 14px;
     padding-bottom: 14px;
     outline: none;
@@ -87,32 +94,30 @@ body {
     cursor: pointer;
 }
 
-
 .gender {
     margin-left: 30px;
     margin-bottom: 30px;
 }
 
-
 .register {
     margin: 0px auto;
     width: 300px;
-    height: 464px;
+    height: auto;
+    min-height: 400px;
     -webkit-border-radius: 8px/7px;
     -moz-border-radius: 8px/7px;
     border-radius: 8px/7px;
     background-color: #ebebeb;
-    -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.31);
-    -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.31);
-    box-shadow: 1px 2px 5px rgba(0,0,0,.31);
+    -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+    -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
     border: solid 1px #cbc9c9;
 
 }
+
 #register-form {
-
-    display:none;
+    display: none;
 }
-
 
 a.button {
     font-size: 14px;
@@ -121,18 +126,19 @@ a.button {
     padding: 6px 25px 0px 20px;
     margin: 10px 8px 20px 0px;
     display: inline-block;
-    float:left;
-    position:relative;
-    left:30%;
+    float: left;
+    position: relative;
+    left: 30%;
     text-decoration: none;
-    width: 50px; height: 27px;
+    width: 50px;
+    height: 27px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     background-color: #3a57af;
-    -webkit-box-shadow: 0 3px rgba(58,87,175,.75);
-    -moz-box-shadow: 0 3px rgba(58,87,175,.75);
-    box-shadow: 0 3px rgba(58,87,175,.75);
+    -webkit-box-shadow: 0 3px rgba(58, 87, 175, .75);
+    -moz-box-shadow: 0 3px rgba(58, 87, 175, .75);
+    box-shadow: 0 3px rgba(58, 87, 175, .75);
     transition: all 0.1s linear 0s;
     top: 0px;
     position: relative;
@@ -140,33 +146,30 @@ a.button {
 
 a.button:hover {
     top: 3px;
-    background-color:#2e458b;
+    background-color: #2e458b;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
 
 }
 
-
-
-
-.register input[type=text], .register input[type=password]{
+.register input[type=text], .register input[type=password] {
     width: 200px;
     height: 39px;
     -webkit-border-radius: 0px 4px 4px 0px/5px 5px 4px 4px;
     -moz-border-radius: 0px 4px 4px 0px/0px 0px 4px 4px;
     border-radius: 0px 4px 4px 0px/5px 5px 4px 4px;
     background-color: #fff;
-    -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.09);
-    -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.09);
-    box-shadow: 1px 2px 5px rgba(0,0,0,.09);
+    -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+    -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
     border: solid 1px #cbc9c9;
     margin-left: -5px;
     margin-top: 13px;
     padding-left: 10px;
 }
 
-.register input[type=password]{
+.register input[type=password] {
     margin-bottom: 25px;
 }
 
@@ -184,11 +187,12 @@ input[type=radio]:checked + label:after {
     -moz-border-radius: 4px 0px 0px 4px;
     border-radius: 4px 0px 0px 4px;
     color: white;
-    -webkit-box-shadow: 1px 2px 5px rgba(0,0,0,.09);
-    -moz-box-shadow: 1px 2px 5px rgba(0,0,0,.09);
-    box-shadow: 1px 2px 5px rgba(0,0,0,.09);
+    -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+    -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
     border: solid 0px #cbc9c9;
 }
+
 label.radio {
     cursor: pointer;
     text-indent: 35px;
@@ -200,9 +204,9 @@ label.radio {
 
 label.radio:before {
     background: #3a57af;
-    content:'';
+    content: '';
     position: absolute;
-    top:2px;
+    top: 2px;
     left: 0;
     width: 20px;
     height: 20px;
@@ -228,9 +232,54 @@ label.radio:after {
     -ms-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
+
 input[type=radio] {
     visibility: hidden;
 }
- form{
+
+form {
     margin: 0 30px;
+}
+
+.error-login-register {
+    margin: 2%;
+}
+
+.error-login-register p {
+    text-align: center;
+}
+
+.desc {
+    margin: 15% 5% 5% 5%;
+}
+
+.desc p {
+    text-align: center;
+}
+
+.custom-wrap.wrap {
+    width: 100%;
+    border-radius: 7px;
+    background: #b6ee65;
+    text-align: center;
+    border: none;
+    color: #51771a;
+    margin-top: 2px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    outline: none;
+    font-size: 13px;
+    border-bottom: 3px solid #307d63;
+    cursor: pointer;
+}
+
+.fb {
+    margin-bottom: 10px!important;
+    background-color: blue!important;
+    color: white!important;
+    font-size: 20px!important;
+}
+
+.change-form {
+    background-color: #50b6ff!important;
 }
