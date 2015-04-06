@@ -71,7 +71,7 @@
             <label for="female" class="radio">Female</label>
         </div>--%>
 
-        <button class="custom-wrap wrap" type="submit" value="register">register</button>
+        <button class="custom-wrap wrap" type="submit" value="register">Register</button>
         <%--<a href="#" class="button" id="logmeIn">Log in</a>--%>
         <div id="logmeIn" class="custom-wrap wrap change-form">Log in</div>
         <div id="register-facebook" class="custom-wrap wrap fb">Register with Facebook</div>
