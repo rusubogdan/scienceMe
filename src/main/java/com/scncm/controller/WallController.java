@@ -12,7 +12,9 @@ import org.apache.mahout.cf.taste.impl.similarity.LogLikelihoodSimilarity;
 import org.apache.mahout.cf.taste.recommender.ItemBasedRecommender;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.postgresql.ds.PGSimpleDataSource;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +35,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/wall")
 public class WallController {
+
+    Logger logger = org.slf4j.LoggerFactory.getLogger(WallController.class);
 
     @Autowired
     private ArticleService articleService;
@@ -57,11 +62,11 @@ public class WallController {
     @RequestMapping(value = "ajax/filterArticles", method = RequestMethod.GET)
     @ResponseBody
     public List<Map> filterArticles(
-            @RequestParam(value = "news")                   Boolean news,
-            @RequestParam(value = "rating")                 Boolean rating,
-            @RequestParam(value = "barLowerBound")          Integer barLowerBound,
-            @RequestParam(value = "upperBoundInterval")     Integer upperBoundInterval,
-            @RequestParam(value = "startingSearchPoint")    Integer startingSearchPoint) {
+            @RequestParam(value = "news") Boolean news,
+            @RequestParam(value = "rating") Boolean rating,
+            @RequestParam(value = "barLowerBound") Integer barLowerBound,
+            @RequestParam(value = "upperBoundInterval") Integer upperBoundInterval,
+            @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint) {
 
         List<Map> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval,
                 startingSearchPoint);
@@ -96,7 +101,7 @@ public class WallController {
 
     @RequestMapping(value = "ajax/getRecommendation", method = RequestMethod.GET)
     @ResponseBody
-    public List<Map> getRecommendation() throws TasteException {
+    public List<Map> getRecommendation() {
         List<Map> articlesList = new ArrayList<Map>();
         List<Integer> recommendedList = new ArrayList<Integer>();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -111,19 +116,25 @@ public class WallController {
         dataSource.setSsl(true);
         dataSource.setSslfactory("org.postgresql.ssl.NonValidatingFactory");
 
-        PostgreSQLJDBCDataModel postgreSQLJDBCDataModel =  new PostgreSQLJDBCDataModel(dataSource,"user_article","user_id","article_id","rating","timestamp");
-        ReloadFromJDBCDataModel model = new ReloadFromJDBCDataModel(postgreSQLJDBCDataModel);
-        ItemSimilarity itemSimilarity =  new LogLikelihoodSimilarity(model);
-        ItemBasedRecommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
-        int id = currentUser.getUserId();
-        List<RecommendedItem> recommendations = recommender.recommend(id, 10);
-        for (RecommendedItem recommendation : recommendations) {
-            articlesList.add(articleService.getArticleAndRating((int) recommendation.getItemID()));
-            recommendedList.add((int)recommendation.getItemID());
-        }
-        if(recommendations.size() != 10) {
-            List<Map> ratedArticleList = articleService.getMostRatedArticle( 10-recommendations.size() , currentUser.getUserId(),recommendedList);
-            articlesList.addAll(ratedArticleList);
+        try {
+            PostgreSQLJDBCDataModel postgreSQLJDBCDataModel = new PostgreSQLJDBCDataModel(
+                    dataSource, "user_article", "user_id", "article_id", "rating", "timestamp");
+            ReloadFromJDBCDataModel model = new ReloadFromJDBCDataModel(postgreSQLJDBCDataModel);
+            ItemSimilarity itemSimilarity = new LogLikelihoodSimilarity(model);
+            ItemBasedRecommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
+            int id = currentUser.getUserId();
+            List<RecommendedItem> recommendations = recommender.recommend(id, 10);
+            for (RecommendedItem recommendation : recommendations) {
+                articlesList.add(articleService.getArticleAndRating((int) recommendation.getItemID()));
+                recommendedList.add((int) recommendation.getItemID());
+            }
+            if (recommendations.size() != 10) {
+                List<Map> ratedArticleList = articleService.getMostRatedArticle(10 - recommendations.size(),
+                        currentUser.getUserId(), recommendedList);
+                articlesList.addAll(ratedArticleList);
+            }
+        } catch (TasteException e) {
+            logger.warn(e.getMessage());
         }
         return articlesList;
     }

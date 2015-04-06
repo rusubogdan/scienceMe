@@ -28,10 +28,10 @@ public class SpringMvcInitializer extends AbstractAnnotationConfigDispatcherServ
         return new String[]{"/"};
     }
 
-    /*@Override
+    @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
-    }*/
+    }
 
     @Override
     protected void registerDispatcherServlet(ServletContext servletContext) {

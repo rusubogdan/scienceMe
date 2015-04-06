@@ -14,7 +14,7 @@ public interface ArticleService {
 
     List<Article> getArticlesByUser (User user);
 
-    Article addArticle (Article article);
+    Integer addArticle (Article article);
 
     Set<Article> searchArticles (String searchQuery);
 
@@ -27,4 +27,6 @@ public interface ArticleService {
     Map getArticleAndRating(Integer articleId);
 
     List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
+
+    Article getArticleByToken(String token);
 }

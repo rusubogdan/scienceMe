@@ -1,6 +1,8 @@
 package com.scncm.service;
 
 import com.scncm.dao.ArticleDAO;
+import com.scncm.helpers.AppUtil;
+import com.scncm.helpers.Constants;
 import com.scncm.model.Article;
 import com.scncm.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,21 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDAO.getSimpleArticle(articleId);
     }
 
+    public Article getArticleByToken(String token) {
+        return articleDAO.getArticleByToken(token);
+    }
+
     // useless, get them directly from user object !!!
     public List<Article> getArticlesByUser (User user) {
         return articleDAO.getArticlesByUser(user);
     }
 
-    public Article addArticle (Article article) {
+    public Integer addArticle (Article article) {
+        String token = AppUtil.generateRandomString(Constants.tokenValidChars, Constants.tokenLength);
+        while(this.getArticleByToken(token) != null) {
+            token = AppUtil.generateRandomString(Constants.tokenValidChars, Constants.tokenLength);
+        }
+        article.setToken(token);
         return articleDAO.addArticle(article);
     }
 

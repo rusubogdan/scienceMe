@@ -2,6 +2,7 @@ package com.scncm.service;
 
 import com.scncm.dao.UserDAO;
 import com.scncm.helpers.AppUtil;
+import com.scncm.helpers.Constants;
 import com.scncm.helpers.SignUpForm;
 import com.scncm.model.Role;
 import com.scncm.model.User;
@@ -19,10 +20,6 @@ public class UserServiceImpl implements UserService {
     private Logger logger = org.slf4j.LoggerFactory.getLogger(UserServiceImpl.class);
 
     private static final String signUpConfirmUrl = "http://localhost:8080/confirm/";
-
-    private static final String tokenValidChars = "1234567890qwertyuiopasdfghjklzxcvbnm";
-
-    private static final Integer tokenLength = 50;
 
     @Autowired
     private UserDAO userDAO;
@@ -89,9 +86,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private String generateRandomToken() {
-        String token = AppUtil.generateRandomString(tokenValidChars, tokenLength);
+        String token = AppUtil.generateRandomString(Constants.tokenValidChars, Constants.tokenLength);
         while (this.getUserByToken(token) != null) {
-            token = AppUtil.generateRandomString(tokenValidChars, tokenLength);
+            token = AppUtil.generateRandomString(Constants.tokenValidChars, Constants.tokenLength);
         }
         return token;
     }
