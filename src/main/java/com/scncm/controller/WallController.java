@@ -96,8 +96,8 @@ public class WallController {
 
     @RequestMapping(value = "ajax/getRecommendation", method = RequestMethod.GET)
     @ResponseBody
-    public List<Article> getRecommendation() throws TasteException {
-        List<Article> articlesList = new ArrayList<Article>();
+    public List<Map> getRecommendation() throws TasteException {
+        List<Map> articlesList = new ArrayList<Map>();
         List<Integer> recommendedList = new ArrayList<Integer>();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userService.getUserByUsername(userName);
@@ -116,13 +116,13 @@ public class WallController {
         ItemSimilarity itemSimilarity =  new LogLikelihoodSimilarity(model);
         ItemBasedRecommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
         int id = currentUser.getUserId();
-        List<RecommendedItem> recommendations = recommender.recommend(id, 5);
+        List<RecommendedItem> recommendations = recommender.recommend(id, 10);
         for (RecommendedItem recommendation : recommendations) {
-            articlesList.add(articleService.getArticle((int) recommendation.getItemID()));
+            articlesList.add(articleService.getArticleAndRating((int) recommendation.getItemID()));
             recommendedList.add((int)recommendation.getItemID());
         }
-        if(recommendations.size() != 5) {
-            List<Article> ratedArticleList = articleService.getMostRatedArticle( 5-recommendations.size() , currentUser.getUserId(),recommendedList);
+        if(recommendations.size() != 10) {
+            List<Map> ratedArticleList = articleService.getMostRatedArticle( 10-recommendations.size() , currentUser.getUserId(),recommendedList);
             articlesList.addAll(ratedArticleList);
         }
         return articlesList;

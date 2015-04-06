@@ -109,21 +109,38 @@ public class ArticleDAOImpl implements ArticleDAO {
                 for(int i = 0 ; i < temporaryArticles.size() ; i++) {
                     Map temporaryMap = new HashMap<>();
                     temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
-                    temporaryMap.put("rating",(Integer) temporaryArticles.get(i)[1]);
+                    Integer articleRating = (Integer) temporaryArticles.get(i)[1];
+                    if(articleRating == null) {
+                        temporaryMap.put("rating",0);
+                    }
+                    else{
+                        temporaryMap.put("rating",articleRating);
+                    }
                     articles.add(temporaryMap);
                 }
             }
             else {
                 if (news && !rating) {
-                    query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
-                            "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
-                            "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
-                            "group by 1 order by UAV.article.createdDate asc");
+                    query = getCurrentSession().createQuery("select A,(SELECT avg(UAV.rating) from UserArticleVote UAV " +
+                            "where UAV.article.articleId = A.articleId) from Article A where A.readingTime between" +
+                            " :barLowerBound and :barUpperBound order by A.createdDate");
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
                     query.setMaxResults(10);
-                    articles = query.list();
+                    temporaryArticles = query.list();
+                    for(int i = 0 ; i < temporaryArticles.size() ; i++) {
+                        Map temporaryMap = new HashMap<>();
+                        temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
+                        Integer articleRating = (Integer) temporaryArticles.get(i)[1];
+                        if(articleRating == null) {
+                            temporaryMap.put("rating",0);
+                        }
+                        else{
+                            temporaryMap.put("rating",articleRating);
+                        }
+                        articles.add(temporaryMap);
+                    }
                 }
             }
 
@@ -141,8 +158,8 @@ public class ArticleDAOImpl implements ArticleDAO {
 
     }
 
-    public List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList){
-        List<Article> articles = new ArrayList<Article>();
+    public List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList){
+        List<Map> articles = new ArrayList<Map>();
         List<Object[]> temporaryArticles;
         Query query;
         String hibernateQuery = "SELECT (select A from Article A where A.articleId = " +
@@ -162,9 +179,29 @@ public class ArticleDAOImpl implements ArticleDAO {
         query.setParameter("userId", userId);
         temporaryArticles = query.list();
         for(int i = 0 ; i < temporaryArticles.size() ; i++) {
-            articles.add((Article) temporaryArticles.get(i)[0]);
+            Map temporaryMap = new HashMap<>();
+            temporaryMap.put("article", temporaryArticles.get(i)[0]);
+            temporaryMap.put("rating", temporaryArticles.get(i)[1]);
+            articles.add(temporaryMap);
         }
-            return articles;
+
+        return articles;
+    }
+
+    public Map getArticleAndRating(Integer articleId){
+        Map articleAndRating = new HashMap<>();
+        Query query;
+        List<Object[]> resultQuery;
+
+        query = getCurrentSession().createQuery("Select A,(select avg(UAV.rating) from UserArticleVote UAV where " +
+                "UAV.article.articleId = :articleId) from Article A where A.articleId = :articleId");
+        query.setParameter("articleId",articleId);
+        resultQuery = query.list();
+        if(resultQuery.size() == 1) {
+            articleAndRating.put("article", resultQuery.get(0)[0]);
+            articleAndRating.put("rating",resultQuery.get(0)[1]);
+        }
+        return articleAndRating;
     }
 
     public Article addArticle(Article article) {

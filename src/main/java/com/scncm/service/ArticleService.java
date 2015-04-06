@@ -22,7 +22,9 @@ public interface ArticleService {
 
     Boolean deleteArticle (Article article);
 
-    List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
+    List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
+
+    Map getArticleAndRating(Integer articleId);
 
     List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 }

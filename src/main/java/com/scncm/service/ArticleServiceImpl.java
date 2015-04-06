@@ -52,7 +52,11 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDAO.getArticleFiltered(news, rating, startTime, endTime, startingSearchPoint);
     }
 
-    public List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList){
+    public List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList){
         return articleDAO.getMostRatedArticle(numberOfArticle,userId,recommendedList);
+    }
+
+    public Map getArticleAndRating(Integer articleId){
+        return articleDAO.getArticleAndRating(articleId);
     }
 }
