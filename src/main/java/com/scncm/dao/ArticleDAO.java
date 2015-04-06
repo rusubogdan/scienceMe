@@ -19,7 +19,9 @@ public interface ArticleDAO {
 
     List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 
-    List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
+    List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
+
+    Map getArticleAndRating(Integer articleId);
 
     Article addArticle (Article article);
 
