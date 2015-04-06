@@ -8,6 +8,7 @@
     </title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
     <%--main stylesheet--%>
     <link href="<c:url value="/resources/css/bootstrap.min.css"/> " rel="stylesheet"/>
@@ -26,15 +27,9 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <div class="container-view-article">
-                <br><br>
-
                 <h1 class="text-center">
                     ${article.title}
                 </h1>
-
-                <br> <br>
-                ${article.description}
-
                 <div>
                     ${article.htmlContent}
                 </div>

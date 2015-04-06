@@ -1,3 +1,4 @@
+<%--@elvariable id="loggedInUser" type="com.scncm.model.User"--%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -14,10 +15,22 @@
 
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
-    <script src="<c:url value="/resources/js/wall.js"/> " rel="stylesheet"></script>
 
 </head>
 
 <body>
-    userProfile
+<jsp:include page="header.jsp"/>
+
+<div class="container">
+    <div class="user-profile">
+        <div class="username">
+            ${loggedInUser.username}
+        </div>
+        <div class="email">
+            ${loggedInUser.email}
+        </div>
+    </div>
+</div>
+
+<jsp:include page="footer.jsp"/>
 </body>

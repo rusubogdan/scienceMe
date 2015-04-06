@@ -34,12 +34,18 @@ public class ExceptionHandlingController {
         return new ModelAndView("redirect:/505");
     }
 
-    /*@ExceptionHandler
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleException (NoSuchRequestHandlingMethodException ex) {
-        return new ModelAndView("redirect:/505");
+        return new ModelAndView("redirect:/404");
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ModelAndView handleException (NoHandlerFoundException ex) {
+        return new ModelAndView("redirect:/404");
+    }
+/*
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleExceptiond (NoHandlerFoundException ex) {

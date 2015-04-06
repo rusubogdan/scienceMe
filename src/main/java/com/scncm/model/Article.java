@@ -87,6 +87,9 @@ public class Article {
     @Column(name = "created_date")
     private Timestamp createdDate;
 
+    @Column(name = "token")
+    private String token;
+
     public User getOwner() {
         return owner;
     }
@@ -165,5 +168,13 @@ public class Article {
 
     public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

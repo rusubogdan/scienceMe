@@ -1,4 +1,4 @@
-    package com.scncm.dao;
+package com.scncm.dao;
 
 import com.scncm.model.Article;
 import com.scncm.model.User;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-    @Repository
+@Repository
 public class ArticleDAOImpl implements ArticleDAO {
 
     private Logger logger = LoggerFactory.getLogger(ArticleDAOImpl.class);
@@ -47,6 +47,24 @@ public class ArticleDAOImpl implements ArticleDAO {
 
         if (simpleArticles.size() > 0) {
             return simpleArticles.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public Article getArticleByToken (String token) {
+        List<Article> articles = new ArrayList<Article>();
+        Query query;
+        try {
+            query = getCurrentSession().createQuery("from Article a where a.token = :token");
+            query.setParameter("token", token);
+            articles = query.list();
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+
+        if (articles.size() > 0) {
+            return articles.get(0);
         } else {
             return null;
         }
@@ -109,7 +127,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                 for(int i = 0 ; i < temporaryArticles.size() ; i++) {
                     Map temporaryMap = new HashMap<>();
                     temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
-                    Integer articleRating = (Integer) temporaryArticles.get(i)[1];
+                    Double articleRating = (Double) temporaryArticles.get(i)[1];
                     if(articleRating == null) {
                         temporaryMap.put("rating",0);
                     }
@@ -132,7 +150,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                     for(int i = 0 ; i < temporaryArticles.size() ; i++) {
                         Map temporaryMap = new HashMap<>();
                         temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
-                        Integer articleRating = (Integer) temporaryArticles.get(i)[1];
+                        Double articleRating = (Double) temporaryArticles.get(i)[1];
                         if(articleRating == null) {
                             temporaryMap.put("rating",0);
                         }
@@ -143,12 +161,6 @@ public class ArticleDAOImpl implements ArticleDAO {
                     }
                 }
             }
-
-
-        try {
-        } catch (Exception e) {
-            logger.warn(e.getMessage());
-        }
 
         if (articles.size() > 0) {
             return articles;
@@ -204,11 +216,10 @@ public class ArticleDAOImpl implements ArticleDAO {
         return articleAndRating;
     }
 
-    public Article addArticle(Article article) {
-        Integer addedArcticle = (Integer) getCurrentSession().save(article);
-//        getCurrentSession().getTransaction().commit();
+    public Integer addArticle(Article article) {
+        Integer articleId = (Integer) getCurrentSession().save(article);
 
-        return article;
+        return articleId;
     }
 
     public Boolean updateArticle(Article article) {

@@ -13,6 +13,8 @@ public interface ArticleDAO {
 
     Article getSimpleArticle(Integer articleId);
 
+    Article getArticleByToken(String token);
+
     List<Article> getArticlesByUser(User user);
 
     Set<Article> searchArticles (String searchQuery);
@@ -23,7 +25,7 @@ public interface ArticleDAO {
 
     Map getArticleAndRating(Integer articleId);
 
-    Article addArticle (Article article);
+    Integer addArticle (Article article);
 
     Boolean updateArticle (Article article);
 

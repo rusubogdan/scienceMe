@@ -158,17 +158,7 @@ var wall = {
         }
     },
     test: function () {
-        $('#test1Button').on({
-            click: function () {
-                $.ajax({
-                    url: 'wall/ajax/testArticle',
-                    method: 'get',
-                    dataType: 'json',
-                    success: function (response) {
-                    }
-                });
-            }
-        });
+
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
         $('#fixed-loader-newest').show();
@@ -179,14 +169,15 @@ var wall = {
                                             "upperBoundInterval": upperBoundInterval,
                                             "startingSearchPoint": startingSearchPoint},
             function (response) {
-                var articles = response.articles;
-                wall.createNewestArticles(articles, $('#newest-article-container'), $('#sample-article-preview'), true);
+//                list of objects of type article and integer
+                var articlesMap = response;
+                wall.createNewestArticles(articlesMap, $('#newest-article-container'), $('#sample-article-preview'), true);
                 // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
             }
         );
 
     },
-    createNewestArticles: function (articles, container, sample, newest) {
+    createNewestArticles: function (articlesMap, container, sample, newest) {
         var $newArticle;
 
         if (!newest) {
@@ -198,19 +189,16 @@ var wall = {
             $('#fixed-loader-carousel').show();
         }
 
-        for (var i = 0; i < articles.length; i++) {
+        for (var i = 0; i < articlesMap.length; i++) {
+            var $article = articlesMap[i].article;
             $newArticle = sample.clone();
             $newArticle.attr('id', $newArticle.attr('id').substr(7) + '-' + i);
-            $newArticle.find('.article-title').html(articles[i].title);
-            $newArticle.find('.article-text').html(articles[i].description);
-            $newArticle.find('.article-reference').attr('href', articles[i].link);
-            $newArticle.find('.article-author')
-                .html(articles[i].owner.username)
-                .on({
-                    click: function () {
-                        location.href('/user/' + articles[i].owner.username);
-                    }
-                });
+            $newArticle.find('.article-title').html($article.title);
+            $newArticle.find('.article-text').html($article.description);
+            $newArticle.find('.article-reference').attr('href', '/article/view/' + $article.token);
+            $newArticle.find('.article-author a')
+                .attr('href', '/user/' + $article.owner.username)
+                .html($article.owner.username);
 
             $newArticle.show();
 
@@ -230,8 +218,8 @@ var wall = {
 
     recommendArticles: function () {
         $.get('wall/ajax/getRecommendation',
-            function(articles){
-                wall.createNewestArticles(articles, null, $('#sample-article-container'), false);
+            function(articlesMap){
+                wall.createNewestArticles(articlesMap, null, $('#sample-article-container'), false);
             });
     }
 };
