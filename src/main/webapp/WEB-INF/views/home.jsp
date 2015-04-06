@@ -10,85 +10,84 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
           type='text/css'>
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+    <link href="<c:url value="/resources/css/scienceMe.css"/>" rel="stylesheet"/>
+
     <script type="application/javascript" src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>
-    <script type="application/javascript" src="<c:url value="/resources/js/firstPage.js"/> "></script>
+
+    <%--it is important to place variables from server before loading the script for the login page--%>
+    <script type="application/javascript">
+        var showRegistrationForm = ${showRegistrationForm};
+    </script>
+    <script type="application/javascript" src="<c:url value="/resources/js/home.js"/> "></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>Welcome to Science Me !</title>
 </head>
 
 <body>
-
-<form method="post" action="<c:url value='j_spring_security_check'/>" id="login-form">
+<form id="login-form" method="post" action="<c:url value='j_spring_security_check'/>" >
     <div class="wrap">
-
         <div class="avatar">
             <img alt="logo" src="<c:url value="/resources/img/atom.png"/> ">
         </div>
-
-        <input type="text" name="j_username" id="j_username"/>
-
+        <input type="text" name="j_username" id="j_username" placeholder="username"/>
         <div class="bar">
             <i></i>
         </div>
+        <input type="password" name="j_password" id="j_password" placeholder="password"/>
 
-        <input type="password" name="j_password" id="j_password"/>
+        <button id="sign-in-submit" type="submit" value="Sign in">Sign in</button>
 
-        <button type="submit" value="Sign in">Sign in</button>
+        <%--<div class="bar">--%>
+            <%--<i></i>--%>
+        <%--</div>--%>
 
-        <div class="bar">
-            <i></i>
-        </div>
-
-        <button type="button" id="registerMe">Register</button>
-
-        <p>
-            <c:if test="${error == true}">
-                <b class="error">Invalid username or password.</b>
-            </c:if>
-
-            <c:if test="${msg ne null}">
-                <b class="logout-success">${msg}</b>
-            </c:if>
-
-            <c:if test="${notAllowed ne null}">
-                <b class="not-allowed">${notAllowed}</b>
-            </c:if>
-        </p>
+        <div id="registerMe" class="custom-wrap wrap change-form">Register</div>
+        <div id="login-facebook" class="custom-wrap wrap fb">Login with Facebook</div>
 
     </div>
 </form>
 
-<form method="post" action="/register" id="register-form">
+<form id="register-form" method="post" action="<c:url value="/register"/> ">
     <div class="register">
-        <%--<form action="/register">--%>
-            <div class="avatar">
-                <img alt="atom" src="<c:url value="/resources/img/atom.png"/> ">
-            </div>
+        <div class="avatar">
+            <img alt="atom" src="<c:url value="/resources/img/atom.png"/> ">
+        </div>
 
-            <label for="email" class="icon"><i class="icon-envelope "></i>email</label>
-            <input type="text" name="email" id="email" value="email"/>
+        <label for="email" class="icon"><i class="icon-envelope"></i></label>
+        <input type="text" name="email" id="email" placeholder="email"/>
 
-            <label for="username" class="icon"><i class="icon-user"></i>username</label>
-            <input type="text" name="username" id="username" value="username"/>
+        <label for="username" class="icon"><i class="icon-user"></i></label>
+        <input type="text" name="username" id="username" placeholder="username"/>
 
-            <label for="password" class="icon"><i class="icon-shield"></i>password</label>
-            <input type="password" name="password" id="password" value="password"/>
+        <label for="password" class="icon"><i class="icon-shield"></i></label>
+        <input type="password" name="password" id="password" placeholder="password"/>
 
-            <%--<div class="gender">
-                <input type="radio" value="None" id="male" name="gender" checked/>
-                <label for="male" class="radio">Male</label>
-                <input type="radio" value="None" id="female" name="gender"/>
-                <label for="female" class="radio">Female</label>
-            </div>--%>
 
-            <button class="button" type="submit" value="register">register</button>
-            <a href="#" class="button" id="logmeIn">Log in</a>
-        <%--</form>--%>
+        <%--<div class="gender">
+            <input type="radio" value="None" id="male" name="gender" checked/>
+            <label for="male" class="radio">Male</label>
+            <input type="radio" value="None" id="female" name="gender"/>
+            <label for="female" class="radio">Female</label>
+        </div>--%>
+
+        <button class="custom-wrap wrap" type="submit" value="register">Register</button>
+        <%--<a href="#" class="button" id="logmeIn">Log in</a>--%>
+        <div id="logmeIn" class="custom-wrap wrap change-form">Log in</div>
+        <div id="register-facebook" class="custom-wrap wrap fb">Register with Facebook</div>
+
     </div>
 </form>
-
+<div class="error-login-register">
+    <p>
+        <%--@elvariable id="error" type="java"--%>
+        <c:if test="${error ne null}">
+            <b class="error">${error}</b>
+        </c:if>
+    </p>
+</div>
 <div class="desc" id="description">
+    <p>some videos and description of the site will be placed here</p>
 </div>
 </body>
 </html>
