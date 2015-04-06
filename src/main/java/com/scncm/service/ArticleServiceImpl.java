@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -47,11 +48,11 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDAO.deleteArticle(article);
     }
 
-    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint) {
+    public List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint) {
         return articleDAO.getArticleFiltered(news, rating, startTime, endTime, startingSearchPoint);
     }
 
-    public List<Article> getMostRatedArticle(Integer numberOfArticle){
-        return articleDAO.getMostRatedArticle(numberOfArticle);
+    public List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList){
+        return articleDAO.getMostRatedArticle(numberOfArticle,userId,recommendedList);
     }
 }

@@ -68,11 +68,7 @@ var wall = {
 
             newsFilter.on({
                 click: function () {
-                    if (wall.filterByNews) {
-                        newsFilter.css('background-color', 'transparent');
-                        wall.filterByNews = false;
-                    }
-                    else {
+                    if (!wall.filterByNews) {
                         newsFilter.css({
                             'background-color': 'rgb(81, 176, 74)'
                         });
@@ -81,19 +77,19 @@ var wall = {
                         ratingFilter.css({
                             'background-color': 'transparent'
                         });
-                    }
 
-                    // ajax to server for filtering the articles
-                    var $range = $(".range-slider");
-                    wall.barLowerBound = $range.val().split(",")[0];
-                    wall.barUpperBound = $range.val().split(",")[1];
-                    if (wall.barUpperBound == null) {
-                        wall.barUpperBound = wall.barLowerBound;
-                        wall.barLowerBound = 0;
-                    }
+                        // ajax to server for filtering the articles
+                        var $range = $(".range-slider");
+                        wall.barLowerBound = $range.val().split(",")[0];
+                        wall.barUpperBound = $range.val().split(",")[1];
+                        if (wall.barUpperBound == null) {
+                            wall.barUpperBound = wall.barLowerBound;
+                            wall.barLowerBound = 0;
+                        }
 
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
-                        wall.barUpperBound, wall.startingSearchPoint);
+                        wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                            wall.barUpperBound, wall.startingSearchPoint);
+                    }
                 },
 
                 mouseover: function () {
@@ -112,11 +108,7 @@ var wall = {
 
             ratingFilter.on({
                 click: function () {
-                    if (wall.filterByRating) {
-                        ratingFilter.css('background-color', 'transparent');
-                        wall.filterByRating = false;
-                    }
-                    else {
+                    if (!wall.filterByRating) {
                         ratingFilter.css({
                             'background-color': 'rgb(81, 176, 74)'
                         });
@@ -125,19 +117,19 @@ var wall = {
                         newsFilter.css({
                             'background-color': 'transparent'
                         });
-                    }
 
-                    // ajax to server for filtering the articles
-                    var $range = $(".range-slider");
-                    wall.barLowerBound = $range.val().split(",")[0];
-                    wall.barUpperBound = $range.val().split(",")[1];
-                    if (wall.barUpperBound == null) {
-                        wall.barUpperBound = wall.barLowerBound;
-                        wall.barLowerBound = 0;
-                    }
+                        // ajax to server for filtering the articles
+                        var $range = $(".range-slider");
+                        wall.barLowerBound = $range.val().split(",")[0];
+                        wall.barUpperBound = $range.val().split(",")[1];
+                        if (wall.barUpperBound == null) {
+                            wall.barUpperBound = wall.barLowerBound;
+                            wall.barLowerBound = 0;
+                        }
 
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
-                        wall.barUpperBound, wall.startingSearchPoint);
+                        wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                            wall.barUpperBound, wall.startingSearchPoint);
+                    }
                 },
 
                 mouseover: function () {
@@ -179,33 +171,30 @@ var wall = {
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
+        $('#fixed-loader-newest').show();
+        $("#newest-article-container .article-preview-container").remove();
         $.get('/wall/ajax/filterArticles', {"news": news,
-                "rating": rating,
-                "barLowerBound": lowerBoundInterval,
-                "upperBoundInterval": upperBoundInterval,
-                "startingSearchPoint": startingSearchPoint},
+                                            "rating": rating,
+                                            "barLowerBound": lowerBoundInterval,
+                                            "upperBoundInterval": upperBoundInterval,
+                                            "startingSearchPoint": startingSearchPoint},
             function (response) {
                 var articles = response.articles;
-
-                wall.createNewestArticles(articles, null, $('#sample-article-container'), false);
                 wall.createNewestArticles(articles, $('#newest-article-container'), $('#sample-article-preview'), true);
-
                 // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
-            });
+            }
+        );
 
     },
     createNewestArticles: function (articles, container, sample, newest) {
         var $newArticle;
 
-        if (newest) {
-            $('#fixed-loader-newest').show();
-//            container.empty();
-            container.find('*').not('#fixed-loader-newest').remove();
-        } else {
+        if (!newest) {
 //            carousel.obj.empty();
             carousel.obj.find('*').not('#fixed-loader-carousel').remove();
             carousel.destroy();
             carousel.init();
+            carousel.removeFirstArticle();
             $('#fixed-loader-carousel').show();
         }
 
@@ -241,8 +230,8 @@ var wall = {
 
     recommendArticles: function () {
         $.get('wall/ajax/getRecommendation',
-            function(response){
-                console.log(response);
+            function(articles){
+                wall.createNewestArticles(articles, null, $('#sample-article-container'), false);
             });
     }
 };

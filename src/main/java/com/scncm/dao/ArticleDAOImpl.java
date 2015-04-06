@@ -1,4 +1,4 @@
-package com.scncm.dao;
+    package com.scncm.dao;
 
 import com.scncm.model.Article;
 import com.scncm.model.User;
@@ -10,12 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-@Repository
+    @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 
     private Logger logger = LoggerFactory.getLogger(ArticleDAOImpl.class);
@@ -94,49 +91,44 @@ public class ArticleDAOImpl implements ArticleDAO {
             return null;
     }
 
-    public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound,
+    public List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound,
                                             Integer barUpperBound, Integer startingSearchPoint) {
-        List<Article> articles = new ArrayList<Article>();
+        List<Map> articles = new ArrayList<Map>();
+        List<Object[]> temporaryArticles;
         Query query = null;
-        if (!news && !rating) {
-            query = getCurrentSession().createQuery(
-                    "SELECT new Article(A.articleId, A.title, A.description, A.owner, " +
-                            "A.readingTime, A.link, A.createdDate, 1) " +
-                    "from Article A " +
-                    "where A.readingTime between :barLowerBound and :barUpperBound");
-            query.setParameter("barLowerBound", barLowerBound);
-            query.setParameter("barUpperBound", barUpperBound);
-            query.setFirstResult(startingSearchPoint);
-            query.setMaxResults(10);
-        } else {
-            if (!news && rating) {
-                query = getCurrentSession().createQuery("SELECT A ,(SELECT sum(UAV.rating)/count" +
-                        "(UAV.articleId) from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
-                        " group by UAV.article.articleId)from Article A where A.readingTime between" +
-                        " :barLowerBound and :barUpperBound order by 2 desc");
+        if (!news && rating) {
+                query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
+                        "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
+                        "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
+                        "group by 1 order by 2 desc");
                 query.setParameter("barLowerBound", barLowerBound);
                 query.setParameter("barUpperBound", barUpperBound);
                 query.setFirstResult(startingSearchPoint);
                 query.setMaxResults(10);
-            } else {
+                temporaryArticles = query.list();
+                for(int i = 0 ; i < temporaryArticles.size() ; i++) {
+                    Map temporaryMap = new HashMap<>();
+                    temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
+                    temporaryMap.put("rating",(Integer) temporaryArticles.get(i)[1]);
+                    articles.add(temporaryMap);
+                }
+            }
+            else {
                 if (news && !rating) {
-                    query = getCurrentSession().createQuery(
-                            "from Article a " +
-                                    "where a.readingTime between :barLowerBound and :barUpperBound " +
-                                    "order by a.createdDate"
-                    );
+                    query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
+                            "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
+                            "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
+                            "group by 1 order by UAV.article.createdDate asc");
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
                     query.setMaxResults(10);
-                } else {
-                    query = null;
+                    articles = query.list();
                 }
             }
 
-        }
+
         try {
-            articles = query.list();
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
@@ -149,16 +141,30 @@ public class ArticleDAOImpl implements ArticleDAO {
 
     }
 
-    public List<Article> getMostRatedArticle(Integer numberOfArticle){
+    public List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList){
         List<Article> articles = new ArrayList<Article>();
-        List<Article> temporaryArticles = new ArrayList<Article>();
+        List<Object[]> temporaryArticles;
         Query query;
-        query = getCurrentSession().createQuery("SELECT A ,(SELECT sum(UAV.rating)/count" +
-                "(UAV.articleId) from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
-                " group by UAV.article.articleId)from Article A order by 2 desc");
+        String hibernateQuery = "SELECT (select A from Article A where A.articleId = " +
+                "UAV.article.articleId) as article, sum(UAV.rating)/count(UAV.article) as rating from " +
+                "UserArticleVote UAV where UAV.article.owner.userId != :userId and UAV.article.articleId not in " +
+                "(SELECT UAV1.article.articleId from UserArticleVote UAV1 where UAV1.user.userId = :userId)";
+        if(recommendedList.size() != 0){
+            hibernateQuery +=" and UAV.article.articleId not in (:recommendedList) group by 1 order by 2 desc";
+            query = getCurrentSession().createQuery(hibernateQuery);
+            query.setParameterList("recommendedList",recommendedList);
+        }
+        else{
+            hibernateQuery += "group by 1 order by 2 desc";
+            query = getCurrentSession().createQuery(hibernateQuery);
+        }
         query.setMaxResults(numberOfArticle);
+        query.setParameter("userId", userId);
         temporaryArticles = query.list();
-        return articles;
+        for(int i = 0 ; i < temporaryArticles.size() ; i++) {
+            articles.add((Article) temporaryArticles.get(i)[0]);
+        }
+            return articles;
     }
 
     public Article addArticle(Article article) {
