@@ -56,6 +56,9 @@ var wall = {
                     wall.barLowerBound = $range.val().split(",")[0];
                     wall.barUpperBound = $range.val().split(",")[1];
 
+                    $('#fixed-loader-newest').show();
+                    $("#newest-article-container .article-preview-container").remove();
+                    wall.startingSearchPoint = 0;
                     wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
                         wall.barUpperBound, wall.startingSearchPoint);
 
@@ -69,6 +72,9 @@ var wall = {
             newsFilter.on({
                 click: function () {
                     if (!wall.filterByNews) {
+                        $('#fixed-loader-newest').show();
+                        $("#newest-article-container .article-preview-container").remove();
+                        wall.startingSearchPoint = 0;
                         newsFilter.css({
                             'background-color': 'rgb(81, 176, 74)'
                         });
@@ -109,6 +115,9 @@ var wall = {
             ratingFilter.on({
                 click: function () {
                     if (!wall.filterByRating) {
+                        $('#fixed-loader-newest').show();
+                        $("#newest-article-container .article-preview-container").remove();
+                        wall.startingSearchPoint = 0;
                         ratingFilter.css({
                             'background-color': 'rgb(81, 176, 74)'
                         });
@@ -155,6 +164,18 @@ var wall = {
 
             wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound,
                 wall.startingSearchPoint);
+        },
+        readMoreButton:function(){
+            var learnMoreButton = $('#learn-more-button');
+            learnMoreButton.on({
+                click: function () {
+                    $('#fixed-loader-newest-end').show();
+                    wall.startingSearchPoint += 10 ;
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound,
+                        wall.startingSearchPoint);
+                }
+            })
+
         }
     },
     test: function () {
@@ -171,8 +192,6 @@ var wall = {
         });
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
-        $('#fixed-loader-newest').show();
-        $("#newest-article-container .article-preview-container").remove();
         $.get('/wall/ajax/filterArticles', {"news": news,
                                             "rating": rating,
                                             "barLowerBound": lowerBoundInterval,
@@ -215,7 +234,8 @@ var wall = {
             $newArticle.show();
 
             if (newest) {
-                container.append($newArticle);
+                $newArticle.insertBefore("#newest-article-container #fixed-loader-newest-end" );
+//                container.append($newArticle);
             } else {
                 carousel.addArticle($newArticle);
             }
@@ -223,6 +243,7 @@ var wall = {
 
         if (newest) {
             $('#fixed-loader-newest').hide();
+            $('#fixed-loader-newest-end').hide();
         } else {
             $('#fixed-loader-carousel').hide();
         }

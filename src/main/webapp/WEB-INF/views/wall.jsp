@@ -44,7 +44,7 @@
                 <jsp:include page="carouselInc.jsp"/>
                 <jsp:include page="newestInc.jsp"/>
 
-                <p id="test1Button"><a class="btn btn-primary btn-lg">Learn more »</a></p>
+                <p id="learn-more-button">Learn more »</p>
             </div>
         </div>
     </div>
