@@ -99,38 +99,33 @@ public class WallController {
     @RequestMapping(value = "ajax/getRecommendation", method = RequestMethod.GET)
     @ResponseBody
     public List<Article> getRecommendation() throws TasteException {
-            List<Article> articlesList = new ArrayList<Article>();
+        List<Article> articlesList = new ArrayList<Article>();
+        List<Integer> recommendedList = new ArrayList<Integer>();
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        User currentUser = userService.getUserByUsername(userName);
 
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
-//        dataSource.setServerName("ec2-54-163-228-58.compute-1.amazonaws.com");
-//        dataSource.setDatabaseName("dfvo2f9it4pmk9");
-//        dataSource.setUser("ucokaucbriaged");
-//        dataSource.setPassword("MiL-tB6turQdPKbGwjqrBlFLXP");
-//        dataSource.setPortNumber(5432);
-//        dataSource.setSsl(true);
-//        dataSource.setSslfactory("org.postgresql.ssl.NonValidatingFactory");
-
-        dataSource.setServerName("ec2-50-17-202-29.compute-1.amazonaws.com");
-        dataSource.setDatabaseName("d6ef4r6bet13qq");
-        dataSource.setUser("ezsnwwozpbvurl");
-        dataSource.setPassword("ANZJCP71_D8hLT0hAZDhcZvteg");
+        dataSource.setServerName("ec2-54-163-228-58.compute-1.amazonaws.com");
+        dataSource.setDatabaseName("dfvo2f9it4pmk9");
+        dataSource.setUser("ucokaucbriaged");
+        dataSource.setPassword("MiL-tB6turQdPKbGwjqrBlFLXP");
         dataSource.setPortNumber(5432);
-        dataSource.setSslfactory("org.postgresql.ssl.NonValidatingFactory");
         dataSource.setSsl(true);
+        dataSource.setSslfactory("org.postgresql.ssl.NonValidatingFactory");
 
         PostgreSQLJDBCDataModel postgreSQLJDBCDataModel =  new PostgreSQLJDBCDataModel(dataSource,"user_article","user_id","article_id","rating","timestamp");
         ReloadFromJDBCDataModel model = new ReloadFromJDBCDataModel(postgreSQLJDBCDataModel);
         ItemSimilarity itemSimilarity =  new LogLikelihoodSimilarity(model);
         ItemBasedRecommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
-        List<RecommendedItem> recommendations = recommender.recommend(4, 5);
-        if(recommendations.size() != 0) {
-            for (RecommendedItem recommendation : recommendations) {
-                System.out.println(recommendation);
-                articlesList.add(articleService.getArticle((int) recommendation.getItemID()));
-            }
+        int id = currentUser.getUserId();
+        List<RecommendedItem> recommendations = recommender.recommend(id, 5);
+        for (RecommendedItem recommendation : recommendations) {
+            articlesList.add(articleService.getArticle((int) recommendation.getItemID()));
+            recommendedList.add((int)recommendation.getItemID());
         }
-        else{
-            articlesList = articleService.getMostRatedArticle(5);
+        if(recommendations.size() != 5) {
+            List<Article> ratedArticleList = articleService.getMostRatedArticle( 5-recommendations.size() , currentUser.getUserId(),recommendedList);
+            articlesList.addAll(ratedArticleList);
         }
         return articlesList;
     }

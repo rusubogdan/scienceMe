@@ -18,7 +18,7 @@ public interface ArticleDAO {
 
     List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 
-    List<Article> getMostRatedArticle(Integer numberOfArticle);
+    List<Article> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
 
     Article addArticle (Article article);
 
