@@ -2,6 +2,7 @@ $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
     carousel.init();
+    wall.recommendArticles();
 });
 
 var carousel = {
@@ -236,5 +237,12 @@ var wall = {
         } else {
             $('#fixed-loader-carousel').hide();
         }
+    },
+
+    recommendArticles: function () {
+        $.get('wall/ajax/getRecommendation',
+            function(response){
+                console.log(response);
+            });
     }
 };

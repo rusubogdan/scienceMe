@@ -21,5 +21,7 @@ public interface ArticleService {
 
     Boolean deleteArticle (Article article);
 
+    List<Article> getMostRatedArticle(Integer numberOfArticle);
+
     List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 }

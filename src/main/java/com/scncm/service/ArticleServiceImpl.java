@@ -50,4 +50,8 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint) {
         return articleDAO.getArticleFiltered(news, rating, startTime, endTime, startingSearchPoint);
     }
+
+    public List<Article> getMostRatedArticle(Integer numberOfArticle){
+        return articleDAO.getMostRatedArticle(numberOfArticle);
+    }
 }

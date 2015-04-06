@@ -110,16 +110,10 @@ public class ArticleDAOImpl implements ArticleDAO {
             query.setMaxResults(10);
         } else {
             if (!news && rating) {
-                query = getCurrentSession().createQuery(
-                        "SELECT new Article(A.articleId, A.title, A.description, A.owner, " +
-                                "A.readingTime, A.link, A.createdDate, " +
-                                "coalesce((SELECT sum (case UAV.vote.voteName " +
-                                            "when 'LIKE' then 1 when 'DISLIKE' then -1 else 0 end)" +
-                                            " from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
-                                            " group by UAV.article.articleId),0))" +
-                                "from Article A " +
-                                "where A.readingTime between :barLowerBound and :barUpperBound " +
-                                "order by 2 desc");
+                query = getCurrentSession().createQuery("SELECT A ,(SELECT sum(UAV.rating)/count" +
+                        "(UAV.articleId) from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
+                        " group by UAV.article.articleId)from Article A where A.readingTime between" +
+                        " :barLowerBound and :barUpperBound order by 2 desc");
                 query.setParameter("barLowerBound", barLowerBound);
                 query.setParameter("barUpperBound", barUpperBound);
                 query.setFirstResult(startingSearchPoint);
@@ -139,6 +133,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                     query = null;
                 }
             }
+
         }
         try {
             articles = query.list();
@@ -151,6 +146,19 @@ public class ArticleDAOImpl implements ArticleDAO {
         } else {
             return null;
         }
+
+    }
+
+    public List<Article> getMostRatedArticle(Integer numberOfArticle){
+        List<Article> articles = new ArrayList<Article>();
+        List<Article> temporaryArticles = new ArrayList<Article>();
+        Query query;
+        query = getCurrentSession().createQuery("SELECT A ,(SELECT sum(UAV.rating)/count" +
+                "(UAV.articleId) from UserArticleVote UAV where A.articleId = UAV.article.articleId" +
+                " group by UAV.article.articleId)from Article A order by 2 desc");
+        query.setMaxResults(numberOfArticle);
+        temporaryArticles = query.list();
+        return articles;
     }
 
     public Article addArticle(Article article) {
