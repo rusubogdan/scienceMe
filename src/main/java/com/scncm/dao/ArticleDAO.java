@@ -23,7 +23,7 @@ public interface ArticleDAO {
 
     List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
 
-    Map getArticleAndRating(Integer articleId);
+    List<Map> getArticleAndRating(List<Integer> recommendedList);
 
     Integer addArticle (Article article);
 

@@ -47,6 +47,24 @@ public class UserDAOImpl implements UserDAO {
             return null;
     }
 
+    public Integer getUserIdByUsername(String username){
+
+        List<Integer> userId = new ArrayList<Integer>();
+        Query query;
+        try {
+            query = getCurrentSession().createSQLQuery("select U.id from users U where U.username = :username");
+            query.setParameter("username", username);
+            userId = query.list();
+        } catch (QueryException e) {
+            logger.warn(e.getMessage());
+        }
+
+        if (userId.size() > 0)
+            return userId.get(0);
+        else
+            return null;
+    }
+
     public User getUserByEmail(String email) {
         List<User> userList = new ArrayList<User>();
         Query query;

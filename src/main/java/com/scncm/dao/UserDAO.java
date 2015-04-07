@@ -14,6 +14,8 @@ public interface UserDAO {
 
     Integer addUser(User user);
 
+    Integer getUserIdByUsername(String username);
+
     Boolean updateUser (User user);
 
     Boolean deleteUser (User user);

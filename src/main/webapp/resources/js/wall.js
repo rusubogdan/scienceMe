@@ -223,15 +223,15 @@ var wall = {
         }
 
         for (var i = 0; i < articlesMap.length; i++) {
-            var $article = articlesMap[i].article;
+            var $article = articlesMap[i];
             $newArticle = sample.clone();
             $newArticle.attr('id', $newArticle.attr('id').substr(7) + '-' + i);
             $newArticle.find('.article-title').html($article.title);
             $newArticle.find('.article-text').html($article.description);
             $newArticle.find('.article-reference').attr('href', '/article/view/' + $article.token);
             $newArticle.find('.article-author a')
-                .attr('href', '/user/' + $article.owner.username)
-                .html($article.owner.username);
+                .attr('href', '/user/' + $article.ownerUsername)
+                .html($article.ownerUsername);
 
             $newArticle.show();
 
