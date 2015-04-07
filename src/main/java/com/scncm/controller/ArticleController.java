@@ -6,6 +6,7 @@ import com.scncm.model.Article;
 import com.scncm.model.HtmlContent;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
+import com.scncm.service.HtmlContentService;
 import com.scncm.service.UserService;
 import com.syncthemall.diffbot.Diffbot;
 import com.syncthemall.diffbot.exception.DiffbotException;
@@ -35,6 +36,9 @@ public class ArticleController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private HtmlContentService htmlContentService;
 
     @RequestMapping(value = "add", method = RequestMethod.GET)
     public ModelAndView addArticle() {
@@ -79,13 +83,23 @@ public class ArticleController {
                     article.setCreatedDate(new Timestamp(new Date().getTime()));
                     article.setReadingTime(Integer.parseInt(new_time));
 
-                    Set htmlSet = new HashSet<HtmlContent>();
+                    // create new html content
                     HtmlContent htmlContent = new HtmlContent();
                     htmlContent.setHtml(diffbotArticle.getHtml());
-                    htmlContent.setArticle(article);
-                    htmlSet.add(htmlContent);
-                    article.setHtmlSet(htmlSet);
+                    // set article id to the html content
+//                    htmlContent.setArticleId();
 
+                    // save html content to db
+                    Integer htmlContentId = htmlContentService.addHtmlContent(htmlContent);
+
+                    // set html content id to the article
+                    article.setHtmlContentId(htmlContentId);
+
+//                    htmlContentService.update
+
+                    htmlContent.setArticleId(article.getArticleId());
+
+                    // save article
                     Integer articleId = articleService.addArticle(article);
 
                     // some error occurs
@@ -124,12 +138,12 @@ public class ArticleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUserByUsername(authentication.getName());
 
+        HtmlContent htmlContent = htmlContentService.getHtmlContentByArticleId(article.getHtmlContentId());
+
         mv.addObject("loggedInUser", user);
-        mv.addObject("article", article);
-
-        List<HtmlContent> list = new ArrayList<>(article.getHtmlSet());
-
-        mv.addObject("html", list.get(0).getHtml());
+        mv.addObject("articleTitle", article.getTitle());
+        mv.addObject("articleDescription", article.getDescription());
+        mv.addObject("articleHtml", htmlContent.getHtml());
 
         return mv;
     }
