@@ -211,3 +211,8 @@
 .article-author a {
     text-decoration: none;
 }
+
+#fixed-loader-newest-end{
+    display: none;
+    cursor: pointer;
+}

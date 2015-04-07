@@ -1,6 +1,7 @@
 $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
+    wall.init.readMoreButton();
     carousel.init();
     wall.recommendArticles();
 });

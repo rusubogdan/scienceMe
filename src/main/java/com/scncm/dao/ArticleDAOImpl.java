@@ -115,10 +115,14 @@ public class ArticleDAOImpl implements ArticleDAO {
         List<Object[]> temporaryArticles;
         Query query = null;
         if (!news && rating) {
-                query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
-                        "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
-                        "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
-                        "group by 1 order by 2 desc");
+//                query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
+//                        "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
+//                        "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
+//                        "group by 1 order by 2 desc");
+
+                query = getCurrentSession().createQuery("select A,(SELECT avg(UAV.rating) from UserArticleVote UAV " +
+                        "where UAV.article.articleId = A.articleId) from Article A where A.readingTime between" +
+                        " :barLowerBound and :barUpperBound order by 2 desc");
                 query.setParameter("barLowerBound", barLowerBound);
                 query.setParameter("barUpperBound", barUpperBound);
                 query.setFirstResult(startingSearchPoint);
@@ -127,12 +131,11 @@ public class ArticleDAOImpl implements ArticleDAO {
                 for(int i = 0 ; i < temporaryArticles.size() ; i++) {
                     Map temporaryMap = new HashMap<>();
                     temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
-                    Double articleRating = (Double) temporaryArticles.get(i)[1];
-                    if(articleRating == null) {
+                    if(temporaryArticles.get(i)[1] == null) {
                         temporaryMap.put("rating",0);
                     }
                     else{
-                        temporaryMap.put("rating",articleRating);
+                        temporaryMap.put("rating",temporaryArticles.get(i)[1]);
                     }
                     articles.add(temporaryMap);
                 }
@@ -141,7 +144,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                 if (news && !rating) {
                     query = getCurrentSession().createQuery("select A,(SELECT avg(UAV.rating) from UserArticleVote UAV " +
                             "where UAV.article.articleId = A.articleId) from Article A where A.readingTime between" +
-                            " :barLowerBound and :barUpperBound order by A.createdDate");
+                            " :barLowerBound and :barUpperBound order by A.createdDate desc");
                     query.setParameter("barLowerBound", barLowerBound);
                     query.setParameter("barUpperBound", barUpperBound);
                     query.setFirstResult(startingSearchPoint);
