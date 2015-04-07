@@ -27,8 +27,8 @@ public class Article implements Serializable{
 
     /* auto generated constructor will all the arguments */
     public Article(String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet,
-                   Set<ArticleTag> articleTags, Integer readingTime, String link,
-                   Set<HtmlContent> htmlSet, Timestamp createdDate) {
+                   Set<ArticleTag> articleTags, Integer readingTime, String link, Timestamp createdDate,
+                   String token, Set<HtmlContent> htmlSet) {
         this.title = title;
         this.description = description;
         this.owner = owner;
@@ -36,8 +36,9 @@ public class Article implements Serializable{
         this.articleTags = articleTags;
         this.readingTime = readingTime;
         this.link = link;
-        this.htmlSet = htmlSet;
         this.createdDate = createdDate;
+        this.token = token;
+        this.htmlSet = htmlSet;
     }
 
     public Article(){}

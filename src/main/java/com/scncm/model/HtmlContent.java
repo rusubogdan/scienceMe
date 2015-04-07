@@ -22,6 +22,14 @@ public class HtmlContent {
     @JsonBackReference("Article-HtmlContentId")
     private Article article;
 
+    public HtmlContent() {
+    }
+
+    public HtmlContent(String html, Article article) {
+        this.html = html;
+        this.article = article;
+    }
+
     public Integer getHtmlContentId() {
         return htmlContentId;
     }

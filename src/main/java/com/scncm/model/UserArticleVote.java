@@ -10,6 +10,13 @@ public class UserArticleVote {
 
     public UserArticleVote(){}
 
+    public UserArticleVote(User user, Article article, Integer rating, Timestamp timestamp) {
+        this.user = user;
+        this.article = article;
+        this.rating = rating;
+        this.timestamp = timestamp;
+    }
+
     @Id
     @GeneratedValue(generator = "user_article_id", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "user_article_id", sequenceName = "user_article_id", allocationSize = 1)

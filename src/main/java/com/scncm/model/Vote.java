@@ -9,6 +9,10 @@ public class Vote {
 
     public Vote(){}
 
+    public Vote(String voteName) {
+        this.voteName = voteName;
+    }
+
     @Id
     @GeneratedValue
     @Column(name = "id")

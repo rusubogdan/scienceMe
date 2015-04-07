@@ -18,6 +18,25 @@ public class User {
 
     public User(){}
 
+    public User(String username, String password, Role role, String firstName, String lastName, String email,
+                GenderType gender, Timestamp registerDate, Timestamp deletedDate, String token, String secretKey,
+                Boolean isFacebook, Set<Article> articles, Set<UserArticleVote> userArticleVotesSet) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.registerDate = registerDate;
+        this.deletedDate = deletedDate;
+        this.token = token;
+        this.secretKey = secretKey;
+        this.isFacebook = isFacebook;
+        this.articles = articles;
+        this.userArticleVotesSet = userArticleVotesSet;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
     @SequenceGenerator(name = "user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
