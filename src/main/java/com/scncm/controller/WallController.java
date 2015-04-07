@@ -90,8 +90,6 @@ public class WallController {
 
 //        Article simpleArticle = articleService.getSimpleArticle(10);
 
-        article.setHtmlSet(null);
-
         map.put("article", article);
 //        map.put("simpleArticle", simpleArticle);
 

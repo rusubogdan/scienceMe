@@ -17,17 +17,19 @@ public class HtmlContent {
     @Column(name = "html")
     private String html;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    /*@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "article_id")
     @JsonBackReference("Article-HtmlContentId")
-    private Article article;
+    private Article article;*/
+
+    @Column(name = "article_id")
+    private Integer articleId;
 
     public HtmlContent() {
     }
 
     public HtmlContent(String html, Article article) {
         this.html = html;
-        this.article = article;
     }
 
     public Integer getHtmlContentId() {
@@ -46,11 +48,11 @@ public class HtmlContent {
         this.html = html;
     }
 
-    public Article getArticle() {
-        return article;
+    public Integer getArticleId() {
+        return articleId;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
     }
 }

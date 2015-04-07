@@ -28,7 +28,7 @@ public class Article implements Serializable{
     /* auto generated constructor will all the arguments */
     public Article(String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet,
                    Set<ArticleTag> articleTags, Integer readingTime, String link, Timestamp createdDate,
-                   String token, Set<HtmlContent> htmlSet) {
+                   String token, Integer htmlContentId) {
         this.title = title;
         this.description = description;
         this.owner = owner;
@@ -38,7 +38,7 @@ public class Article implements Serializable{
         this.link = link;
         this.createdDate = createdDate;
         this.token = token;
-        this.htmlSet = htmlSet;
+        this.htmlContentId = htmlContentId;
     }
 
     public Article(){}
@@ -92,9 +92,12 @@ public class Article implements Serializable{
     @Column(name = "token")
     private String token;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
+    /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
     @JsonManagedReference("Article-HtmlContentId")
-    private Set<HtmlContent> htmlSet;
+    private Set<HtmlContent> htmlSet;*/
+
+    @Column(name = "html_id")
+    private Integer htmlContentId;
 
     public User getOwner() {
         return owner;
@@ -184,11 +187,11 @@ public class Article implements Serializable{
         this.token = token;
     }
 
-    public Set<HtmlContent> getHtmlSet() {
-        return htmlSet;
+    public Integer getHtmlContentId() {
+        return htmlContentId;
     }
 
-    public void setHtmlSet(Set<HtmlContent> htmlSet) {
-        this.htmlSet = htmlSet;
+    public void setHtmlContentId(Integer htmlContentId) {
+        this.htmlContentId = htmlContentId;
     }
 }
