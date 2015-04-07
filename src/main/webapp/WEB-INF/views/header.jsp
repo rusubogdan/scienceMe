@@ -27,7 +27,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/user/${loggedInUser.username}">${loggedInUser.username}</a></li>
+                <li><a href="/user/${userName}">${userName}</a></li>
                 <li><a href="/j_spring_security_logout">logout</a></li>
             </ul>
         </div>

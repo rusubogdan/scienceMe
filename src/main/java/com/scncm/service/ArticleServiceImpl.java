@@ -67,7 +67,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDAO.getMostRatedArticle(numberOfArticle,userId,recommendedList);
     }
 
-    public Map getArticleAndRating(Integer articleId){
-        return articleDAO.getArticleAndRating(articleId);
+    public List<Map> getArticleAndRating(List<Integer> recommendedList){
+        return articleDAO.getArticleAndRating(recommendedList);
     }
 }

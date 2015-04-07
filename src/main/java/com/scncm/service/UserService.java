@@ -21,5 +21,7 @@ public interface UserService {
 
     User fromSignUpForm (SignUpForm signUpForm, Boolean b);
 
+    Integer getUserIdByUsername(String username);
+
     Boolean sendSignUpEmail (User user);
 }

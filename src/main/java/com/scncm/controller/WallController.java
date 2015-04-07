@@ -1,7 +1,9 @@
 package com.scncm.controller;
 
+import com.scncm.dao.ArticleDAOImpl;
 import com.scncm.model.*;
 import com.scncm.service.ArticleService;
+import com.scncm.service.ArticleServiceImpl;
 import com.scncm.service.TagService;
 import com.scncm.service.UserService;
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -51,10 +53,8 @@ public class WallController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         mv = new ModelAndView("wall");
-
-        User loggedInUser = userService.getUserByUsername(authentication.getName());
-
-        mv.addObject("loggedInUser", loggedInUser);
+        String name = authentication.getName();
+        mv.addObject("userName", name);
 
         return mv;
     }
@@ -67,7 +67,6 @@ public class WallController {
             @RequestParam(value = "barLowerBound") Integer barLowerBound,
             @RequestParam(value = "upperBoundInterval") Integer upperBoundInterval,
             @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint) {
-
         List<Map> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval,
                 startingSearchPoint);
        /* ObjectMapper objectMapper = new ObjectMapper();
@@ -79,7 +78,7 @@ public class WallController {
                 e.printStackTrace();
         }*/
 
-        return articles;
+            return articles;
     }
 
     @RequestMapping(value = "ajax/testArticle", method = RequestMethod.GET)
@@ -105,7 +104,7 @@ public class WallController {
         List<Map> articlesList = new ArrayList<Map>();
         List<Integer> recommendedList = new ArrayList<Integer>();
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        User currentUser = userService.getUserByUsername(userName);
+        int userId = userService.getUserIdByUsername(userName);
 
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setServerName("ec2-54-163-228-58.compute-1.amazonaws.com");
@@ -122,19 +121,25 @@ public class WallController {
             ReloadFromJDBCDataModel model = new ReloadFromJDBCDataModel(postgreSQLJDBCDataModel);
             ItemSimilarity itemSimilarity = new LogLikelihoodSimilarity(model);
             ItemBasedRecommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
-            int id = currentUser.getUserId();
-            List<RecommendedItem> recommendations = recommender.recommend(id, 10);
+
+            List<RecommendedItem> recommendations = recommender.recommend(userId, 10);
             for (RecommendedItem recommendation : recommendations) {
-                articlesList.add(articleService.getArticleAndRating((int) recommendation.getItemID()));
+//                articlesList.add(articleService.getArticleAndRating((int) recommendation.getItemID()));
                 recommendedList.add((int) recommendation.getItemID());
             }
+            //If I haven recommended articles, then get contain
+            if(recommendedList.size() != 0) {
+                articlesList.addAll(articleService.getArticleAndRating(recommendedList));
+            }
+            //If I haven't 10 recommended articles, then get most rated article until 10
             if (recommendations.size() != 10) {
                 List<Map> ratedArticleList = articleService.getMostRatedArticle(10 - recommendations.size(),
-                        currentUser.getUserId(), recommendedList);
+                        userId, recommendedList);
                 articlesList.addAll(ratedArticleList);
             }
         } catch (TasteException e) {
-            List<Map> ratedArticleList = articleService.getMostRatedArticle(10,currentUser.getUserId(), recommendedList);
+            //can't find an user in user_article table, then recommend just most rated articles
+            List<Map> ratedArticleList = articleService.getMostRatedArticle(10,userId, recommendedList);
             articlesList.addAll(ratedArticleList);
         }
         return articlesList;

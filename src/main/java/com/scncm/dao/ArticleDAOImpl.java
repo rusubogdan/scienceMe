@@ -115,14 +115,10 @@ public class ArticleDAOImpl implements ArticleDAO {
         List<Object[]> temporaryArticles;
         Query query = null;
         if (!news && rating) {
-//                query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
-//                        "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
-//                        "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
-//                        "group by 1 order by 2 desc");
-
-                query = getCurrentSession().createQuery("select A,(SELECT avg(UAV.rating) from UserArticleVote UAV " +
-                        "where UAV.article.articleId = A.articleId) from Article A where A.readingTime between" +
-                        " :barLowerBound and :barUpperBound order by 2 desc");
+            query = getCurrentSession().createSQLQuery("select A.title,A.description,A.owner_id,(Select U.username from" +
+                    " users U where U.id = A.owner_id),A.reading_time,A.created_date,A.token,(Select avg(UA.rating)" +
+                    "from user_article UA where UA.article_id = A.article_id) as rating from article A where " +
+                    "A.reading_time between :barLowerBound and :barUpperBound ORDER BY rating desc");
             query.setParameter("barLowerBound", barLowerBound);
             query.setParameter("barUpperBound", barUpperBound);
             query.setFirstResult(startingSearchPoint);
@@ -130,25 +126,27 @@ public class ArticleDAOImpl implements ArticleDAO {
             temporaryArticles = query.list();
             for (int i = 0; i < temporaryArticles.size(); i++) {
                 Map temporaryMap = new HashMap<>();
-                temporaryMap.put("article", (Article) temporaryArticles.get(i)[0]);
-                Double articleRating = (Double) temporaryArticles.get(i)[1];
-                if (articleRating == null) {
+                temporaryMap.put("title",temporaryArticles.get(i)[0]);
+                temporaryMap.put("description",temporaryArticles.get(i)[1]);
+                temporaryMap.put("ownerId",temporaryArticles.get(i)[2]);
+                temporaryMap.put("ownerUsername",temporaryArticles.get(i)[3]);
+                temporaryMap.put("readingTime",temporaryArticles.get(i)[4]);
+                temporaryMap.put("createdDate",temporaryArticles.get(i)[5]);
+                temporaryMap.put("token",temporaryArticles.get(i)[6]);
+                if (temporaryArticles.get(i)[7] == null) {
                     temporaryMap.put("rating", 0);
                 } else {
-                    temporaryMap.put("rating", articleRating);
+                    temporaryMap.put("rating", temporaryArticles.get(i)[7]);
                 }
                 articles.add(temporaryMap);
             }
         } else {
             if (news && !rating) {
-                query = getCurrentSession().createQuery(
-                        "select A," +
-                                "(SELECT avg(UAV.rating) " +
-                                "from UserArticleVote UAV " +
-                                "where UAV.article.articleId = A.articleId) " +
-                        "from Article A " +
-                        "where A.readingTime between :barLowerBound and :barUpperBound" +
-                        " order by A.createdDate");
+                query = getCurrentSession().createSQLQuery("select A.title,A.description,A.owner_id,(Select U.username " +
+                        "from users U where U.id = A.owner_id),A.reading_time,A.created_date,A.token," +
+                        "(Select avg(UA.rating)from user_article UA where UA.article_id = A.article_id) as rating" +
+                        " from article A where A.reading_time between :barLowerBound and :barUpperBound ORDER BY" +
+                        " A.created_date desc");
                 query.setParameter("barLowerBound", barLowerBound);
                 query.setParameter("barUpperBound", barUpperBound);
                 query.setFirstResult(startingSearchPoint);
@@ -156,14 +154,18 @@ public class ArticleDAOImpl implements ArticleDAO {
                 temporaryArticles = query.list();
                 for (int i = 0; i < temporaryArticles.size(); i++) {
                     Map temporaryMap = new HashMap<>();
-                    temporaryMap.put("article", (Article) temporaryArticles.get(i)[0]);
-
-                    if (temporaryArticles.get(i)[1] == null) {
+                    temporaryMap.put("title",temporaryArticles.get(i)[0]);
+                    temporaryMap.put("description",temporaryArticles.get(i)[1]);
+                    temporaryMap.put("ownerId",temporaryArticles.get(i)[2]);
+                    temporaryMap.put("ownerUsername",temporaryArticles.get(i)[3]);
+                    temporaryMap.put("readingTime",temporaryArticles.get(i)[4]);
+                    temporaryMap.put("createdDate",temporaryArticles.get(i)[5]);
+                    temporaryMap.put("token",temporaryArticles.get(i)[6]);
+                    if (temporaryArticles.get(i)[7] == null) {
                         temporaryMap.put("rating", 0);
                     } else {
-                        temporaryMap.put("rating", temporaryArticles.get(i)[1]);
+                        temporaryMap.put("rating", temporaryArticles.get(i)[7]);
                     }
-         
                     articles.add(temporaryMap);
                 }
             }
@@ -181,48 +183,68 @@ public class ArticleDAOImpl implements ArticleDAO {
         List<Map> articles = new ArrayList<Map>();
         List<Object[]> temporaryArticles;
         Query query;
-        String hibernateQuery = "SELECT (select A from Article A where A.articleId = " +
-                "UAV.article.articleId) as article, sum(UAV.rating)/count(UAV.article) as rating from " +
-                "UserArticleVote UAV where UAV.article.owner.userId != :userId and UAV.article.articleId not in " +
-                "(SELECT UAV1.article.articleId from UserArticleVote UAV1 where UAV1.user.userId = :userId)";
+        String hibernateQuery ="select A.title,A.description,A.owner_id,(Select U.username " +
+                "from users U where U.id = A.owner_id),A.reading_time,A.created_date,A.token," +
+                "(Select avg(UA.rating)from user_article UA where UA.article_id = A.article_id) as rating" +
+                " from article A where A.owner_id != :userId and A.article_id not in (select UA.article_id " +
+                "from user_article UA where UA.user_id = :userId)";
         if (recommendedList.size() != 0) {
-            hibernateQuery += " and UAV.article.articleId not in (:recommendedList) group by 1 order by 2 desc";
+            hibernateQuery += " and A.article_id not in (:recommendedList) order by rating desc";
             query = getCurrentSession().createQuery(hibernateQuery);
             query.setParameterList("recommendedList", recommendedList);
         } else {
-            hibernateQuery += "group by 1 order by 2 desc";
-            query = getCurrentSession().createQuery(hibernateQuery);
+            hibernateQuery += "order by rating desc";
+            query = getCurrentSession().createSQLQuery(hibernateQuery);
         }
         query.setMaxResults(numberOfArticle);
         query.setParameter("userId", userId);
         temporaryArticles = query.list();
+
         for (int i = 0; i < temporaryArticles.size(); i++) {
             Map temporaryMap = new HashMap<>();
-            temporaryMap.put("article", temporaryArticles.get(i)[0]);
-            temporaryMap.put("rating", temporaryArticles.get(i)[1]);
+            temporaryMap.put("title",temporaryArticles.get(i)[0]);
+            temporaryMap.put("description",temporaryArticles.get(i)[1]);
+            temporaryMap.put("ownerId",temporaryArticles.get(i)[2]);
+            temporaryMap.put("ownerUsername",temporaryArticles.get(i)[3]);
+            temporaryMap.put("readingTime",temporaryArticles.get(i)[4]);
+            temporaryMap.put("createdDate",temporaryArticles.get(i)[5]);
+            temporaryMap.put("token",temporaryArticles.get(i)[6]);
+            if (temporaryArticles.get(i)[7] == null) {
+                temporaryMap.put("rating", 0);
+            } else {
+                temporaryMap.put("rating", temporaryArticles.get(i)[7]);
+            }
             articles.add(temporaryMap);
         }
-
         return articles;
     }
 
-    public Map getArticleAndRating(Integer articleId) {
-        Map articleAndRating = new HashMap<>();
+    public List<Map> getArticleAndRating(List<Integer> recommendedList) {
+        List<Map> articleAndRating = new ArrayList<>();
         Query query;
-        List<Object[]> resultQuery;
+        List<Object[]> temporaryArticles;
 
-        query = getCurrentSession().createQuery("" +
-                "select A," +
-                    "(select avg(UAV.rating) " +
-                    "from UserArticleVote UAV " +
-                    "where UAV.article.articleId = :articleId) " +
-                "from Article A " +
-                "where A.articleId = :articleId");
-        query.setParameter("articleId", articleId);
-        resultQuery = query.list();
-        if (resultQuery.size() == 1) {
-            articleAndRating.put("article", resultQuery.get(0)[0]);
-            articleAndRating.put("rating", resultQuery.get(0)[1]);
+        query = getCurrentSession().createSQLQuery("select A.title,A.description,A.owner_id,(Select U.username from" +
+                " users U where U.id = A.owner_id),A.reading_time,A.created_date,A.token,(Select avg(UA.rating)" +
+                "from user_article UA where UA.article_id = A.article_id) as rating from article A where " +
+                "A.article_id in (:recommendedList)");
+        query.setParameterList ("recommendedList", recommendedList);
+        temporaryArticles = query.list();
+        for (int i = 0; i < temporaryArticles.size(); i++) {
+            Map temporaryMap = new HashMap<>();
+            temporaryMap.put("title",temporaryArticles.get(i)[0]);
+            temporaryMap.put("description",temporaryArticles.get(i)[1]);
+            temporaryMap.put("ownerId",temporaryArticles.get(i)[2]);
+            temporaryMap.put("ownerUsername",temporaryArticles.get(i)[3]);
+            temporaryMap.put("readingTime",temporaryArticles.get(i)[4]);
+            temporaryMap.put("createdDate",temporaryArticles.get(i)[5]);
+            temporaryMap.put("token",temporaryArticles.get(i)[6]);
+            if (temporaryArticles.get(i)[7] == null) {
+                temporaryMap.put("rating", 0);
+            } else {
+                temporaryMap.put("rating", temporaryArticles.get(i)[7]);
+            }
+            articleAndRating.add(temporaryMap);
         }
         return articleAndRating;
     }

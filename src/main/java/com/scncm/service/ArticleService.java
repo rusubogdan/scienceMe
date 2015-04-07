@@ -24,7 +24,7 @@ public interface ArticleService {
 
     List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
 
-    Map getArticleAndRating(Integer articleId);
+    List<Map> getArticleAndRating(List<Integer> recommendedList);
 
     List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 
