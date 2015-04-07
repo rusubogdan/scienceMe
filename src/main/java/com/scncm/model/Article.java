@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "article")
-public class Article {
+public class Article implements Serializable{
 
     /*no html content constructor*/
     public Article(int articleId, String title, String description, User owner,
@@ -27,7 +28,7 @@ public class Article {
     /* auto generated constructor will all the arguments */
     public Article(String title, String description, User owner, Set<UserArticleVote> userArticleVoteSet,
                    Set<ArticleTag> articleTags, Integer readingTime, String link,
-                   String htmlContent, Timestamp createdDate) {
+                   Set<HtmlContent> htmlSet, Timestamp createdDate) {
         this.title = title;
         this.description = description;
         this.owner = owner;
@@ -35,7 +36,7 @@ public class Article {
         this.articleTags = articleTags;
         this.readingTime = readingTime;
         this.link = link;
-        this.htmlContent = htmlContent;
+        this.htmlSet = htmlSet;
         this.createdDate = createdDate;
     }
 
@@ -79,16 +80,20 @@ public class Article {
     @Column(name = "link")
     private String link;
 
-    @Column(name = "html_content")
-    @JsonIgnore
-    @Basic(fetch = FetchType.LAZY)
-    private String htmlContent;
+//    @Column(name = "html_content")
+//    @JsonIgnore
+//    @Basic(fetch = FetchType.LAZY)
+//    private String htmlContent;
 
     @Column(name = "created_date")
     private Timestamp createdDate;
 
     @Column(name = "token")
     private String token;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
+    @JsonManagedReference("Article-HtmlContentId")
+    private Set<HtmlContent> htmlSet;
 
     public User getOwner() {
         return owner;
@@ -154,13 +159,13 @@ public class Article {
         this.articleTags = articleTags;
     }
 
-    public String getHtmlContent() {
-        return htmlContent;
-    }
+//    public String getHtmlContent() {
+//        return htmlContent;
+//    }
 
-    public void setHtmlContent(String htmlContent) {
-        this.htmlContent = htmlContent;
-    }
+//    public void setHtmlContent(String htmlContent) {
+//        this.htmlContent = htmlContent;
+//    }
 
     public Timestamp getCreatedDate() {
         return createdDate;
@@ -176,5 +181,13 @@ public class Article {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Set<HtmlContent> getHtmlSet() {
+        return htmlSet;
+    }
+
+    public void setHtmlSet(Set<HtmlContent> htmlSet) {
+        this.htmlSet = htmlSet;
     }
 }

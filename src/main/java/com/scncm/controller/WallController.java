@@ -87,11 +87,13 @@ public class WallController {
     public Map testArticle() {
         Map map = new HashMap();
 
-        Article article = articleService.getArticle(1);
+        Article article = articleService.getArticle(9);
 
 //        Article simpleArticle = articleService.getSimpleArticle(10);
 
-        map.put("article", article.getArticleId());
+        article.setHtmlSet(null);
+
+        map.put("article", article);
 //        map.put("simpleArticle", simpleArticle);
 
         map.put("message", "message");
