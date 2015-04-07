@@ -136,7 +136,8 @@ public class WallController {
                 articlesList.addAll(ratedArticleList);
             }
         } catch (TasteException e) {
-            logger.warn(e.getMessage());
+            List<Map> ratedArticleList = articleService.getMostRatedArticle(10,currentUser.getUserId(), recommendedList);
+            articlesList.addAll(ratedArticleList);
         }
         return articlesList;
     }
