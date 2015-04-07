@@ -4,6 +4,10 @@
     <div id="fixed-loader-newest" class="fixed-loader-newest">
         <img src="<c:url value="/resources/img/ajax-loader.gif"/>"/>
     </div>
+
+    <div id="fixed-loader-newest-end" class="fixed-loader-newest">
+        <img src="<c:url value="/resources/img/ajax-loader.gif"/>"/>
+    </div>
 </div>
 
 <div id="sample-article-preview" class="article-preview-container" style="display: none;">

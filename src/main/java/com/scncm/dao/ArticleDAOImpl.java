@@ -115,16 +115,14 @@ public class ArticleDAOImpl implements ArticleDAO {
         List<Object[]> temporaryArticles;
         Query query = null;
         if (!news && rating) {
-            query = getCurrentSession().createQuery(
-                    "SELECT " +
-                            "(select A" +
-                            " from Article A" +
-                            " where A.articleId = UAV.article.articleId), " +
-                            "sum(UAV.rating)/count(UAV.article) " +
-                    "from UserArticleVote UAV  " +
-                    "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
-                    "group by 1 " +
-                    "order by 2 desc");
+//                query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
+//                        "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
+//                        "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
+//                        "group by 1 order by 2 desc");
+
+                query = getCurrentSession().createQuery("select A,(SELECT avg(UAV.rating) from UserArticleVote UAV " +
+                        "where UAV.article.articleId = A.articleId) from Article A where A.readingTime between" +
+                        " :barLowerBound and :barUpperBound order by 2 desc");
             query.setParameter("barLowerBound", barLowerBound);
             query.setParameter("barUpperBound", barUpperBound);
             query.setFirstResult(startingSearchPoint);
@@ -165,6 +163,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                     } else {
                         temporaryMap.put("rating", temporaryArticles.get(i)[1]);
                     }
+         
                     articles.add(temporaryMap);
                 }
             }

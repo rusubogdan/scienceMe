@@ -239,3 +239,8 @@
     line-height: 0;
     vertical-align: bottom;
 }
+
+#fixed-loader-newest-end{
+    display: none;
+    cursor: pointer;
+}
