@@ -3,6 +3,7 @@ package com.scncm.controller;
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.scncm.model.Article;
+import com.scncm.model.HtmlContent;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
@@ -22,7 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/article", method = RequestMethod.GET)
@@ -77,7 +78,13 @@ public class ArticleController {
                     article.setOwner(loggedInUser);
                     article.setCreatedDate(new Timestamp(new Date().getTime()));
                     article.setReadingTime(Integer.parseInt(new_time));
-                    article.setHtmlContent(diffbotArticle.getHtml());
+
+                    Set htmlSet = new HashSet<HtmlContent>();
+                    HtmlContent htmlContent = new HtmlContent();
+                    htmlContent.setHtml(diffbotArticle.getHtml());
+                    htmlContent.setArticle(article);
+                    htmlSet.add(htmlContent);
+                    article.setHtmlSet(htmlSet);
 
                     Integer articleId = articleService.addArticle(article);
 
@@ -119,6 +126,10 @@ public class ArticleController {
 
         mv.addObject("loggedInUser", user);
         mv.addObject("article", article);
+
+        List<HtmlContent> list = new ArrayList<>(article.getHtmlSet());
+
+        mv.addObject("html", list.get(0).getHtml());
 
         return mv;
     }

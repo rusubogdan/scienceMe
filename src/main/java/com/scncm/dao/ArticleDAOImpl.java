@@ -15,7 +15,7 @@ import java.util.*;
 @Repository
 public class ArticleDAOImpl implements ArticleDAO {
 
-    private Logger logger = LoggerFactory.getLogger(ArticleDAOImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ArticleDAOImpl.class);
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -25,7 +25,7 @@ public class ArticleDAOImpl implements ArticleDAO {
     }
 
     public Article getArticle(Integer articleId) {
-        return (Article) getCurrentSession().get(Article.class, articleId);
+        return (Article) getCurrentSession().load(Article.class, articleId);
     }
 
     public Article getSimpleArticle(Integer articleId) {
@@ -52,7 +52,7 @@ public class ArticleDAOImpl implements ArticleDAO {
         }
     }
 
-    public Article getArticleByToken (String token) {
+    public Article getArticleByToken(String token) {
         List<Article> articles = new ArrayList<Article>();
         Query query;
         try {
@@ -110,57 +110,65 @@ public class ArticleDAOImpl implements ArticleDAO {
     }
 
     public List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound,
-                                            Integer barUpperBound, Integer startingSearchPoint) {
+                                        Integer barUpperBound, Integer startingSearchPoint) {
         List<Map> articles = new ArrayList<Map>();
         List<Object[]> temporaryArticles;
         Query query = null;
         if (!news && rating) {
-                query = getCurrentSession().createQuery("SELECT (select A from Article A where A.articleId = " +
-                        "UAV.article.articleId), sum(UAV.rating)/count(UAV.article) from UserArticleVote UAV  " +
-                        "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
-                        "group by 1 order by 2 desc");
+            query = getCurrentSession().createQuery(
+                    "SELECT " +
+                            "(select A" +
+                            " from Article A" +
+                            " where A.articleId = UAV.article.articleId), " +
+                            "sum(UAV.rating)/count(UAV.article) " +
+                    "from UserArticleVote UAV  " +
+                    "where UAV.article.readingTime between :barLowerBound and :barUpperBound " +
+                    "group by 1 " +
+                    "order by 2 desc");
+            query.setParameter("barLowerBound", barLowerBound);
+            query.setParameter("barUpperBound", barUpperBound);
+            query.setFirstResult(startingSearchPoint);
+            query.setMaxResults(10);
+            temporaryArticles = query.list();
+            for (int i = 0; i < temporaryArticles.size(); i++) {
+                Map temporaryMap = new HashMap<>();
+                temporaryMap.put("article", (Article) temporaryArticles.get(i)[0]);
+                Double articleRating = (Double) temporaryArticles.get(i)[1];
+                if (articleRating == null) {
+                    temporaryMap.put("rating", 0);
+                } else {
+                    temporaryMap.put("rating", articleRating);
+                }
+                articles.add(temporaryMap);
+            }
+        } else {
+            if (news && !rating) {
+                query = getCurrentSession().createQuery(
+                        "select A," +
+                                "(SELECT avg(UAV.rating) " +
+                                "from UserArticleVote UAV " +
+                                "where UAV.article.articleId = A.articleId) " +
+                        "from Article A " +
+                        "where A.readingTime between :barLowerBound and :barUpperBound" +
+                        " order by A.createdDate");
                 query.setParameter("barLowerBound", barLowerBound);
                 query.setParameter("barUpperBound", barUpperBound);
                 query.setFirstResult(startingSearchPoint);
                 query.setMaxResults(10);
                 temporaryArticles = query.list();
-                for(int i = 0 ; i < temporaryArticles.size() ; i++) {
+                for (int i = 0; i < temporaryArticles.size(); i++) {
                     Map temporaryMap = new HashMap<>();
-                    temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
-                    Double articleRating = (Double) temporaryArticles.get(i)[1];
-                    if(articleRating == null) {
-                        temporaryMap.put("rating",0);
-                    }
-                    else{
-                        temporaryMap.put("rating",articleRating);
+                    temporaryMap.put("article", (Article) temporaryArticles.get(i)[0]);
+
+                    if (temporaryArticles.get(i)[1] == null) {
+                        temporaryMap.put("rating", 0);
+                    } else {
+                        temporaryMap.put("rating", temporaryArticles.get(i)[1]);
                     }
                     articles.add(temporaryMap);
                 }
             }
-            else {
-                if (news && !rating) {
-                    query = getCurrentSession().createQuery("select A,(SELECT avg(UAV.rating) from UserArticleVote UAV " +
-                            "where UAV.article.articleId = A.articleId) from Article A where A.readingTime between" +
-                            " :barLowerBound and :barUpperBound order by A.createdDate");
-                    query.setParameter("barLowerBound", barLowerBound);
-                    query.setParameter("barUpperBound", barUpperBound);
-                    query.setFirstResult(startingSearchPoint);
-                    query.setMaxResults(10);
-                    temporaryArticles = query.list();
-                    for(int i = 0 ; i < temporaryArticles.size() ; i++) {
-                        Map temporaryMap = new HashMap<>();
-                        temporaryMap.put("article",(Article) temporaryArticles.get(i)[0]);
-                        Double articleRating = (Double) temporaryArticles.get(i)[1];
-                        if(articleRating == null) {
-                            temporaryMap.put("rating",0);
-                        }
-                        else{
-                            temporaryMap.put("rating",articleRating);
-                        }
-                        articles.add(temporaryMap);
-                    }
-                }
-            }
+        }
 
         if (articles.size() > 0) {
             return articles;
@@ -170,7 +178,7 @@ public class ArticleDAOImpl implements ArticleDAO {
 
     }
 
-    public List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList){
+    public List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList) {
         List<Map> articles = new ArrayList<Map>();
         List<Object[]> temporaryArticles;
         Query query;
@@ -178,19 +186,18 @@ public class ArticleDAOImpl implements ArticleDAO {
                 "UAV.article.articleId) as article, sum(UAV.rating)/count(UAV.article) as rating from " +
                 "UserArticleVote UAV where UAV.article.owner.userId != :userId and UAV.article.articleId not in " +
                 "(SELECT UAV1.article.articleId from UserArticleVote UAV1 where UAV1.user.userId = :userId)";
-        if(recommendedList.size() != 0){
-            hibernateQuery +=" and UAV.article.articleId not in (:recommendedList) group by 1 order by 2 desc";
+        if (recommendedList.size() != 0) {
+            hibernateQuery += " and UAV.article.articleId not in (:recommendedList) group by 1 order by 2 desc";
             query = getCurrentSession().createQuery(hibernateQuery);
-            query.setParameterList("recommendedList",recommendedList);
-        }
-        else{
+            query.setParameterList("recommendedList", recommendedList);
+        } else {
             hibernateQuery += "group by 1 order by 2 desc";
             query = getCurrentSession().createQuery(hibernateQuery);
         }
         query.setMaxResults(numberOfArticle);
         query.setParameter("userId", userId);
         temporaryArticles = query.list();
-        for(int i = 0 ; i < temporaryArticles.size() ; i++) {
+        for (int i = 0; i < temporaryArticles.size(); i++) {
             Map temporaryMap = new HashMap<>();
             temporaryMap.put("article", temporaryArticles.get(i)[0]);
             temporaryMap.put("rating", temporaryArticles.get(i)[1]);
@@ -200,18 +207,23 @@ public class ArticleDAOImpl implements ArticleDAO {
         return articles;
     }
 
-    public Map getArticleAndRating(Integer articleId){
+    public Map getArticleAndRating(Integer articleId) {
         Map articleAndRating = new HashMap<>();
         Query query;
         List<Object[]> resultQuery;
 
-        query = getCurrentSession().createQuery("Select A,(select avg(UAV.rating) from UserArticleVote UAV where " +
-                "UAV.article.articleId = :articleId) from Article A where A.articleId = :articleId");
-        query.setParameter("articleId",articleId);
+        query = getCurrentSession().createQuery("" +
+                "select A," +
+                    "(select avg(UAV.rating) " +
+                    "from UserArticleVote UAV " +
+                    "where UAV.article.articleId = :articleId) " +
+                "from Article A " +
+                "where A.articleId = :articleId");
+        query.setParameter("articleId", articleId);
         resultQuery = query.list();
-        if(resultQuery.size() == 1) {
+        if (resultQuery.size() == 1) {
             articleAndRating.put("article", resultQuery.get(0)[0]);
-            articleAndRating.put("rating",resultQuery.get(0)[1]);
+            articleAndRating.put("rating", resultQuery.get(0)[1]);
         }
         return articleAndRating;
     }

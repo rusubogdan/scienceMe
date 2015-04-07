@@ -27,7 +27,7 @@ public class UserDAOImpl implements UserDAO {
 
     public User getUser(Integer userId) {
         // todo load auxiliary data
-        return (User) getCurrentSession().get(User.class, userId);
+        return (User) getCurrentSession().load(User.class, userId);
     }
 
     public User getUserByUsername(String username) {

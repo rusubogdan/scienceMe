@@ -31,7 +31,7 @@
                     ${article.title}
                 </h1>
                 <div>
-                    ${article.htmlContent}
+                    ${html}
                 </div>
             </div>
         </div>

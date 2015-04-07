@@ -63,6 +63,19 @@ var wall = {
             });
         },
         buttonSideBar: function () {
+            ////test
+
+            $('#time-label').on({
+                click: function () {
+                    $.get('/wall/ajax/testArticle', function (response) {
+                        console.log(response);
+                    })
+                }
+            });
+
+
+
+
             var newsFilter = $('#news-button-sidebar');
             var ratingFilter = $('#rating-button-sidebar');
 

@@ -150,7 +150,7 @@
 .article-preview-container .article-title {
     width: 100%;
     padding: 10px 0;
-    text-align: center;
+    text-align: left;
     font-size: 28px;
 }
 
@@ -168,6 +168,14 @@
     text-align: right;
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+.article-preview-container {
+    /*display: inline-block;*/
+}
+
+.article-preview-container div {
+    display: inline-block;
 }
 
 .article-information .article-author, .article-information .article-reference {
@@ -210,4 +218,24 @@
 
 .article-author a {
     text-decoration: none;
+}
+
+.bar {
+    width: 100%;
+    height: 1px;
+    background: none repeat scroll 0 0 #FFF;
+}
+
+.image-holder {
+    width: 100px;
+    height: 100px;
+}
+
+.image-holder img {
+    width: auto;
+    height: auto;
+    min-width: 100px;
+    min-height: 100px;
+    line-height: 0;
+    vertical-align: bottom;
 }
