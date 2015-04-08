@@ -16,7 +16,7 @@ var carousel = {
             slidesToScroll: 1,
             dots: true,
             //adaptiveHeight: true,
-            autoplay: true,
+            autoplay: false,
             autoplaySpeed: 6000,
             arrows: false
         });
@@ -37,16 +37,16 @@ var articles;
 var wall = {
     filterByNews: true,
     filterByRating: false,
-    barLowerBound: 1,
+    barLowerBound: 0,
     barUpperBound: 23,
     startingSearchPoint: 0,
     init: {
         timeBar: function () {
             $('.range-slider').jRange({
-                from: 1,
+                from: 0,
                 to: 60,
                 step: 1,
-                scale: [1, 15, 30, 45, 60],
+                scale: [0, 15, 30, 45, 60],
                 format: '%s',
                 width: 150,
                 theme: "theme-blue",
@@ -234,7 +234,9 @@ var wall = {
                 .attr('href', '/user/' + $article.ownerUsername)
                 .html($article.ownerUsername);
             $newArticle.find('.article-rating span').html('Rating: ' + $article.rating + '/5');
-            $newArticle.find('.image-holder img').attr("src", $article.imageLink);
+            if($article.imageLink != null) {
+                $newArticle.find('.image-holder').css({background: 'url(' + $article.imageLink + ')no-repeat center'});
+            }
 
             $newArticle.show();
 

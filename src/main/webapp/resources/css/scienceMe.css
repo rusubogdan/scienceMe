@@ -174,8 +174,9 @@
     display: inline-block;
 }
 
+
 .article-preview-container {
-    text-align: center;
+    /*text-align: center;*/
     /*display: inline-block;*/
 }
 
@@ -190,12 +191,17 @@
     padding: 5px;
 }
 
-.article-preview-container div.image-holder>img{
-    background-size: cover;
-    background-position: 50%;
-    min-height: 210px;
+.image-holder{
+    width: 35%;
+    text-align: center;
+    margin: 5px;
+    width: 200px;
+    height: 200px;
+    border: 5px solid #a9a9a9;
     vertical-align: middle;
+    border-radius: 50%;
 }
+
 .article-preview-container div.image-holder{
     display: inline-block;
 }
@@ -241,35 +247,29 @@
     text-decoration: none;
 }
 
-/*.bar {*/
-    /*width: 100%;*/
-    /*height: 1px;*/
-    /*background: none repeat scroll 0 0 #FFF;*/
-/*}*/
-
-.image-holder {
-    /*width: 100px;*/
-    /*height: 100px;*/
-}
-
-.image-holder img {
-    width: auto;
-    height: auto;
+/*.image-holder img {*/
+    /*width: auto;*/
+    /*height: auto;*/
     /*min-width: 100px;*/
     /*min-height: 100px;*/
-    line-height: 0;
-    vertical-align: bottom;
-}
+    /*line-height: 0;*/
+    /*vertical-align: bottom;*/
+/*}*/
 
 #fixed-loader-newest-end{
     display: none;
     cursor: pointer;
 }
 
+.carousel-content{
+    vertical-align: middle;
+}
 
-
-@media (max-width: 767px) {
+@media (max-width: 1000px) and (min-width: 100px) {
     .articles-carousel{
         margin: -17px -15px 60px -15px;
+    }
+    .article-preview-container {
+        text-align: center !important;
     }
 }

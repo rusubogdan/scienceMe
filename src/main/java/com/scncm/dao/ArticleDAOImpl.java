@@ -202,11 +202,20 @@ public class ArticleDAOImpl implements ArticleDAO {
         List<Map> articles = new ArrayList<Map>();
         List<Object[]> temporaryArticles;
         Query query;
-        String hibernateQuery ="select A.title,A.description,A.owner_id,(Select U.username " +
-                "from users U where U.id = A.owner_id),A.reading_time,A.created_date,A.token," +
-                "(Select avg(UA.rating)from user_article UA where UA.article_id = A.article_id) as rating" +
-                " from article A where A.owner_id != :userId and A.article_id not in (select UA.article_id " +
-                "from user_article UA where UA.user_id = :userId)";
+        String hibernateQuery =
+                "select A.title,A.description,A.owner_id," +
+                        "(Select U.username " +
+                        "from users U " +
+                        "where U.id = A.owner_id)," +
+                        "A.reading_time,A.created_date,A.token," +
+                        "(select coalesce(avg(cast(NULLIF(UA.rating, 0) AS BIGINT)), 0)" +
+                        "from user_article UA " +
+                        "where UA.article_id = A.article_id) as rating," +
+                        "coalesce (nullif (A.image_link, ''), 'http://www.mbari.org/earth/images/atom.png') " +
+                "from article A " +
+                "where A.owner_id != :userId and A.article_id not in (select UA.article_id " +
+                                                                     "from user_article UA " +
+                                                                     "where UA.user_id = :userId)";
         if (recommendedList.size() != 0) {
             hibernateQuery += " and A.article_id not in (:recommendedList) order by rating desc";
             query = getCurrentSession().createQuery(hibernateQuery);
@@ -233,6 +242,7 @@ public class ArticleDAOImpl implements ArticleDAO {
             } else {
                 temporaryMap.put("rating", temporaryArticles.get(i)[7]);
             }
+            temporaryMap.put("imageLink", temporaryArticles.get(i)[8]);
             articles.add(temporaryMap);
         }
         return articles;
@@ -243,10 +253,18 @@ public class ArticleDAOImpl implements ArticleDAO {
         Query query;
         List<Object[]> temporaryArticles;
 
-        query = getCurrentSession().createSQLQuery("select A.title,A.description,A.owner_id,(Select U.username from" +
-                " users U where U.id = A.owner_id),A.reading_time,A.created_date,A.token,(Select avg(UA.rating)" +
-                "from user_article UA where UA.article_id = A.article_id) as rating from article A where " +
-                "A.article_id in (:recommendedList)");
+        query = getCurrentSession().createSQLQuery(
+                "select A.title,A.description,A.owner_id," +
+                        "(Select U.username " +
+                        "from users U" +
+                        " where U.id = A.owner_id)" +
+                        ",A.reading_time,A.created_date,A.token," +
+                        "(Select avg(UA.rating)" +
+                        "from user_article UA " +
+                        "where UA.article_id = A.article_id) as rating," +
+                        "coalesce (nullif (A.image_link, ''), 'http://www.mbari.org/earth/images/atom.png') " +
+                        "from article A where " +
+                        "A.article_id in (:recommendedList)");
         query.setParameterList ("recommendedList", recommendedList);
         temporaryArticles = query.list();
         for (int i = 0; i < temporaryArticles.size(); i++) {
@@ -263,6 +281,7 @@ public class ArticleDAOImpl implements ArticleDAO {
             } else {
                 temporaryMap.put("rating", temporaryArticles.get(i)[7]);
             }
+            temporaryMap.put("imageLink", temporaryArticles.get(i)[8]);
             articleAndRating.add(temporaryMap);
         }
         return articleAndRating;
