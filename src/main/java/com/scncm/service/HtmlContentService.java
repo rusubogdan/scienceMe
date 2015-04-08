@@ -9,4 +9,6 @@ public interface HtmlContentService {
     HtmlContent getHtmlContentByArticleId (Integer articleId);
 
     Integer addHtmlContent(HtmlContent htmlContent);
+
+    Boolean update(HtmlContent htmlContent);
 }

@@ -1,10 +1,7 @@
 package com.scncm.controller;
 
-import com.scncm.dao.ArticleDAOImpl;
-import com.scncm.model.*;
+import com.scncm.model.Article;
 import com.scncm.service.ArticleService;
-import com.scncm.service.ArticleServiceImpl;
-import com.scncm.service.TagService;
 import com.scncm.service.UserService;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLJDBCDataModel;
@@ -14,7 +11,6 @@ import org.apache.mahout.cf.taste.impl.similarity.LogLikelihoodSimilarity;
 import org.apache.mahout.cf.taste.recommender.ItemBasedRecommender;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
-import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

@@ -18,7 +18,12 @@
     <div class="article-title"></div>
     <div class="article-text"></div>
     <div class="article-information">
-        <div class="article-author"></div>
+        <div class="article-rating">
+            <span></span>
+        </div>
+        <div class="article-author">
+            <a href="" class="author-reference"></a>
+        </div>
         <a href="" class="article-reference">Read the full article</a>
     </div>
 </div>

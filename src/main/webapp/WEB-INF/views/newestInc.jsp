@@ -19,6 +19,9 @@
         <div class="bar"></div>
         <div class="article-text"></div>
         <div class="article-information">
+            <div class="article-rating">
+                <span></span>
+            </div>
             <div class="article-author">
                 <a href="" class="author-reference"></a>
             </div>

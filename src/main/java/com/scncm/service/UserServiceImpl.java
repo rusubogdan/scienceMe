@@ -54,7 +54,8 @@ public class UserServiceImpl implements UserService {
         user.setToken(generateRandomToken());
 //        user.setPassword();
         // every new created user will have the role user
-        user.setRole(roleService.getRole(Role.ROLE_USER));
+        Role role = roleService.getRole(Role.ROLE_USER);
+        user.setRole(role);
 
         user.setFacebook(false);
 

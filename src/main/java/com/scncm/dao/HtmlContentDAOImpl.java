@@ -53,4 +53,16 @@ public class HtmlContentDAOImpl implements HtmlContentDAO {
     public Integer addHtmlContent (HtmlContent htmlContent) {
         return (Integer) getCurrentSession().save(htmlContent);
     }
+
+    public Boolean update(HtmlContent htmlContent) {
+        try {
+            getCurrentSession().getTransaction().begin();
+            getCurrentSession().update(htmlContent);
+            getCurrentSession().getTransaction().commit();
+            getCurrentSession().flush();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

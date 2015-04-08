@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Controller
 public class LoginController {
 
@@ -22,7 +21,7 @@ public class LoginController {
             Model model) {
         // todo check here for admin or moderator or use in JSP sec tag!!!
 
-        // if not authenticated, return to the wall page
+        // if is authenticated, return to the wall page
         if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             return new ModelAndView("redirect:/wall");
         }

@@ -28,10 +28,10 @@
         <div class="col-md-8">
             <div class="container-view-article">
                 <h1 class="text-center">
-                    ${article.title}
+                    ${articleTitle}
                 </h1>
                 <div>
-                    ${html}
+                    ${articleHtml}
                 </div>
             </div>
         </div>

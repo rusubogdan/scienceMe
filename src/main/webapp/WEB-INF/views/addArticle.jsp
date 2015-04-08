@@ -54,9 +54,7 @@
                         Your description:
                     </label>
                     <div class="col-xs-5">
-                        <textarea name="description" class="form-control">
-
-                        </textarea>
+                        <textarea name="description" class="form-control"></textarea>
                     </div>
                 </div>
 

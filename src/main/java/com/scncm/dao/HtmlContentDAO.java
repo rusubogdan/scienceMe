@@ -10,4 +10,5 @@ public interface HtmlContentDAO {
 
     Integer addHtmlContent (HtmlContent htmlContent);
 
+    Boolean update(HtmlContent htmlContent);
 }

@@ -44,9 +44,8 @@ public class ArticleController {
     public ModelAndView addArticle() {
         ModelAndView mv = new ModelAndView("addArticle");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
 
-        mv.addObject("loggedInUser", user);
+        mv.addObject("userName", authentication.getName());
 
         return mv;
     }
@@ -86,8 +85,9 @@ public class ArticleController {
                     // create new html content
                     HtmlContent htmlContent = new HtmlContent();
                     htmlContent.setHtml(diffbotArticle.getHtml());
-                    // set article id to the html content
-//                    htmlContent.setArticleId();
+
+                    // Nu intrebati de ce  :)
+                    htmlContent.setArticleId(9999);
 
                     // save html content to db
                     Integer htmlContentId = htmlContentService.addHtmlContent(htmlContent);
@@ -95,15 +95,15 @@ public class ArticleController {
                     // set html content id to the article
                     article.setHtmlContentId(htmlContentId);
 
-//                    htmlContentService.update
-
-                    htmlContent.setArticleId(article.getArticleId());
-
-                    // save article
                     Integer articleId = articleService.addArticle(article);
 
+                    htmlContent.setArticleId(articleId);
+
+                    // update html content
+                    Boolean success = htmlContentService.update(htmlContent);
+
                     // some error occurs
-                    if (articleId < 1) {
+                    if (articleId < 1 || !success) {
                         logger.warn("article creation failed");
                         return new ModelAndView("redirect:/article/add");
                     }
@@ -136,11 +136,10 @@ public class ArticleController {
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.getUserByUsername(authentication.getName());
 
-        HtmlContent htmlContent = htmlContentService.getHtmlContentByArticleId(article.getHtmlContentId());
+        HtmlContent htmlContent = htmlContentService.getHtmlContentByArticleId(article.getArticleId());
 
-        mv.addObject("loggedInUser", user);
+        mv.addObject("userName", authentication.getName());
         mv.addObject("articleTitle", article.getTitle());
         mv.addObject("articleDescription", article.getDescription());
         mv.addObject("articleHtml", htmlContent.getHtml());

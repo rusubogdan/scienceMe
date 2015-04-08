@@ -24,4 +24,7 @@ public class HtmlContentServiceImpl implements HtmlContentService{
         return htmlContentDAO.addHtmlContent(htmlContent);
     }
 
+    public Boolean update(HtmlContent htmlContent) {
+        return htmlContentDAO.update(htmlContent);
+    }
 }

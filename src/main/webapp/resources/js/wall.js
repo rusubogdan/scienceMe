@@ -204,6 +204,7 @@ var wall = {
             function (response) {
 //                list of objects of type article and integer
                 var articlesMap = response;
+                console.log(response);
                 wall.createNewestArticles(articlesMap, $('#newest-article-container'), $('#sample-article-preview'), true);
                 // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
             }
@@ -232,6 +233,7 @@ var wall = {
             $newArticle.find('.article-author a')
                 .attr('href', '/user/' + $article.ownerUsername)
                 .html($article.ownerUsername);
+            $newArticle.find('.article-rating span').html('Rating: ' + $article.rating + '/5');
 
             $newArticle.show();
 
