@@ -14,16 +14,39 @@
 </div>
 
 <%--this is the sample; when used, the id will be change and the div will be shown !!! --%>
-<div id="sample-article-container" class="article-preview-container" style="display: none;">
-    <div class="article-title"></div>
-    <div class="article-text"></div>
-    <div class="article-information">
-        <div class="article-rating">
-            <span></span>
+<%--<div id="sample-article-container" class="article-preview-container" style="display: none;">--%>
+    <%--<div class="article-title"></div>--%>
+    <%--<div class="article-text"></div>--%>
+    <%--<div class="article-information">--%>
+        <%--<div class="article-rating">--%>
+            <%--<span></span>--%>
+        <%--</div>--%>
+        <%--<div class="article-author">--%>
+            <%--<a href="" class="author-reference"></a>--%>
+        <%--</div>--%>
+        <%--<a href="" class="article-reference">Read the full article</a>--%>
+    <%--</div>--%>
+<%--</div>--%>
+
+<div id="sample-article-container" class="article-preview-container mijloc" style="display: none;">
+        <div class="image-holder">
+            <img src="<c:url value="/resources/img/atom.png"/> "/>
         </div>
-        <div class="article-author">
-            <a href="" class="author-reference"></a>
+        <div class="content-holder">
+            <div class="article-title"></div>
+            <div class="bar"></div>
+            <div class="article-text"></div>
+            <div class="article-information">
+                <div class="article-rating">
+                    <span></span>
+                </div>
+                <div class="article-author">
+                    <a href="" class="author-reference"></a>
+                </div>
+                <div class="article-link">
+                    <a href="" class="article-reference">Read the full article</a>
+                </div>
+            </div>
         </div>
-        <a href="" class="article-reference">Read the full article</a>
-    </div>
+
 </div>

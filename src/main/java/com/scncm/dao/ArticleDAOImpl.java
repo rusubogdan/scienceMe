@@ -198,11 +198,19 @@ public class ArticleDAOImpl implements ArticleDAO {
         List<Map> articles = new ArrayList<Map>();
         List<Object[]> temporaryArticles;
         Query query;
-        String hibernateQuery ="select A.title,A.description,A.owner_id,(Select U.username " +
-                "from users U where U.id = A.owner_id),A.reading_time,A.created_date,A.token," +
-                "(Select avg(UA.rating)from user_article UA where UA.article_id = A.article_id) as rating" +
-                " from article A where A.owner_id != :userId and A.article_id not in (select UA.article_id " +
-                "from user_article UA where UA.user_id = :userId)";
+        String hibernateQuery =
+                "select A.title,A.description,A.owner_id," +
+                        "(Select U.username " +
+                        "from users U " +
+                        "where U.id = A.owner_id)," +
+                        "A.reading_time,A.created_date,A.token," +
+                        "(select coalesce(avg(cast(NULLIF(UA.rating, 0) AS BIGINT)), 0)" +
+                        "from user_article UA " +
+                        "where UA.article_id = A.article_id) as rating " +
+                "from article A " +
+                "where A.owner_id != :userId and A.article_id not in (select UA.article_id " +
+                                                                     "from user_article UA " +
+                                                                     "where UA.user_id = :userId)";
         if (recommendedList.size() != 0) {
             hibernateQuery += " and A.article_id not in (:recommendedList) order by rating desc";
             query = getCurrentSession().createQuery(hibernateQuery);
