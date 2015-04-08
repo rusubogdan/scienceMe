@@ -28,9 +28,8 @@
     <%--</div>--%>
 <%--</div>--%>
 
-<div id="sample-article-container" class="article-preview-container mijloc" style="display: none;">
+<div id="sample-article-container" class="article-preview-container" style="display: none;">
         <div class="image-holder">
-            <img src="<c:url value="/resources/img/atom.png"/> "/>
         </div>
         <div class="content-holder">
             <div class="article-title"></div>

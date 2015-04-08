@@ -12,7 +12,6 @@
 
 <div id="sample-article-preview" class="article-preview-container" style="display: none;">
     <div class="image-holder">
-        <img src="<c:url value="/resources/img/atom.png"/> "/>
     </div>
     <div class="content-holder">
         <div class="article-title"></div>

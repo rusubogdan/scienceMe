@@ -234,7 +234,9 @@ var wall = {
                 .attr('href', '/user/' + $article.ownerUsername)
                 .html($article.ownerUsername);
             $newArticle.find('.article-rating span').html('Rating: ' + $article.rating + '/5');
-            $newArticle.find('.image-holder img').attr("src", $article.imageLink);
+            if($article.imageLink != null) {
+                $newArticle.find('.image-holder').css({background: 'url(' + $article.imageLink + ')no-repeat center'});
+            }
 
             $newArticle.show();
 
