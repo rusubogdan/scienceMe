@@ -2,12 +2,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com</groupId>
-    <artifactId>sciencemeapp</artifactId>
+    <artifactId>scienceme</artifactId>
 
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>sciencemeapp</name>
+    <name>scienceme</name>
 
     <properties>
         <hibernate.version>4.3.8.Final</hibernate.version>
@@ -15,6 +15,7 @@
         <spring.version>4.0.1.RELEASE</spring.version>
         <spring.security.version>3.2.3.RELEASE</spring.security.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javaLanguage.version>1.8</javaLanguage.version>
     </properties>
 
     <dependencies>
@@ -240,7 +241,7 @@
     </dependencies>
 
     <build>
-        <finalName>sciencemeapp</finalName>
+        <finalName>scienceme</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -248,7 +249,7 @@
                     <artifactId>heroku-maven-plugin</artifactId>
                     <version>0.3.5</version>
                     <configuration>
-                        <appName>sciencemeapp</appName>
+                        <appName>scienceme</appName>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -256,6 +257,15 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                        <source>${javaLanguage.version}</source>
+                        <target>${javaLanguage.version}</target>
                     </configuration>
                 </plugin>
             </plugins>
