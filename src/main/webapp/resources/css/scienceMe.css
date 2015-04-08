@@ -134,7 +134,7 @@
     -webkit-box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.6);
     -moz-box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.6);
     box-shadow: 1px 1px 3px 0px rgba(0, 0, 0, 0.6);
-    padding: 0 16px 5px 16px;
+    /*padding: 0 16px 5px 16px;*/
 }
 
 .newest-articles .article-preview-container:hover {
@@ -150,7 +150,7 @@
 .article-preview-container .article-title {
     width: 100%;
     padding: 10px 0;
-    text-align: left;
+    text-align: center;
     font-size: 28px;
 }
 
@@ -170,14 +170,35 @@
     margin-bottom: 5px;
 }
 
+.article-preview-container .article-information>div{
+    display: inline-block;
+}
+
 .article-preview-container {
+    text-align: center;
     /*display: inline-block;*/
 }
 
 .article-preview-container div {
+    /*display: inline-block;*/
+}
+.article-preview-container .content-holder{
+    min-width: 200px;
+    max-width: 440px;
     display: inline-block;
+    vertical-align: middle;
+    padding: 5px;
 }
 
+.article-preview-container div.image-holder>img{
+    background-size: cover;
+    background-position: 50%;
+    min-height: 210px;
+    vertical-align: middle;
+}
+.article-preview-container div.image-holder{
+    display: inline-block;
+}
 .article-information .article-author, .article-information .article-reference {
     display: inline-block;
     padding: 0 5px;
@@ -193,8 +214,8 @@
 
 .articles-carousel {
     margin: -48px -60px 60px -60px;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    /*border-top-left-radius: 6px;*/
+    /*border-top-right-radius: 6px;*/
     padding: 5px 20px;
     background: #ffffff;
     border-bottom: 1px solid #333;
@@ -220,22 +241,22 @@
     text-decoration: none;
 }
 
-.bar {
-    width: 100%;
-    height: 1px;
-    background: none repeat scroll 0 0 #FFF;
-}
+/*.bar {*/
+    /*width: 100%;*/
+    /*height: 1px;*/
+    /*background: none repeat scroll 0 0 #FFF;*/
+/*}*/
 
 .image-holder {
-    width: 100px;
-    height: 100px;
+    /*width: 100px;*/
+    /*height: 100px;*/
 }
 
 .image-holder img {
     width: auto;
     height: auto;
-    min-width: 100px;
-    min-height: 100px;
+    /*min-width: 100px;*/
+    /*min-height: 100px;*/
     line-height: 0;
     vertical-align: bottom;
 }
@@ -243,4 +264,12 @@
 #fixed-loader-newest-end{
     display: none;
     cursor: pointer;
+}
+
+
+
+@media (max-width: 767px) {
+    .articles-carousel{
+        margin: -17px -15px 60px -15px;
+    }
 }
