@@ -92,6 +92,9 @@ public class Article implements Serializable{
     @Column(name = "token")
     private String token;
 
+    @Column(name = "image_link")
+    private String imageLink;
+
     /*@OneToMany(fetch = FetchType.LAZY, mappedBy = "article", cascade = CascadeType.ALL)
     @JsonManagedReference("Article-HtmlContentId")
     private Set<HtmlContent> htmlSet;*/
@@ -193,5 +196,13 @@ public class Article implements Serializable{
 
     public void setHtmlContentId(Integer htmlContentId) {
         this.htmlContentId = htmlContentId;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
     }
 }

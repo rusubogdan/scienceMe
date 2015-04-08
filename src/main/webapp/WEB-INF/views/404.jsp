@@ -104,7 +104,7 @@
     <div class="clearfix"></div>
 
     <div id="main-body">
-        <p class="enormous-font bree-font"> 505 </p>
+        <p class="enormous-font bree-font"> 404 </p>
         <p class="big-font"> Ooops. It seem that you have lost!</p>
         <hr>
         <p class="big-font"> Let's return to the   <a href="/" class="underline">home page.</a></p>

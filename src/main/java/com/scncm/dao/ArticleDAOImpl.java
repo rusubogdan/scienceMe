@@ -123,7 +123,8 @@ public class ArticleDAOImpl implements ArticleDAO {
                             "A.reading_time, A.created_date, A.token," +
                                 "(select coalesce(avg(cast(NULLIF(UA.rating, 0) AS BIGINT)), 0)" +
                                 "from user_article UA " +
-                                "where UA.article_id = A.article_id) as rating " +
+                                "where UA.article_id = A.article_id) as rating," +
+                            "coalesce (nullif (A.image_link, ''), 'http://www.mbari.org/earth/images/atom.png') " +
                     "from article A " +
                     "where A.reading_time between :barLowerBound and :barUpperBound" +
                     " ORDER BY rating desc");
@@ -146,21 +147,23 @@ public class ArticleDAOImpl implements ArticleDAO {
                 } else {
                     temporaryMap.put("rating", temporaryArticles.get(i)[7]);
                 }
+                temporaryMap.put("imageLink", temporaryArticles.get(i)[8]);
                 articles.add(temporaryMap);
             }
         } else {
             if (news && !rating) {
                 query = getCurrentSession().createSQLQuery(
-                        "select A.title, A.description, A.owner_id," +
+                        "select A.title, A.description, A.owner_id, " +
                                 "(select U.username " +
-                                "from users U" +
-                                " where U.id = A.owner_id)," +
-                                "A.reading_time, A.created_date, A.token," +
-                                "(select coalesce(avg(cast(NULLIF(UA.rating, 0) AS BIGINT)), 0)" +
+                                "from users U " +
+                                "where U.id = A.owner_id), " +
+                                "A.reading_time, A.created_date, A.token, " +
+                                "(select coalesce(avg(cast(NULLIF(UA.rating, 0) AS BIGINT)), 0) " +
                                 "from user_article UA " +
-                                "where UA.article_id = A.article_id) as rating" +
-                        " from article A" +
-                        " where A.reading_time between :barLowerBound and :barUpperBound " +
+                                "where UA.article_id = A.article_id) as rating, " +
+                                "coalesce (nullif (A.image_link, ''), 'http://www.mbari.org/earth/images/atom.png') " +
+                        "from article A " +
+                        "where A.reading_time between :barLowerBound and :barUpperBound " +
                         "ORDER BY A.created_date desc");
                 query.setParameter("barLowerBound", barLowerBound);
                 query.setParameter("barUpperBound", barUpperBound);
@@ -181,6 +184,7 @@ public class ArticleDAOImpl implements ArticleDAO {
                     } else {
                         temporaryMap.put("rating", temporaryArticles.get(i)[7]);
                     }
+                    temporaryMap.put("imageLink", temporaryArticles.get(i)[8]);
                     articles.add(temporaryMap);
                 }
             }
