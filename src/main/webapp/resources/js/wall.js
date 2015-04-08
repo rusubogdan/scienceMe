@@ -16,7 +16,7 @@ var carousel = {
             slidesToScroll: 1,
             dots: true,
             //adaptiveHeight: true,
-            autoplay: false,
+            autoplay: true,
             autoplaySpeed: 6000,
             arrows: false
         });
