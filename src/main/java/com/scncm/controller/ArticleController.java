@@ -65,7 +65,7 @@ public class ArticleController {
                 Diffbot diffbot = null;
 
                 try {
-                    diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
+                    diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "eaeca3b6be20aa7c47b987e8f0ad28d2");
                     /*in the diffbotArticle we keep all the data received from the diffBoot api*/
                     com.syncthemall.diffbot.model.article.Article diffbotArticle = diffbot.article().analyze(new_link).execute();
 
