@@ -81,6 +81,8 @@ public class ArticleController {
                     article.setOwner(loggedInUser);
                     article.setCreatedDate(new Timestamp(new Date().getTime()));
                     article.setReadingTime(Integer.parseInt(new_time));
+                    article.setImageLink((diffbotArticle.getImages() != null) ?
+                            diffbotArticle.getImages().get(0).getUrl() : "http://www.mbari.org/earth/images/atom.png");
 
                     // create new html content
                     HtmlContent htmlContent = new HtmlContent();
