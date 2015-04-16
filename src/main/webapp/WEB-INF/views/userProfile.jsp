@@ -32,7 +32,7 @@
             <div class="col-sm-4 text-center ">
 
                 <img src="<c:url value="/resources/img/helix2.png"/>"
-                     class="img-rounded" alt="Cinque Terre" width="300" height="300">
+                     class="img-rounded" alt="Profile" width="300" height="300">
 
 
             </div>
