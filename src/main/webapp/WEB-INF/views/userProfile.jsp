@@ -24,11 +24,45 @@
 <div class="container">
     <div class="user-profile">
         <div class="username">
-            ${loggedInUser.username}
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Username</h3>
+                </div>
+                <div class="panel-body">
+                     ${loggedInUser.username}
+                </div>
+            </div>
+
         </div>
-        <div class="email">
-            ${loggedInUser.email}
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Email</h3>
+                </div>
+                <div class="panel-body">
+                    ${loggedInUser.email}
+                </div>
+            </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Register Date</h3>
+            </div>
+            <div class="panel-body">
+                ${loggedInUser.registerDate}
+            </div>
         </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Register Date</h3>
+            </div>
+            <div class="panel-body">
+                ${loggedInUser.articles}
+            </div>
+        </div>
+
+
     </div>
 </div>
 
