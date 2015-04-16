@@ -21,50 +21,75 @@
 <body>
 <jsp:include page="header.jsp"/>
 
-<div class="container">
+<div class="container bg-info">
     <div class="user-profile">
-        <div class="username">
 
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Username</h3>
-                </div>
-                <div class="panel-body">
-                     ${loggedInUser.username}
-                </div>
+
+
+
+        <div class="row">
+
+            <div class="col-sm-4 text-center ">
+
+                <img src="<c:url value="/resources/img/helix2.png"/>"
+                     class="img-rounded" alt="Cinque Terre" width="300" height="300">
+
+
             </div>
+
+            <div class="col-sm-8">
+                <div class="username">
+
+                    <div class="panel panel-primary ">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Username</h3>
+                        </div>
+                        <div class="panel-body">
+                            ${loggedInUser.username}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Email</h3>
+                    </div>
+                    <div class="panel-body">
+                        ${loggedInUser.email}
+                    </div>
+                </div>
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Register Date</h3>
+                    </div>
+                    <div class="panel-body">
+                        ${loggedInUser.registerDate}
+                    </div>
+                </div>
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">User contributions to the site.</h3>
+                    </div>
+                    <div class="panel-body">
+                        ${loggedInUser.articles}
+                    </div>
+                </div>
+
+            </div>
+
+
 
         </div>
 
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Email</h3>
-                </div>
-                <div class="panel-body">
-                    ${loggedInUser.email}
-                </div>
-            </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Register Date</h3>
-            </div>
-            <div class="panel-body">
-                ${loggedInUser.registerDate}
-            </div>
-        </div>
 
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Register Date</h3>
-            </div>
-            <div class="panel-body">
-                ${loggedInUser.articles}
-            </div>
-        </div>
+
 
 
     </div>
 </div>
 
-<jsp:include page="footer.jsp"/>
+<!-- <jsp:include page="footer.jsp"/>-->
+
 </body>
