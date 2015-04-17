@@ -2,6 +2,8 @@ package com.scncm.dao;
 
 import com.scncm.model.User;
 
+import java.util.List;
+
 public interface UserDAO {
 
     User getUser (Integer userId);
@@ -15,6 +17,8 @@ public interface UserDAO {
     Integer addUser(User user);
 
     Integer getUserIdByUsername(String username);
+
+    List<Integer> getRecommendationByUsername(String username);
 
     Boolean updateUser (User user);
 

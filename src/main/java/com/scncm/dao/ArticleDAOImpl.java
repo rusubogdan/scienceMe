@@ -259,12 +259,13 @@ public class ArticleDAOImpl implements ArticleDAO {
                         "from users U" +
                         " where U.id = A.owner_id)" +
                         ",A.reading_time,A.created_date,A.token," +
-                        "(Select avg(UA.rating)" +
+                        "(select coalesce(avg(cast(NULLIF(UA.rating, 0) AS BIGINT)), 0)" +
                         "from user_article UA " +
                         "where UA.article_id = A.article_id) as rating," +
                         "coalesce (nullif (A.image_link, ''), 'http://www.mbari.org/earth/images/atom.png') " +
                         "from article A where " +
-                        "A.article_id in (:recommendedList)");
+                                        "A.article_id in (:recommendedList) " +
+                        "order by rating desc");
         query.setParameterList ("recommendedList", recommendedList);
         temporaryArticles = query.list();
         for (int i = 0; i < temporaryArticles.size(); i++) {
