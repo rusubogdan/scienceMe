@@ -53,7 +53,7 @@
 
 <%--    informatiile din aces formular trebuie trimise in articlecontroller in functia addarticle--%>
             <%--    In aceasta functie iau informatiile de la link si le bag  in baza de date --%>
-            <form id="bootstrapTagsInputForm" method="post" action="add-article-in-database" class="form-horizontal">
+            <form id="bootstrapTagsInputForm" method="post" action="add.do" class="form-horizontal">
 
                 <div class="form-group">
                     <label class="col-xs-3 control-label">

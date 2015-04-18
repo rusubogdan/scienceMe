@@ -1,11 +1,18 @@
 package com.scncm.controller;
 
-import com.scncm.model.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.scncm.model.Article;
 import com.scncm.service.ArticleService;
-import com.scncm.service.TagService;
 import com.scncm.service.UserService;
-
+import org.apache.mahout.cf.taste.common.TasteException;
+import org.apache.mahout.cf.taste.impl.model.jdbc.PostgreSQLJDBCDataModel;
+import org.apache.mahout.cf.taste.impl.model.jdbc.ReloadFromJDBCDataModel;
+import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
+import org.apache.mahout.cf.taste.impl.similarity.LogLikelihoodSimilarity;
+import org.apache.mahout.cf.taste.recommender.ItemBasedRecommender;
+import org.apache.mahout.cf.taste.recommender.RecommendedItem;
+import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.postgresql.ds.PGSimpleDataSource;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,14 +24,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/wall")
 public class WallController {
+
+    Logger logger = org.slf4j.LoggerFactory.getLogger(WallController.class);
 
     @Autowired
     private ArticleService articleService;
@@ -32,63 +38,39 @@ public class WallController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private TagService tagService;
-
     @RequestMapping(value = "")
     public ModelAndView wall(HttpServletResponse httpServletResponse) {
         ModelAndView mv;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // todo redirect the infidel from the wall page to login page
-        // only vip are allowed
-        if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
-            try {
-                httpServletResponse.sendRedirect("/login?forbidden");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
         mv = new ModelAndView("wall");
-
-        User loggedInUser = userService.getUserByUsername(authentication.getName());
-
-        mv.addObject("loggedInUser", loggedInUser);
+        String name = authentication.getName();
+        mv.addObject("userName", name);
 
         return mv;
     }
 
     @RequestMapping(value = "ajax/filterArticles", method = RequestMethod.GET)
     @ResponseBody
-    public String filterArticles(
+    public List<Map> filterArticles(
             @RequestParam(value = "news") Boolean news,
             @RequestParam(value = "rating") Boolean rating,
             @RequestParam(value = "barLowerBound") Integer barLowerBound,
             @RequestParam(value = "upperBoundInterval") Integer upperBoundInterval,
-            @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint
-    ) {
-        Map map = new HashMap();
-//        Map<Integer,Article> map = new HashMap<Integer,Article>();
-        List<Article> articles = articleService.getArticleFiltered(news,rating,barLowerBound,upperBoundInterval,startingSearchPoint);
-//        for(int i = 0 ; i < articles.size() ; i++){
-//            map.put(i,articles.get(i));
-//        }
-//        articles.get(0).setOwner(null);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String articlesAsJson = "";
-//        map.put("articol",articles);
-//The input argument of the writeValueAsString() function can be a bean, array, list, map or a set.
-        try {
-            articlesAsJson = objectMapper.writeValueAsString(articles);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        articles.get(0).getOwner().
-//        map.put("articol",articles.get(0).setUserArticleVoteSet(null););
-        return articlesAsJson;
+            @RequestParam(value = "startingSearchPoint") Integer startingSearchPoint) {
+        List<Map> articles = articleService.getArticleFiltered(news, rating, barLowerBound, upperBoundInterval,
+                startingSearchPoint);
+       /* ObjectMapper objectMapper = new ObjectMapper();
+            String articlesAsJson = "";
+            //The input argument of the writeValueAsString() function can be a bean, array, list, map or a set.
+            try {
+                articlesAsJson = objectMapper.writeValueAsString(articles);
+            } catch (IOException e) {
+                e.printStackTrace();
+        }*/
+
+            return articles;
     }
 
     @RequestMapping(value = "ajax/testArticle", method = RequestMethod.GET)
@@ -96,15 +78,46 @@ public class WallController {
     public Map testArticle() {
         Map map = new HashMap();
 
-        User dbUser = userService.getUser(1);
-        dbUser.setFirstName("MATAAAAAA");
+        Article article = articleService.getArticle(9);
 
-        userService.updateUser(dbUser);
+//        Article simpleArticle = articleService.getSimpleArticle(10);
 
-//        dbUser.setPassword("456456");
+        map.put("article", article);
+//        map.put("simpleArticle", simpleArticle);
 
-        map.put("user", dbUser);
+        map.put("message", "message");
 
         return map;
+    }
+
+//    public Comparator<Map> mapComparator = new Comparator<Map>() {
+//        public int compare(Map m1, Map m2) {
+//            if (((Double) m1.get("rating")) < ((Double) m2.get("rating"))) {
+//                return 1;
+//            } else {
+//                return -1;
+//            }
+//        }
+//    };
+
+
+    @RequestMapping(value = "ajax/getRecommendation", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Map> getRecommendation() {
+        List<Map> articlesList = new ArrayList<Map>();
+        List<Integer> recommendedList;
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        Integer userId = userService.getUserIdByUsername(userName);
+        recommendedList = userService.getRecommendationByUsername(userName);
+
+        if(recommendedList.size() != 0) {
+            articlesList.addAll(articleService.getArticleAndRating(recommendedList));
+//            Collections.sort(articlesList, mapComparator);
+        }
+        else{
+            articlesList.addAll( articleService.getMostRatedArticle(10,userId, recommendedList));
+        }
+
+        return articlesList;
     }
 }

@@ -1,16 +1,16 @@
 package com.scncm.init;
 
+import org.hibernate.SessionFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate4.support.OpenSessionInViewInterceptor;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -23,7 +23,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("com")
 @PropertySource("classpath:application.properties")
-//@ImportResource("classpath:spring-security.xml")
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
     private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";
@@ -34,6 +33,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
     private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
     private static final String PROPERTY_NAME_ENTITYMANAGER_PACKAGES_TO_SCAN = "entitymanager.packages.to.scan";
+
+    @Autowired
+    SessionFactory sessionFactory;
 
     @Resource
     private Environment env;
@@ -46,19 +48,16 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         dataSource.setUrl(env.getRequiredProperty(PROPERTY_NAME_DATABASE_URL));
         dataSource.setUsername(env.getRequiredProperty(PROPERTY_NAME_DATABASE_USERNAME));
         dataSource.setPassword(env.getRequiredProperty(PROPERTY_NAME_DATABASE_PASSWORD));
-        // setConnectionProperties
+
         return dataSource;
     }
 
-//    @Bean
-//    public SessionFactory sessionFactory() {
-//        LocalSessionFactoryBuilder builder =
-//                new LocalSessionFactoryBuilder(dataSource());
-//        builder.scanPackages("com.scncm.model")
-//                .addProperties(getHibernateProperties());
-//
-//        return builder.buildSessionFactory();
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        OpenSessionInViewInterceptor osiv = new OpenSessionInViewInterceptor();
+        osiv.setSessionFactory(sessionFactory);
+        registry.addWebRequestInterceptor(osiv);
+    }
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
@@ -75,6 +74,7 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         Properties properties = new Properties();
         properties.put(PROPERTY_NAME_HIBERNATE_DIALECT, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_DIALECT));
         properties.put(PROPERTY_NAME_HIBERNATE_SHOW_SQL, env.getRequiredProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL));
+        properties.put("hibernate.temp.use_jdbc_metadata_defaults", "false");
         return properties;
     }
 
@@ -104,11 +104,6 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
-
-    /*@Bean(name = "multipartResolver")
-    public CommonsMultipartResolver getMultipartResolver() {
-        return new CommonsMultipartResolver();
-    }*/
 
     /*for custom application messages*/
     /*@Bean(name = "messageSource")

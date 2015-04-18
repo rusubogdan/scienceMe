@@ -1,3 +1,5 @@
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -6,8 +8,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand hidden-xs" href="#">HOME</a>
-            <a class="navbar-brand visible-xs" href="#">S</a>
+            <a class="navbar-brand hidden-xs" href="<c:url value="/wall"/> ">Home</a>
+            <a class="navbar-brand hidden-xs" href="<c:url value="/article/add"/> ">Add article</a>
+            <a class="navbar-brand visible-xs" href="#">H</a>
+            <a class="navbar-brand visible-xs" href="#">ADD</a>
 
             <form class="navbar-form pull-left" role="search">
                 <div class="input-group">
@@ -22,7 +26,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/user/${loggedInUser.email}">${loggedInUser.email}</a></li>
+                <li><a href="/user/${userName}">${userName}</a></li>
                 <li><a href="/j_spring_security_logout">logout</a></li>
             </ul>
         </div>

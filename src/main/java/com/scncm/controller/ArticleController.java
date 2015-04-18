@@ -3,15 +3,19 @@ package com.scncm.controller;
 import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.scncm.model.Article;
+import com.scncm.model.HtmlContent;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
 import com.syncthemall.diffbot.Diffbot;
 import com.syncthemall.diffbot.exception.DiffbotException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,12 +26,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.util.*;
 
 
 @Controller
 @RequestMapping(value = "/article", method = RequestMethod.GET)
 public class ArticleController {
+    Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @Autowired
     private ArticleService articleService;
@@ -35,22 +40,21 @@ public class ArticleController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HtmlContentService htmlContentService;
 
-    @RequestMapping(value = "add-article", method = RequestMethod.GET)
-    public ModelAndView addArticle(
-            HttpServletRequest request) throws JAXBException {
-
+    @RequestMapping(value = "add", method = RequestMethod.GET)
+    public ModelAndView addArticle() {
         ModelAndView mv = new ModelAndView("addArticle");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        mv.addObject("userName", authentication.getName());
 
-//        mv.addObject("description", "description");
         return mv;
     }
 
-    @RequestMapping(value = "add-article-in-database", method = RequestMethod.POST)
-    public ModelAndView addArticleInDataBase(
-            HttpServletRequest request) throws JAXBException {
-
+    @RequestMapping(value = "add.do", method = RequestMethod.POST)
+    public ModelAndView addArticleInDataBase(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("addArticle");
 
         mv.addObject("ok","0");
@@ -66,76 +70,88 @@ public class ArticleController {
                 new_tags != null &&
                 new_time != null) {
 
-                Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "25831bb0c62f549dab3e1807bef2ff5f");
                 try {
-                /*in the article_diff we keep all the data received from the diffBoot api*/
-                    com.syncthemall.diffbot.model.article.Article article_diff = diffbot.article().analyze(new_link).execute();
+                    diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "eaeca3b6be20aa7c47b987e8f0ad28d2");
+                    /*in the diffbotArticle we keep all the data received from the diffBoot api*/
+                    com.syncthemall.diffbot.model.article.Article diffbotArticle = diffbot.article().analyze(new_link).execute();
 
-                    System.out.println("aici");
-                    mv.addObject("description", article_diff.getHtml());
+                    mv.addObject("description", diffbotArticle.getHtml());
 
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-                    if (authentication.getAuthorities().toString().contains("ROLE_ANONYMOUS")) {
-                        HttpServletResponse httpServletResponse = null;
-                        httpServletResponse.sendRedirect("/");
-                        return null;
-                    }
-
                     User loggedInUser = userService.getUserByUsername(authentication.getName());
 
-                    com.scncm.model.Article art = new com.scncm.model.Article();
+                    article = new com.scncm.model.Article();
+                    article.setDescription(new_description);
+                    article.setTitle(diffbotArticle.getTitle());
+                    article.setLink(diffbotArticle.getUrl());
+                    article.setOwner(loggedInUser);
+                    article.setCreatedDate(new Timestamp(new Date().getTime()));
+                    article.setReadingTime(Integer.parseInt(new_time));
+                    article.setImageLink((diffbotArticle.getImages() != null) ?
+                            diffbotArticle.getImages().get(0).getUrl() : "http://www.mbari.org/earth/images/atom.png");
 
-//                art.setArticleId(100);
-                    art.setDescription(new_description);
-                    art.setTitle(article_diff.getTitle());
-                    art.setLink(article_diff.getUrl());
-                    art.setOwner(loggedInUser);
-                    art.setCreatedDate(new Timestamp(new Date().getTime()));
-                    art.setReadingTime(Integer.parseInt(new_time));
-                    art.setHtmlContent(article_diff.getHtml());
+                    // create new html content
+                    HtmlContent htmlContent = new HtmlContent();
+                    htmlContent.setHtml(diffbotArticle.getHtml());
 
-                    Article articlol = articleService.addArticle(art);
+                    // Nu intrebati de ce  :)
+                    htmlContent.setArticleId(9999);
+
+                    // save html content to db
+                    Integer htmlContentId = htmlContentService.addHtmlContent(htmlContent);
+
+                    // set html content id to the article
+                    article.setHtmlContentId(htmlContentId);
+
+                    Integer articleId = articleService.addArticle(article);
+
+                    htmlContent.setArticleId(articleId);
+
+                    // update html content
+                    Boolean success = htmlContentService.update(htmlContent);
+
+                    // some error occurs
+                    if (articleId < 1 || !success) {
+                        logger.warn("article creation failed");
+                        return new ModelAndView("redirect:/article/add");
+                    }
 
                     mv.addObject("loggedInUser", loggedInUser);
 
-                } catch (DiffbotException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (DiffbotException | JAXBException e) {
                     e.printStackTrace();
                 }
             }
         }
 
-//        mv.addObject("description", "description");
-
+        mv = new ModelAndView("redirect:/article/view/" + (article != null ? article.getToken() : "00000000"));
 
         return mv;
     }
 
+    @RequestMapping(value = "view", method = RequestMethod.GET)
+    public ModelAndView viewArticle() {
+        return new ModelAndView("redirect:/wall");
+    }
 
-    @RequestMapping(value = "view-article", method = RequestMethod.GET)
-    public ModelAndView viewArticle(
-            @RequestParam(value = "article", required = false) com.scncm.model.Article article) throws JAXBException {
-
+    @RequestMapping(value = "view/{token}", method = RequestMethod.GET)
+    public ModelAndView viewArticle(@PathVariable(value = "token") String token) {
         ModelAndView mv = new ModelAndView("viewArticle");
+        Article article = articleService.getArticleByToken(token);
 
-        System.out.println("ajunge");
+        if (article == null) {
+            return new ModelAndView("redirect:/404");
+        }
 
-        com.scncm.model.Article articol = articleService.getArticle(0);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-//        in view folosesc doar title si description deocamdata
-        mv.addObject("title", articol.getTitle());
-        mv.addObject("title_view", "View Article");
-        mv.addObject("description", articol.getDescription());
+        HtmlContent htmlContent = htmlContentService.getHtmlContentByArticleId(article.getArticleId());
+
+        mv.addObject("userName", authentication.getName());
+        mv.addObject("articleTitle", article.getTitle());
+        mv.addObject("articleDescription", article.getDescription());
+        mv.addObject("articleHtml", htmlContent.getHtml());
 
         return mv;
     }
-
-
-    public void testRequest() {
-
-    }
-
-
 }

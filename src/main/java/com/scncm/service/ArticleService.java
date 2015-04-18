@@ -4,14 +4,17 @@ import com.scncm.model.Article;
 import com.scncm.model.User;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface ArticleService {
     Article getArticle(Integer articleId);
 
+    Article getSimpleArticle (Integer articleId);
+
     List<Article> getArticlesByUser (User user);
 
-    Article addArticle (Article article);
+    Integer addArticle (Article article);
 
     Set<Article> searchArticles (String searchQuery);
 
@@ -19,5 +22,11 @@ public interface ArticleService {
 
     Boolean deleteArticle (Article article);
 
-    List<Article> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
+    List<Map> getMostRatedArticle(Integer numberOfArticle, Integer userId, List<Integer> recommendedList);
+
+    List<Map> getArticleAndRating(List<Integer> recommendedList);
+
+    List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
+
+    Article getArticleByToken(String token);
 }

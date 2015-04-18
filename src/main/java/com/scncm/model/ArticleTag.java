@@ -1,10 +1,19 @@
 package com.scncm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "article_tag")
 public class ArticleTag {
+    public ArticleTag(Article article, Tag tag) {
+        this.article = article;
+        this.tag = tag;
+    }
+
+    public ArticleTag(){}
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "article_tag_id")
@@ -14,10 +23,12 @@ public class ArticleTag {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "article_id")
+    @JsonBackReference("article-articleTags")
     private Article article;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tag_id")
+    @JsonManagedReference("tags-articleTags")
     private Tag tag;
 
     public Integer getArticleTagId() {

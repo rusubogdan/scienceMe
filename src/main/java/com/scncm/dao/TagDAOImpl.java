@@ -20,7 +20,7 @@ public class TagDAOImpl implements TagDAO {
     public Tag getTag(Integer tagId) {
         // the load method wasn't good here
         // just some proxies (uncompleted objects) were loaded
-        return (Tag) sessionFactory.getCurrentSession().get(Tag.class, tagId);
+        return (Tag) sessionFactory.getCurrentSession().load(Tag.class, tagId);
     }
 
     @Override

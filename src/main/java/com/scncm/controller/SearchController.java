@@ -57,8 +57,6 @@ public class SearchController {
             @RequestParam String searchQuery) {
         Map response = new HashMap();
 
-        User user = userService.getUser(1);
-
         response.put("msg", "bla");
 
         return response;

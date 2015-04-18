@@ -8,12 +8,34 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.scncm.helpers.GenderType;
 import javax.persistence.*;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
+
+    public User(){}
+
+    public User(String username, String password, Role role, String firstName, String lastName, String email,
+                GenderType gender, Timestamp registerDate, Timestamp deletedDate, String token, String secretKey,
+                Boolean isFacebook, Set<Article> articles, Set<UserArticleVote> userArticleVotesSet) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.registerDate = registerDate;
+        this.deletedDate = deletedDate;
+        this.token = token;
+        this.secretKey = secretKey;
+        this.isFacebook = isFacebook;
+        this.articles = articles;
+        this.userArticleVotesSet = userArticleVotesSet;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
@@ -26,6 +48,7 @@ public class User {
     private String username;
 
     @JsonIgnore
+    @Column(name = "password")
     private String password;
 
     @JsonIgnore
@@ -79,7 +102,7 @@ public class User {
     private Set<Article> articles;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference("UserArticleVote-UserId")
     private Set<UserArticleVote> userArticleVotesSet;
 
@@ -117,7 +140,6 @@ public class User {
         this.username = username;
     }
 
-    @Column(name = "password")
     @JsonIgnore
     public String getPassword() {
         return password;

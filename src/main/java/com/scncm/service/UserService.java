@@ -1,6 +1,9 @@
 package com.scncm.service;
 
+import com.scncm.helpers.SignUpForm;
 import com.scncm.model.User;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -10,9 +13,19 @@ public interface UserService {
 
     User getUserByEmail (String email);
 
-    User addUser (User user);
+    User getUserByToken (String token);
+
+    Integer addUser (User user);
 
     Boolean updateUser (User user);
 
     Boolean deleteUser (User user);
+
+    User fromSignUpForm (SignUpForm signUpForm, Boolean b);
+
+    Integer getUserIdByUsername(String username);
+
+    Boolean sendSignUpEmail (User user);
+
+    List<Integer> getRecommendationByUsername(String username);
 }

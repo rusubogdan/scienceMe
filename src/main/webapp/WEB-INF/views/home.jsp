@@ -5,92 +5,89 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
-    <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/resources/img/atom.png"/> " />
     <%--CSS and JS--%>
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/login.css"/>">
-    <script type="application/javascript" src="<c:url value="/resources/js/firstPage.js"/> "></script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
+          type='text/css'>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+    <link href="<c:url value="/resources/css/scienceMe.css"/>" rel="stylesheet"/>
+
+    <script type="application/javascript" src="<c:url value="/resources/js/jquery-2.1.3.min.js"/>"></script>
+
+    <%--it is important to place variables from server before loading the script for the login page--%>
+    <script type="application/javascript">
+        var showRegistrationForm = ${showRegistrationForm};
+    </script>
+    <script type="application/javascript" src="<c:url value="/resources/js/home.js"/> "></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
     <title>Welcome to Science Me !</title>
 </head>
 
-
 <body>
-
-<form method="post" action="<c:url value='j_spring_security_check'/>" id="loginform">
+<form id="login-form" method="post" action="<c:url value='j_spring_security_check'/>" >
     <div class="wrap">
-
         <div class="avatar">
-            <img src="<c:url value="/resources/img/atom.png"/> ">
+            <img alt="logo" src="<c:url value="/resources/img/atom.png"/> ">
         </div>
-
-        <input type="text" name="j_username" id="j_username" placeholder="username"/></td>
+        <input type="text" name="j_username" id="j_username" placeholder="username"/>
         <div class="bar">
             <i></i>
         </div>
+        <input type="password" name="j_password" id="j_password" placeholder="password"/>
 
-        <input type="password" name="j_password" id="j_password" placeholer="password"/></td>
+        <button id="sign-in-submit" type="submit" value="Sign in">Sign in</button>
 
-        <button type="submit" value="Sign in">Sign in</button>
-        <div class="bar">
-            <i></i>
+        <%--<div class="bar">--%>
+            <%--<i></i>--%>
+        <%--</div>--%>
+
+        <div id="registerMe" class="custom-wrap wrap change-form">Register</div>
+        <div id="login-facebook" class="custom-wrap wrap fb">Login with Facebook</div>
+
+    </div>
+</form>
+
+<form id="register-form" method="post" action="<c:url value="/register"/> ">
+    <div class="register">
+        <div class="avatar">
+            <img alt="atom" src="<c:url value="/resources/img/atom.png"/> ">
         </div>
-        <button type="button" onclick="show();"> Register </button>
 
-        <p>
-            <c:if test="${error == true}">
-                <b class="error">Invalid username or password.</b>
-            </c:if>
+        <label for="email" class="icon"><i class="icon-envelope"></i></label>
+        <input type="text" name="email" id="email" placeholder="email"/>
 
-            <c:if test="${msg ne null}">
-                <b class="logout-success">${msg}</b>
-            </c:if>
+        <label for="username" class="icon"><i class="icon-user"></i></label>
+        <input type="text" name="username" id="username" placeholder="username"/>
 
-            <c:if test="${notAllowed ne null}">
-                <b class="not-allowed">${notAllowed}</b>
-            </c:if>
-        </p>
+        <label for="password" class="icon"><i class="icon-shield"></i></label>
+        <input type="password" name="password" id="password" placeholder="password"/>
+
+
+        <%--<div class="gender">
+            <input type="radio" value="None" id="male" name="gender" checked/>
+            <label for="male" class="radio">Male</label>
+            <input type="radio" value="None" id="female" name="gender"/>
+            <label for="female" class="radio">Female</label>
+        </div>--%>
+
+        <button class="custom-wrap wrap" type="submit" value="register">Register</button>
+        <%--<a href="#" class="button" id="logmeIn">Log in</a>--%>
+        <div id="logmeIn" class="custom-wrap wrap change-form">Log in</div>
+        <div id="register-facebook" class="custom-wrap wrap fb">Register with Facebook</div>
 
     </div>
 </form>
-<form method="post" action="<c:url value='j_spring_security_check'/>" id="registerform">
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="register" >
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
-
-        <form action="/">
-            <div class="avatar">
-                <img src="<c:url value="/resources/img/atom.png"/> ">
-            </div>
-            <br>
-
-            <label class="icon" ><i class="icon-envelope "></i></label>
-            <input type="text" name="j_addEmail" id="j_addEmail"  placeholder="Email"  />
-            <label class="icon" ><i class="icon-user">     </i></label>
-            <input type="text" name="j_addFirstname" id="j_addFirstname" placeholder="First Name"  />
-            <label class="icon" ><i class="icon-user"></i></label>
-            <input type="text" name="j_addLastname" id="j_addLastname" placeholder="Last Name"  />
-            <label class="icon" ><i class="icon-shield"></i></label>
-            <input type="password" name="j_addPassword" id="j_addPassword" placeholder="Password"   />
-            <div class="gender">
-                    <input type="radio" value="None" id="male" name="gender" checked/>
-                    <label for="male" class="radio"  >Male</label>
-                    <input type="radio" value="None" id="female" name="gender" />
-                    <label for="female" class="radio">Female</label>
-            </div>
-
-            <a href="#" class="button">Register</a>
-            <a href="#" class="button" onclick="hide();">Login</a>
-
-        </form>
-    </div>
-
-
-</form>
+<div class="error-login-register">
+    <p>
+        <%--@elvariable id="error" type="java"--%>
+        <c:if test="${error ne null}">
+            <b class="error">${error}</b>
+        </c:if>
+    </p>
+</div>
+<div class="desc" id="description">
+    <p>some videos and description of the site will be placed here</p>
+</div>
 </body>
 </html>

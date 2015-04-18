@@ -22,9 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String email) {
+    public UserDetails loadUserByUsername(String username) {
 
-        com.scncm.model.User domainUser = userService.getUserByEmail(email);
+        com.scncm.model.User domainUser = userService.getUserByUsername(username);
 
         boolean enabled = true;
         boolean accountNonExpired = true;
@@ -38,7 +38,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         return new User(
-                domainUser.getEmail(),
+                domainUser.getUsername(),
                 domainUser.getPassword(),
                 enabled,
                 accountNonExpired,

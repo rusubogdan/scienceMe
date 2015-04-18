@@ -1,59 +1,94 @@
 $(document).ready(function () {
     wall.test();
     wall.init.leftSideBar();
-
-
-    $('.articles-carousel').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        dots: true,
-        //adaptiveHeight: true,
-        autoplay: true,
-        autoplaySpeed: 7000,
-        arrows: false
-    });
+    wall.init.readMoreButton();
+    carousel.init();
+    wall.recommendArticles();
 });
 
-// Cosmin - schimba :hover eventul
-// apeleaza ajax-ul cand se schimba intervalul
+var carousel = {
+    obj: null,
+    init: function () {
+        carousel.obj = $('#articles-carousel');
 
+        carousel.obj.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            dots: true,
+            //adaptiveHeight: true,
+            autoplay: true,
+            autoplaySpeed: 6000,
+            arrows: false
+        });
+    },
+    addArticle: function (html) {
+        carousel.obj.slick('slickAdd', html);
+    },
+    removeFirstArticle: function () {
+        carousel.obj.slick('slickRemove', true);
+    },
+    destroy: function () {
+        carousel.obj.slick('unslick');
+    }
+
+};
+
+var articles;
 var wall = {
-    filterByNews: false ,
+    filterByNews: true,
     filterByRating: false,
-    barLowerBound: 1,
+    barLowerBound: 0,
     barUpperBound: 23,
     startingSearchPoint: 0,
     init: {
         timeBar: function () {
             $('.range-slider').jRange({
-                from: 1,
+                from: 0,
                 to: 60,
                 step: 1,
-                scale: [1, 15, 30, 45, 60],
+                scale: [0, 15, 30, 45, 60],
                 format: '%s',
                 width: 150,
                 theme: "theme-blue",
                 showLabels: true,
                 isRange: true,
                 onstatechange: function () {
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+                    var $range = $(".range-slider");
+                    wall.barLowerBound = $range.val().split(",")[0];
+                    wall.barUpperBound = $range.val().split(",")[1];
+
+                    $('#fixed-loader-newest').show();
+                    $("#newest-article-container .article-preview-container").remove();
+                    wall.startingSearchPoint = 0;
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                        wall.barUpperBound, wall.startingSearchPoint);
 
                 }
             });
         },
         buttonSideBar: function () {
+            ////test
+
+            $('#time-label').on({
+                click: function () {
+                    $.get('/wall/ajax/testArticle', function (response) {
+                        console.log(response);
+                    })
+                }
+            });
+
+
+
+
             var newsFilter = $('#news-button-sidebar');
             var ratingFilter = $('#rating-button-sidebar');
 
             newsFilter.on({
                 click: function () {
-                    if (wall.filterByNews) {
-                        newsFilter.css('background-color', 'transparent');
-                        wall.filterByNews = false;
-                    }
-                    else {
+                    if (!wall.filterByNews) {
+                        $('#fixed-loader-newest').show();
+                        $("#newest-article-container .article-preview-container").remove();
+                        wall.startingSearchPoint = 0;
                         newsFilter.css({
                             'background-color': 'rgb(81, 176, 74)'
                         });
@@ -62,12 +97,19 @@ var wall = {
                         ratingFilter.css({
                             'background-color': 'transparent'
                         });
-                    }
 
-                    // ajax to server for filtering the articles
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+                        // ajax to server for filtering the articles
+                        var $range = $(".range-slider");
+                        wall.barLowerBound = $range.val().split(",")[0];
+                        wall.barUpperBound = $range.val().split(",")[1];
+                        if (wall.barUpperBound == null) {
+                            wall.barUpperBound = wall.barLowerBound;
+                            wall.barLowerBound = 0;
+                        }
+
+                        wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                            wall.barUpperBound, wall.startingSearchPoint);
+                    }
                 },
 
                 mouseover: function () {
@@ -86,11 +128,10 @@ var wall = {
 
             ratingFilter.on({
                 click: function () {
-                    if (wall.filterByRating) {
-                        ratingFilter.css('background-color', 'transparent');
-                        wall.filterByRating = false;
-                    }
-                    else {
+                    if (!wall.filterByRating) {
+                        $('#fixed-loader-newest').show();
+                        $("#newest-article-container .article-preview-container").remove();
+                        wall.startingSearchPoint = 0;
                         ratingFilter.css({
                             'background-color': 'rgb(81, 176, 74)'
                         });
@@ -99,12 +140,19 @@ var wall = {
                         newsFilter.css({
                             'background-color': 'transparent'
                         });
-                    }
 
-                    // ajax to server for filtering the articles
-                    wall.barLowerBound = $(".range-slider").val().split(",")[0];
-                    wall.barUpperBound = $(".range-slider").val().split(",")[1];
-                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+                        // ajax to server for filtering the articles
+                        var $range = $(".range-slider");
+                        wall.barLowerBound = $range.val().split(",")[0];
+                        wall.barUpperBound = $range.val().split(",")[1];
+                        if (wall.barUpperBound == null) {
+                            wall.barUpperBound = wall.barLowerBound;
+                            wall.barLowerBound = 0;
+                        }
+
+                        wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound,
+                            wall.barUpperBound, wall.startingSearchPoint);
+                    }
                 },
 
                 mouseover: function () {
@@ -124,44 +172,94 @@ var wall = {
         leftSideBar: function () {
             wall.init.buttonSideBar();
             wall.init.timeBar();
-            wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound, wall.startingSearchPoint);
+            $('#news-button-sidebar').css({
+                'background-color': 'rgb(81, 176, 74)'
+            });
+
+            wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound,
+                wall.startingSearchPoint);
+        },
+        readMoreButton:function(){
+            var learnMoreButton = $('#learn-more-button');
+            learnMoreButton.on({
+                click: function () {
+                    $('#fixed-loader-newest-end').show();
+                    wall.startingSearchPoint += 10 ;
+                    wall.filterArticles(wall.filterByNews, wall.filterByRating, wall.barLowerBound, wall.barUpperBound,
+                        wall.startingSearchPoint);
+                }
+            })
+
         }
     },
     test: function () {
-        $('#test1Button').on({
-            click: function () {
-                /*$.get('wall/ajax/testArticle',  function (response) {
-                    console.log(response.object);
-                });*/
-                $.ajax({
-                    url: 'wall/ajax/testArticle',
-                    method: 'get',
-                    dataType: 'json',
-                    success: function (response) {
-                        console.log(response.user.email);
-                    }
-                });
-            }
-        });
+
     },
     filterArticles: function (news, rating, lowerBoundInterval, upperBoundInterval, startingSearchPoint) {
-        console.log(news);
-        console.log(rating);
-        console.log(lowerBoundInterval);
-        console.log(upperBoundInterval);
-        $.get('wall/ajax/filterArticles',{"news": news,
-                                          "rating": rating,
-                                          "barLowerBound": lowerBoundInterval,
-                                          "upperBoundInterval": upperBoundInterval,
-                                          "startingSearchPoint": startingSearchPoint},
+        $.get('/wall/ajax/filterArticles', {"news": news,
+                                            "rating": rating,
+                                            "barLowerBound": lowerBoundInterval,
+                                            "upperBoundInterval": upperBoundInterval,
+                                            "startingSearchPoint": startingSearchPoint},
             function (response) {
-            console.log(response);
-        });
+//                list of objects of type article and integer
+                var articlesMap = response;
+                console.log(response);
+                wall.createNewestArticles(articlesMap, $('#newest-article-container'), $('#sample-article-preview'), true);
+                // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
+            }
+        );
 
-        $.post('search/ajax/filterArticles', {"searchQuery": "Romania"}, function (response) {
-           console.log(response);
-        });
+    },
+    createNewestArticles: function (articlesMap, container, sample, newest) {
+        var $newArticle;
 
+        if (!newest) {
+//            carousel.obj.empty();
+            carousel.obj.find('*').not('#fixed-loader-carousel').remove();
+            carousel.destroy();
+            carousel.init();
+            carousel.removeFirstArticle();
+            $('#fixed-loader-carousel').show();
+        }
 
+        for (var i = 0; i < articlesMap.length; i++) {
+            var $article = articlesMap[i];
+            $newArticle = sample.clone();
+            $newArticle.attr('id', $newArticle.attr('id').substr(7) + '-' + i);
+            $newArticle.find('.article-title').html($article.title);
+            $newArticle.find('.article-text').html($article.description);
+            $newArticle.find('.article-reference').attr('href', '/article/view/' + $article.token);
+            $newArticle.find('.article-author a')
+                .attr('href', '/user/' + $article.ownerUsername)
+                .html($article.ownerUsername);
+            $newArticle.find('.article-rating span').html('Rating: ' + $article.rating + '/5');
+            if($article.imageLink != null) {
+                $newArticle.find('.image-holder').css({background: 'url(' + $article.imageLink + ')no-repeat center'});
+            }
+
+            $newArticle.show();
+
+            if (newest) {
+                $newArticle.insertBefore("#newest-article-container #fixed-loader-newest-end" );
+//                container.append($newArticle);
+            } else {
+                carousel.addArticle($newArticle);
+            }
+        }
+
+        if (newest) {
+            $('#fixed-loader-newest').hide();
+            $('#fixed-loader-newest-end').hide();
+        } else {
+            $('#fixed-loader-carousel').hide();
+        }
+    },
+
+    recommendArticles: function () {
+        $.get('wall/ajax/getRecommendation',
+            function(articlesMap){
+                wall.createNewestArticles(articlesMap, null, $('#sample-article-container'), false);
+            });
     }
 };
