@@ -15,6 +15,7 @@
     <link href="<c:url value="/resources/css/bootstrap.min.css"/> " rel="stylesheet"/>
     <link href="<c:url value="/resources/css/bootstrap-theme.min.css"/> " rel="stylesheet"/>
     <link href="<c:url value="/resources/css/scienceMe.css"/> " rel="stylesheet"/>
+    <link href="<c:url value="/resources/css/article.css"/> " rel="stylesheet"/>
 
     <script src="<c:url value="/resources/js/jquery-2.1.3.min.js"/> " rel="stylesheet"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js"/> " rel="stylesheet"></script>
@@ -32,23 +33,23 @@
     <script src="//cdn.jsdelivr.net/bootstrap.tagsinput/0.4.2/bootstrap-tagsinput.min.js"></script>
 
 </head>
-<body>
+<body class="wallpaper">
 <jsp:include page="header.jsp"/>
 <div class="row">
 
     <div class="col-md-2"></div>
     <div class="col-md-8">
         <div class="container-view-article">
-            <br><br><br>
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
+            <br><br>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
                 <h1>
                     Add new article
                 </h1>
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-3"></div>
             <div class="clearfix"></div>
-
+    <br>
 
 
 <%--    informatiile din aces formular trebuie trimise in articlecontroller in functia addarticle--%>
@@ -96,8 +97,10 @@
 
 
                 <div class="form-group">
-                    <div class="col-xs-5 col-xs-offset-5">
-                        <button type="button" id="saveArticleBtn" class="btn btn-success">
+                    <label class="col-xs-3 control-label">
+                    </label>
+                    <div class="col-md-5">
+                        <button type="button" id="saveArticleBtn" class="btn btn-success btn-block">
                             Save &nbsp; <img id="loadingmessage" src="/resources/img/add-article-loading.gif" class="hidden">
                         </button>
                     </div>
@@ -111,6 +114,8 @@
     <div class="col-md-2"></div>
 
 </div>
-
+<%-----------footer-----------%>
+<jsp:include page="footer.jsp"/>
+<%----------------------------%>
 </body>
 </html>

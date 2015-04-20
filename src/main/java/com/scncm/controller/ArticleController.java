@@ -6,6 +6,7 @@ import com.scncm.model.Article;
 import com.scncm.model.HtmlContent;
 import com.scncm.model.User;
 import com.scncm.service.ArticleService;
+import com.scncm.service.HtmlContentService;
 import com.scncm.service.UserService;
 import com.syncthemall.diffbot.Diffbot;
 import com.syncthemall.diffbot.exception.DiffbotException;
@@ -18,15 +19,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBException;
-import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
 
 
 @Controller
@@ -58,6 +56,7 @@ public class ArticleController {
         ModelAndView mv = new ModelAndView("addArticle");
 
         mv.addObject("ok","0");
+        Article article = null;
         if(request != null ){
 
             String new_link = request.getParameter("link");
@@ -71,7 +70,7 @@ public class ArticleController {
                 new_time != null) {
 
                 try {
-                    diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "eaeca3b6be20aa7c47b987e8f0ad28d2");
+                    Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "eaeca3b6be20aa7c47b987e8f0ad28d2");
                     /*in the diffbotArticle we keep all the data received from the diffBoot api*/
                     com.syncthemall.diffbot.model.article.Article diffbotArticle = diffbot.article().analyze(new_link).execute();
 
@@ -151,6 +150,7 @@ public class ArticleController {
         mv.addObject("articleTitle", article.getTitle());
         mv.addObject("articleDescription", article.getDescription());
         mv.addObject("articleHtml", htmlContent.getHtml());
+        mv.addObject("articleTimeRead", article.getReadingTime());
 
         return mv;
     }
