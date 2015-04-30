@@ -74,4 +74,8 @@ public  class ArticleServiceImpl implements ArticleService {
     public Integer verifyIfUserVoteArticle(Integer user_id, Integer article_id){
         return articleDAO.verifyIfUserVoteArticle(user_id, article_id);
     }
+
+    public void insertOrUpdeteVoteArtcile(Integer user_id, Integer article_id, Integer rating){
+        articleDAO.insertOrUpdeteVoteArtcile(user_id, article_id,rating);
+    }
 }

@@ -173,6 +173,7 @@ public class ArticleController {
 
         System.out.println("vote" + vote + " -> id_user" + id_user + " -> id_article" + id_article);
 
+        articleService.insertOrUpdeteVoteArtcile(id_user, id_article, vote);
 
         return vote;
     }

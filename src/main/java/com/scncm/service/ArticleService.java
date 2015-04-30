@@ -31,4 +31,6 @@ public interface ArticleService {
     Article getArticleByToken(String token);
 
     Integer  verifyIfUserVoteArticle(Integer user_id, Integer article_id);
+
+    void insertOrUpdeteVoteArtcile(Integer user_id, Integer article_id, Integer rating);
 }
