@@ -77,7 +77,6 @@
             });
 
             $('#rating-input').on('rating.change', function() {
-                alert($('#rating-input').val());
 
                 $.post('/article/ajax/vote', {"vote": $('#rating-input').val(),"id_user": "${id_user}", "id_article": "${id_article}"},
                         function (response) {
