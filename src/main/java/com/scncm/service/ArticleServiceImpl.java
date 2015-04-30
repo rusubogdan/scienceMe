@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Service
 @Transactional
-public class ArticleServiceImpl implements ArticleService {
+public  class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleDAO articleDAO;
@@ -69,5 +69,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     public List<Map> getArticleAndRating(List<Integer> recommendedList){
         return articleDAO.getArticleAndRating(recommendedList);
+    }
+
+    public Integer verifyIfUserVoteArticle(Integer user_id, Integer article_id){
+        return articleDAO.verifyIfUserVoteArticle(user_id, article_id);
     }
 }

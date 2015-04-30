@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -146,12 +144,36 @@ public class ArticleController {
 
         HtmlContent htmlContent = htmlContentService.getHtmlContentByArticleId(article.getArticleId());
 
+        int id_user = userService.getUserIdByUsername(authentication.getName());
+        int vote =  articleService.verifyIfUserVoteArticle(id_user, article.getArticleId());
+        int id_article = article.getArticleId();
+
         mv.addObject("userName", authentication.getName());
         mv.addObject("articleTitle", article.getTitle());
         mv.addObject("articleDescription", article.getDescription());
         mv.addObject("articleHtml", htmlContent.getHtml());
         mv.addObject("articleTimeRead", article.getReadingTime());
 
+        if(vote <= 0){
+            vote = 0;
+        }
+        mv.addObject("my_vote", vote);
+        mv.addObject("id_article", id_article);
+        mv.addObject("id_user", id_user);
+
         return mv;
+    }
+
+    @RequestMapping(value = "ajax/vote", method = RequestMethod.POST)
+    @ResponseBody
+    public Integer addVoteForArticle(
+            @RequestParam(value = "vote") Integer vote,
+            @RequestParam(value = "id_user") Integer  id_user,
+            @RequestParam(value = "id_article") Integer id_article) {
+
+        System.out.println("vote" + vote + " -> id_user" + id_user + " -> id_article" + id_article);
+
+
+        return vote;
     }
 }

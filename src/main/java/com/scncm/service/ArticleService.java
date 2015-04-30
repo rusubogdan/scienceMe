@@ -29,4 +29,6 @@ public interface ArticleService {
     List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 
     Article getArticleByToken(String token);
+
+    Integer  verifyIfUserVoteArticle(Integer user_id, Integer article_id);
 }

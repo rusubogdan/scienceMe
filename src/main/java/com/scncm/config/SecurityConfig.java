@@ -45,9 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                         .anyRequest()
                             .permitAll()
-                /*.and()
+                .and()
                     .exceptionHandling()
-                            .accessDeniedPage("/login?session_expired")*/
+                            .accessDeniedPage("/login?session_expired")
                 .and()
                     .formLogin()
                         .loginPage("/login")

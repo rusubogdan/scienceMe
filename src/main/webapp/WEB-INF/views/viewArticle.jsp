@@ -36,7 +36,7 @@
         <div class="col-md-8">
 
             <div class="container-view-article">
-                <input id="rating-input" type="number" />
+                <input id="rating-input" type="number" value="${my_vote}"/>
                 <span class="pull-right"> Time to read: ${articleTimeRead} </span>
                 <hr>
 
@@ -78,6 +78,15 @@
 
             $('#rating-input').on('rating.change', function() {
                 alert($('#rating-input').val());
+
+                $.post('/article/ajax/vote', {"vote": $('#rating-input').val(),"id_user": "${id_user}", "id_article": "${id_article}"},
+                        function (response) {
+//                list of objects of type article and integer
+                            var articlesMap = response;
+                            console.log("ajunge" + response);
+                        }
+                );
+
             });
 
 
