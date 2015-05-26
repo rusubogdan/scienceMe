@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>wall</title>
+    <title>Profile</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -23,9 +23,6 @@
 
 <div class="container bg-info">
     <div class="user-profile">
-
-
-
 
         <div class="row">
 
@@ -46,6 +43,9 @@
                         </div>
                         <div class="panel-body">
                             ${loggedInUser.username}
+
+
+
                         </div>
                     </div>
 
@@ -70,10 +70,12 @@
 
                 <div class="panel panel-primary ">
                     <div class="panel-heading">
-                        <h3 class="panel-title">User contributions to the site.</h3>
+                        <h3 class="panel-title">Contributions to the site</h3>
                     </div>
                     <div class="panel-body">
-                        ${loggedInUser.articles}
+                            <c:forEach items="${userArticles}" var="item">
+                                <a href="/article/view/${item.token}">${item.title}</a><br>
+                            </c:forEach>
                     </div>
                 </div>
 
