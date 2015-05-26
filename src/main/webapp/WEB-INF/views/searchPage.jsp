@@ -51,7 +51,15 @@
                                 <div class="article-text">${article.description}</div>
                                 <div class="article-information">
                                     <div class="article-rating">
-                                        <span>${article.userArticleVoteSet}/5</span>
+                                        <c:set var="voteMedian" value="0" scope="page"/>
+                                        <c:set var="counter" value="1" scope="page"/>
+                                        <c:forEach items="${article.userArticleVoteSet}" var="vote">
+                                            <c:set var="voteMedian" value="${voteMedian + vote.rating}"/>
+                                            <c:set var="counter" value="${counter + 1}"/>
+                                        </c:forEach>
+                                        <c:set var="voteMedia" value="${voteMedian/counter}"/>
+                                        <span>${voteMedian}/5</span>
+                                        <%--<span>${counter}/5</span>--%>
                                     </div>
                                     <div class="article-author">
                                         <a href="/user/${article.owner.username}" class="author-reference">${article.owner.username}</a>

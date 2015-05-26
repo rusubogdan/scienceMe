@@ -22,7 +22,7 @@ var carousel = {
         });
     },
     addArticle: function (html) {
-        carousel.obj.slick('slickAdd', html);
+        carousel.obj.slick('slickAdd/', html);
     },
     removeFirstArticle: function () {
         carousel.obj.slick('slickRemove', true);
