@@ -1,5 +1,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -13,9 +14,9 @@
             <a class="navbar-brand visible-xs" href="#">H</a>
             <a class="navbar-brand visible-xs" href="#">ADD</a>
 
-            <form class="navbar-form pull-left" role="search">
+            <form class="navbar-form pull-left" method="post" action="/search" role="search">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" class="form-control" name="searchQuery" placeholder="Search">
 
                     <div class="input-group-btn">
                         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>

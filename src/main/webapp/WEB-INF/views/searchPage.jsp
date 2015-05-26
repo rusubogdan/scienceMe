@@ -27,17 +27,45 @@
     <%--always the last included script !!!--%>
     <script src="<c:url value="/resources/js/search.js"/> " rel="stylesheet"></script>
 
+
 </head>
 
 <body>
     <%-----------header-----------%>
     <jsp:include page="header.jsp"/>
     <%----------------------------%>
-
     <div class="container">
-        <div class="row">
-            <div id="test-articles" class="text-success">
+        <div class="row row-centered">
+            <div class="col-md-3 col-md-pull-1 ">
+            </div>
+            <div class="col-md-9 col-centered wall-content-container col-md-pull-1 container">
+                <div class="jumbotron">
+<div class="newest-articles" id="newest-article-container">
+                        <c:forEach items="${articleList}" var="article">
+                        <div id="sample-article-preview" class="article-preview-container">
+                            <div class="image-holder" style="background: url(${article.imageLink}) 50% 50% no-repeat;">
+                            </div>
+                            <div class="content-holder">
+                                <div class="article-title">${article.title}</div>
+                                <div class="bar"></div>
+                                <div class="article-text">${article.description}</div>
+                                <div class="article-information">
+                                    <div class="article-rating">
+                                        <span>${article.userArticleVoteSet}/5</span>
+                                    </div>
+                                    <div class="article-author">
+                                        <a href="/user/${article.owner.username}" class="author-reference">${article.owner.username}</a>
+                                    </div>
+                                    <div class="article-link">
+                                        <a href="/article/view/${article.token}" class="article-reference">Read the full article</a>
+                                    </div>
+                                </div>
+                            </div>
 
+                        </div>
+                        </c:forEach>
+</div>
+                </div>
             </div>
         </div>
     </div>
