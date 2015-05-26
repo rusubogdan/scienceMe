@@ -17,7 +17,7 @@ public interface ArticleDAO {
 
     List<Article> getArticlesByUser(User user);
 
-    Set<Article> searchArticles (String searchQuery);
+    List<Map> searchArticles (String searchQuery);
 
     List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer startTime, Integer endTime, Integer startingSearchPoint);
 

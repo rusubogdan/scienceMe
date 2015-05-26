@@ -89,25 +89,78 @@ public  class ArticleDAOImpl implements ArticleDAO {
         }
     }
 
-    public Set<Article> searchArticles(String searchQuery) {
-        List<Article> articles = new ArrayList<Article>();
+    public List<Map> searchArticles(String searchQuery) {
+        List<Map> articles = new ArrayList<Map>();
         Query query = null;
+        List<Object[]> temporaryArticles;
 
         try {
-            query = getCurrentSession().createQuery("from Article a where a.title like :searchQuery " +
-                    "or a.description like :searchQuery");
-            query.setParameter("searchQuery", '%' + searchQuery + '%');
-            articles = query.list();
+//            query = getCurrentSession().createQuery("from Article a where a.title like :searchQuery " +
+//                    "or a.description like :searchQuery");
+//            query.setParameter("searchQuery", '%' + searchQuery + '%');
+//            articles = query.list();
+//
+//            query = null;
+
+            query = getCurrentSession().createSQLQuery(
+                    "SELECT title, description, owner_id, username,  reading_time, created_date, token, rating, image " +
+                    "FROM" +
+                        "( SELECT setweight(to_tsvector(a.title), 'A') || setweight(to_tsvector(a.description),'B') || setweight(to_tsvector(h.html),'B') as content, " +
+                                "a.title, " +
+                                "a.description, " +
+                                "h.html, " +
+                                "a.owner_id, " +
+                                "a.reading_time, " +
+                                "a.created_date, " +
+                                "a.token, "+
+                                "(SELECT u.username " +
+                                 "FROM users u " +
+                                 "WHERE u.id = a.owner_id) username, " +
+                                "(select coalesce(round(avg(cast(NULLIF(ua.rating, 0) AS BIGINT)),0), 0)" +
+                                 "from user_article ua " +
+                                 "where ua.article_id = a.article_id) as rating," +
+                                "coalesce (nullif (a.image_link, ''), 'http://www.mbari.org/earth/images/atom.png') image " +
+                        "from article a, html_content h " +
+                        "where " +
+                            "a.html_id = h.id " +
+                        ") tabel " +
+                    "WHERE " +
+                            "tabel.content @@ plainto_tsquery(:searchQuery) " +
+                            "ORDER BY ts_rank(tabel.content, to_tsquery(:searchQuery))"
+            );
+            query.setParameter("searchQuery", searchQuery);
+            query.setMaxResults(15);
+            temporaryArticles = query.list();
+            for (int i = 0; i < temporaryArticles.size(); i++) {
+                Map temporaryMap = new HashMap<>();
+                temporaryMap.put("title",temporaryArticles.get(i)[0]);
+                temporaryMap.put("description",temporaryArticles.get(i)[1]);
+                temporaryMap.put("ownerId",temporaryArticles.get(i)[2]);
+                temporaryMap.put("username",temporaryArticles.get(i)[3]);
+                temporaryMap.put("readingTime",temporaryArticles.get(i)[4]);
+                temporaryMap.put("createdDate",temporaryArticles.get(i)[5]);
+                temporaryMap.put("token",temporaryArticles.get(i)[6]);
+                if (temporaryArticles.get(i)[7] == null) {
+                    temporaryMap.put("rating", 0);
+                } else {
+                    temporaryMap.put("rating", temporaryArticles.get(i)[7]);
+                }
+                temporaryMap.put("imageLink", temporaryArticles.get(i)[8]);
+                articles.add(temporaryMap);
+            }
         } catch (Exception e) {
             logger.warn(e.getMessage());
         }
 
-        Set<Article> articleSet = new HashSet<Article>(articles);
+        //Set<Article> articleSet = new HashSet<Article>(articles);
 
-        if (articleSet.size() > 0)
-            return articleSet;
-        else
+        if (articles.size() > 0) {
+            return articles;
+        }
+        else {
             return null;
+        }
+
     }
 
     public List<Map> getArticleFiltered(Boolean news, Boolean rating, Integer barLowerBound,
