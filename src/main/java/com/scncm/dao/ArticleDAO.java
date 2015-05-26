@@ -25,6 +25,8 @@ public interface ArticleDAO {
 
     List<Map> getArticleAndRating(List<Integer> recommendedList);
 
+    // List<Map> getArticleSearch(List<Integer> resultList);
+
     Integer addArticle (Article article);
 
     Boolean updateArticle (Article article);

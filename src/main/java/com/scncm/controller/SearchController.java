@@ -6,6 +6,7 @@ import com.scncm.service.ArticleService;
 import com.scncm.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,17 +42,22 @@ public class SearchController {
             @RequestParam(value = "searchQuery") String searchQuery) {
         ModelAndView mv = new ModelAndView("searchPage");
 
-        Set<Article> articles = articleService.searchArticles(searchQuery);
+       Set<Article> articles = articleService.searchArticles(searchQuery);
 
-        List<Article> articleList = new ArrayList<Article>(articles);
+       if(articles != null){
+           List<Article> articleList = new ArrayList<Article>(articles);
+           mv.addObject("articleList", articleList);
+       }else{
+           return new ModelAndView("redirect:/wall");
+       }
 
         mv.addObject("searchQuery", searchQuery);
-        mv.addObject("articleList", articleList);
-
+//
         return mv;
     }
 
-    @RequestMapping(value = "ajax/filterArticles", method = RequestMethod.POST)
+
+    @RequestMapping(value = "ajax/search", method = RequestMethod.POST)
     @ResponseBody
     public Map search(
             @RequestParam String searchQuery) {
@@ -61,5 +67,25 @@ public class SearchController {
 
         return response;
     }
+
+//    public List<Map> search(
+//            @RequestParam(value = "searchQuery") String searchQuery) {
+//
+//        List<Map> articlesList = new ArrayList<Map>();
+//        List<Integer> recommendedList;
+//        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+//        Integer userId = userService.getUserIdByUsername(userName);
+//        recommendedList = userService.getRecommendationByUsername(userName);
+//
+//        if(recommendedList.size() != 0) {
+//            articlesList.addAll(articleService.getArticleAndRating(recommendedList));
+////            Collections.sort(articlesList, mapComparator);
+//        }
+//        else{
+//            articlesList.addAll( articleService.getMostRatedArticle(10,userId, recommendedList));
+//        }
+//
+//        return articlesList;
+//    }
 
 }
