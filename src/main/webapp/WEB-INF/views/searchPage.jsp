@@ -43,7 +43,7 @@
 <div class="newest-articles" id="newest-article-container">
                 <c:choose>
                     <c:when test="${empty articleList}">
-                        <div>Invalid Search string!</div>
+                        <h3 style="text-align: center;">Invalid Search string!</h3>
                     </c:when>
                     <c:otherwise>
 
