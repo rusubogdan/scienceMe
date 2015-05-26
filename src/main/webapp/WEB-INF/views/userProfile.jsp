@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>wall</title>
+    <title>Profile</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -21,16 +21,77 @@
 <body>
 <jsp:include page="header.jsp"/>
 
-<div class="container">
+<div class="container bg-info">
     <div class="user-profile">
-        <div class="username">
-            ${loggedInUser.username}
+
+        <div class="row">
+
+            <div class="col-sm-4 text-center ">
+
+                <img src="<c:url value="/resources/img/helix2.png"/>"
+                     class="img-rounded" alt="Profile" width="300" height="300">
+
+
+            </div>
+
+            <div class="col-sm-8">
+                <div class="username">
+
+                    <div class="panel panel-primary ">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Username</h3>
+                        </div>
+                        <div class="panel-body">
+                            ${loggedInUser.username}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Email</h3>
+                    </div>
+                    <div class="panel-body">
+                        ${loggedInUser.email}
+                    </div>
+                </div>
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Register Date</h3>
+                    </div>
+                    <div class="panel-body">
+                        ${registeredDate}
+                    </div>
+                </div>
+
+                <div class="panel panel-primary ">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Contributions to the site</h3>
+                    </div>
+                    <div class="panel-body">
+                        <c:if test="${noContribution eq true}">
+                            <span>No contribution yet</span>
+                        </c:if>
+                        <c:forEach items="${userArticles}" var="item">
+                            <a href="/article/view/${item.token}">${item.title}</a><br>
+                        </c:forEach>
+                    </div>
+                </div>
+
+            </div>
+
+
+
         </div>
-        <div class="email">
-            ${loggedInUser.email}
-        </div>
+
+
+
+
+
     </div>
 </div>
 
-<jsp:include page="footer.jsp"/>
+<!-- <jsp:include page="footer.jsp"/>-->
+
 </body>
