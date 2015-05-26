@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -50,8 +52,10 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "add.do", method = RequestMethod.POST)
-    public ModelAndView addArticleInDataBase(HttpServletRequest request) {
+    @ResponseBody
+    public Map addArticleInDataBase(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("addArticle");
+        Map response = new HashMap<>();
 
         mv.addObject("ok","0");
         Article article = null;
@@ -68,7 +72,7 @@ public class ArticleController {
                 new_time != null) {
 
                 try {
-                    Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "eaeca3b6be20aa7c47b987e8f0ad28d2");
+                    Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "e12e0bc90bd22736dc43f3bd9cd5a27f");
                     /*in the diffbotArticle we keep all the data received from the diffBoot api*/
                     com.syncthemall.diffbot.model.article.Article diffbotArticle = diffbot.article().analyze(new_link).execute();
 
@@ -110,7 +114,10 @@ public class ArticleController {
                     // some error occurs
                     if (articleId < 1 || !success) {
                         logger.warn("article creation failed");
-                        return new ModelAndView("redirect:/article/add");
+//                        return new ModelAndView("redirect:/article/add");
+                        response.put("error", true);
+                        response.put("errorMessage", "article creation failed");
+                        return response;
                     }
 
                     mv.addObject("loggedInUser", loggedInUser);
@@ -121,9 +128,14 @@ public class ArticleController {
             }
         }
 
-        mv = new ModelAndView("redirect:/article/view/" + (article != null ? article.getToken() : "00000000"));
+        String redirectUrl = "/article/view/" + (article != null ? article.getToken() : "00000000");
 
-        return mv;
+        mv.addObject("redirectUrl", redirectUrl);
+        response.put("redirectUrl", redirectUrl);
+        response.put("success", true);
+//        mv = new ModelAndView("redirect:/article/view/" + (article != null ? article.getToken() : "00000000"));
+
+        return response;
     }
 
     @RequestMapping(value = "view", method = RequestMethod.GET)

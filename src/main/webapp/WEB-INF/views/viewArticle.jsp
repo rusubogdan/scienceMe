@@ -37,7 +37,7 @@
 
             <div class="container-view-article">
                 <input id="rating-input" type="number" value="${my_vote}"/>
-                <span class="pull-right"> Time to read: ${articleTimeRead} </span>
+                <span class="pull-right"> Time to read: ${articleTimeRead} minutes</span>
                 <hr>
 
                 <h1 class="text-center">

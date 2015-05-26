@@ -75,7 +75,7 @@ public  class ArticleDAOImpl implements ArticleDAO {
         List<Article> articles = new ArrayList<Article>();
         Query query;
         try {
-            query = getCurrentSession().createQuery("from Article a where a.user = :user");
+            query = getCurrentSession().createQuery("from Article a where a.owner = :user");
             query.setParameter("user", user);
             articles = query.list();
         } catch (Exception e) {

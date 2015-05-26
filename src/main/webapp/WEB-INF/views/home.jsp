@@ -87,7 +87,7 @@
     </p>
 </div>
 <div class="desc" id="description">
-    <p>some videos and description of the site will be placed here</p>
+    <%--<p>some videos and description of the site will be placed here</p>--%>
 </div>
 </body>
 </html>
