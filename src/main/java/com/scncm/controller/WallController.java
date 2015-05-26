@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping(value = "/wall")
@@ -93,50 +90,34 @@ public class WallController {
         return map;
     }
 
+//    public Comparator<Map> mapComparator = new Comparator<Map>() {
+//        public int compare(Map m1, Map m2) {
+//            if (((Double) m1.get("rating")) < ((Double) m2.get("rating"))) {
+//                return 1;
+//            } else {
+//                return -1;
+//            }
+//        }
+//    };
+
+
     @RequestMapping(value = "ajax/getRecommendation", method = RequestMethod.GET)
     @ResponseBody
     public List<Map> getRecommendation() {
         List<Map> articlesList = new ArrayList<Map>();
-        List<Integer> recommendedList = new ArrayList<Integer>();
+        List<Integer> recommendedList;
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        int userId = userService.getUserIdByUsername(userName);
+        Integer userId = userService.getUserIdByUsername(userName);
+        recommendedList = userService.getRecommendationByUsername(userName);
 
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setServerName("ec2-54-163-228-58.compute-1.amazonaws.com");
-        dataSource.setDatabaseName("dfvo2f9it4pmk9");
-        dataSource.setUser("ucokaucbriaged");
-        dataSource.setPassword("MiL-tB6turQdPKbGwjqrBlFLXP");
-        dataSource.setPortNumber(5432);
-        dataSource.setSsl(true);
-        dataSource.setSslfactory("org.postgresql.ssl.NonValidatingFactory");
-
-        try {
-            PostgreSQLJDBCDataModel postgreSQLJDBCDataModel = new PostgreSQLJDBCDataModel(
-                    dataSource, "user_article", "user_id", "article_id", "rating", "timestamp");
-            ReloadFromJDBCDataModel model = new ReloadFromJDBCDataModel(postgreSQLJDBCDataModel);
-            ItemSimilarity itemSimilarity = new LogLikelihoodSimilarity(model);
-            ItemBasedRecommender recommender = new GenericItemBasedRecommender(model, itemSimilarity);
-
-            List<RecommendedItem> recommendations = recommender.recommend(userId, 10);
-            for (RecommendedItem recommendation : recommendations) {
-//                articlesList.add(articleService.getArticleAndRating((int) recommendation.getItemID()));
-                recommendedList.add((int) recommendation.getItemID());
-            }
-            //If I haven recommended articles, then get contain
-            if(recommendedList.size() != 0) {
-                articlesList.addAll(articleService.getArticleAndRating(recommendedList));
-            }
-            //If I haven't 10 recommended articles, then get most rated article until 10
-            if (recommendations.size() != 10) {
-                List<Map> ratedArticleList = articleService.getMostRatedArticle(10 - recommendations.size(),
-                        userId, recommendedList);
-                articlesList.addAll(ratedArticleList);
-            }
-        } catch (TasteException e) {
-            //can't find an user in user_article table, then recommend just most rated articles
-            List<Map> ratedArticleList = articleService.getMostRatedArticle(10,userId, recommendedList);
-            articlesList.addAll(ratedArticleList);
+        if(recommendedList.size() != 0) {
+            articlesList.addAll(articleService.getArticleAndRating(recommendedList));
+//            Collections.sort(articlesList, mapComparator);
         }
+        else{
+            articlesList.addAll( articleService.getMostRatedArticle(10,userId, recommendedList));
+        }
+
         return articlesList;
     }
 }

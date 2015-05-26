@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -52,7 +53,7 @@ public class UserDAOImpl implements UserDAO {
         List<Integer> userId = new ArrayList<Integer>();
         Query query;
         try {
-            query = getCurrentSession().createSQLQuery("select U.id from users U where U.username = :username");
+            query = getCurrentSession().createSQLQuery("select id from users where username = :username");
             query.setParameter("username", username);
             userId = query.list();
         } catch (QueryException e) {
@@ -129,5 +130,26 @@ public class UserDAOImpl implements UserDAO {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public List<Integer> getRecommendationByUsername(String username){
+        List<Integer> articlesRecommendeted = new ArrayList<>();
+        List<String> recommendedList = new ArrayList<>();
+        Query query = getCurrentSession().createSQLQuery("" +
+                "Select recommendation_article " +
+                "from recommendation " +
+                "where user_id = (Select id " +
+                                 "from users U " +
+                                 "where U.username = :username )");
+        query.setParameter("username",username);
+        recommendedList = query.list();
+        String recommended = recommendedList.get(0);
+            recommendedList = Arrays.asList(recommended.substring(1,recommended.length()-1).split(", "));
+
+        for(String number : recommendedList){
+            articlesRecommendeted.add(Integer.parseInt(number));
+        }
+
+        return  articlesRecommendeted;
     }
 }

@@ -2,18 +2,19 @@ package com.scncm.dao;
 
 import com.scncm.model.Article;
 import com.scncm.model.User;
-
-import org.hibernate.*;
-
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.security.Timestamp;
 import java.util.*;
 
 @Repository
-public class ArticleDAOImpl implements ArticleDAO {
+public  class ArticleDAOImpl implements ArticleDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ArticleDAOImpl.class);
 
@@ -259,12 +260,13 @@ public class ArticleDAOImpl implements ArticleDAO {
                         "from users U" +
                         " where U.id = A.owner_id)" +
                         ",A.reading_time,A.created_date,A.token," +
-                        "(Select avg(UA.rating)" +
+                        "(select coalesce(avg(cast(NULLIF(UA.rating, 0) AS BIGINT)), 0)" +
                         "from user_article UA " +
                         "where UA.article_id = A.article_id) as rating," +
                         "coalesce (nullif (A.image_link, ''), 'http://www.mbari.org/earth/images/atom.png') " +
                         "from article A where " +
-                        "A.article_id in (:recommendedList)");
+                                        "A.article_id in (:recommendedList) " +
+                        "order by rating desc");
         query.setParameterList ("recommendedList", recommendedList);
         temporaryArticles = query.list();
         for (int i = 0; i < temporaryArticles.size(); i++) {
@@ -313,5 +315,78 @@ public class ArticleDAOImpl implements ArticleDAO {
         } catch (Exception e) {
             return false;
         }
+    }
+
+
+    public Integer verifyIfUserVoteArticle(Integer user_id, Integer article_id){
+      List<Integer> rating = new ArrayList<Integer>();
+        Query query;
+
+        try {
+            query = getCurrentSession().createSQLQuery(
+                    "select rating " +
+                            "from user_article as a " +
+                            "where a.article_id = (:article_id) " +
+                            "and a.user_id = (:user_id) ");
+
+            query.setParameter ("user_id", user_id);
+            query.setParameter ("article_id", article_id);
+
+            rating = query.list();
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+
+        if (rating.size() > 0) {
+            return rating.get(0);
+        } else {
+            return -1;
+        }
+
+    }
+
+    public void insertOrUpdeteVoteArtcile(Integer user_id, Integer article_id, Integer rating){
+        List<Integer> id = new ArrayList<Integer>();
+        Query query;
+
+        try {
+            query = getCurrentSession().createSQLQuery(
+                    "select id " +
+                            "from user_article as a " +
+                            "where a.article_id = (:article_id) " +
+                            "and a.user_id = (:user_id) ");
+
+            query.setParameter ("user_id", user_id);
+            query.setParameter ("article_id", article_id);
+
+            id = query.list();
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+
+        if (id.size() > 0) {
+            query = getCurrentSession().createSQLQuery(
+              "update user_article " +
+                      "set rating = :rating " +
+                      "where user_id = :user_id " +
+                      "and article_id = :article_id"
+            );
+        } else {
+            Date insert_date = new java.sql.Timestamp(new Date().getTime());
+            query = getCurrentSession().createSQLQuery(
+                    "insert into user_article (user_id,article_id, rating, timestamp) " +
+                            " values(:user_id, :article_id, :rating, :insert_date) "
+            );
+
+            query.setParameter ("insert_date", insert_date);
+        }
+
+        query.setParameter ("user_id", user_id);
+        query.setParameter ("article_id", article_id);
+        query.setParameter ("rating", rating);
+
+        query.executeUpdate();
+
+
     }
 }

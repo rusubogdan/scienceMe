@@ -3,6 +3,8 @@ package com.scncm.service;
 import com.scncm.helpers.SignUpForm;
 import com.scncm.model.User;
 
+import java.util.List;
+
 public interface UserService {
 
     User getUser (Integer userId);
@@ -24,4 +26,6 @@ public interface UserService {
     Integer getUserIdByUsername(String username);
 
     Boolean sendSignUpEmail (User user);
+
+    List<Integer> getRecommendationByUsername(String username);
 }

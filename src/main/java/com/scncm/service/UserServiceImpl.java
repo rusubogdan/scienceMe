@@ -6,10 +6,14 @@ import com.scncm.helpers.Constants;
 import com.scncm.helpers.SignUpForm;
 import com.scncm.model.Role;
 import com.scncm.model.User;
+
 import org.slf4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -75,7 +79,6 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setEmail(signUpForm.getEmail());
         user.setUsername(signUpForm.getUsername());
-        user.setRegisterDate(new Timestamp(new Date().getTime()));
         // todo encoded password
         user.setPassword(signUpForm.getPassword());
 
@@ -98,5 +101,9 @@ public class UserServiceImpl implements UserService {
             token = AppUtil.generateRandomString(Constants.tokenValidChars, Constants.tokenLength);
         }
         return token;
+    }
+
+    public List<Integer> getRecommendationByUsername(String username){
+        return userDAO.getRecommendationByUsername(username);
     }
 }

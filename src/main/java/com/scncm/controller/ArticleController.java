@@ -16,15 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+
 
 @Controller
 @RequestMapping(value = "/article", method = RequestMethod.GET)
@@ -53,19 +52,23 @@ public class ArticleController {
     @RequestMapping(value = "add.do", method = RequestMethod.POST)
     public ModelAndView addArticleInDataBase(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("addArticle");
-        com.scncm.model.Article article = null;
 
-        if (request != null) {
+        mv.addObject("ok","0");
+        Article article = null;
+        if(request != null ){
+
             String new_link = request.getParameter("link");
             String new_description = request.getParameter("description");
             String new_time = request.getParameter("time");
             String new_tags = request.getParameter("tags");
 
-            if (new_link != null) {
-                Diffbot diffbot = null;
+            if (new_link != null &&
+                new_description != null &&
+                new_tags != null &&
+                new_time != null) {
 
                 try {
-                    diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "e12e0bc90bd22736dc43f3bd9cd5a27f");
+                    Diffbot diffbot = new Diffbot(new ApacheHttpTransport(), new JacksonFactory(), "eaeca3b6be20aa7c47b987e8f0ad28d2");
                     /*in the diffbotArticle we keep all the data received from the diffBoot api*/
                     com.syncthemall.diffbot.model.article.Article diffbotArticle = diffbot.article().analyze(new_link).execute();
 
@@ -141,11 +144,37 @@ public class ArticleController {
 
         HtmlContent htmlContent = htmlContentService.getHtmlContentByArticleId(article.getArticleId());
 
+        int id_user = userService.getUserIdByUsername(authentication.getName());
+        int vote =  articleService.verifyIfUserVoteArticle(id_user, article.getArticleId());
+        int id_article = article.getArticleId();
+
         mv.addObject("userName", authentication.getName());
         mv.addObject("articleTitle", article.getTitle());
         mv.addObject("articleDescription", article.getDescription());
         mv.addObject("articleHtml", htmlContent.getHtml());
+        mv.addObject("articleTimeRead", article.getReadingTime());
+
+        if(vote <= 0){
+            vote = 0;
+        }
+        mv.addObject("my_vote", vote);
+        mv.addObject("id_article", id_article);
+        mv.addObject("id_user", id_user);
 
         return mv;
+    }
+
+    @RequestMapping(value = "ajax/vote", method = RequestMethod.POST)
+    @ResponseBody
+    public Integer addVoteForArticle(
+            @RequestParam(value = "vote") Integer vote,
+            @RequestParam(value = "id_user") Integer  id_user,
+            @RequestParam(value = "id_article") Integer id_article) {
+
+        System.out.println("vote" + vote + " -> id_user" + id_user + " -> id_article" + id_article);
+
+        articleService.insertOrUpdeteVoteArtcile(id_user, id_article, vote);
+
+        return vote;
     }
 }
