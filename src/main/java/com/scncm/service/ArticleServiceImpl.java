@@ -47,7 +47,7 @@ public  class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Set<Article> searchArticles(String searchQuery) {
+    public List<Map> searchArticles(String searchQuery) {
         return articleDAO.searchArticles(searchQuery);
     }
 

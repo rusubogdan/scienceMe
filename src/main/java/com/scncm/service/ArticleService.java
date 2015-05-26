@@ -16,7 +16,7 @@ public interface ArticleService {
 
     Integer addArticle (Article article);
 
-    Set<Article> searchArticles (String searchQuery);
+    List<Map> searchArticles (String searchQuery);
 
     Boolean updateArticle (Article article);
 
