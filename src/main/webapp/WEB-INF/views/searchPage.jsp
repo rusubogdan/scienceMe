@@ -51,10 +51,10 @@
                                 <div class="article-text">${article.description}</div>
                                 <div class="article-information">
                                     <div class="article-rating">
-                                        <span>${article.userArticleVoteSet}/5</span>
+                                        <span>${article.rating}/5</span>
                                     </div>
                                     <div class="article-author">
-                                        <a href="/user/${article.owner.username}" class="author-reference">${article.owner.username}</a>
+                                        <a href="/user/${article.username}" class="author-reference">${article.username}</a>
                                     </div>
                                     <div class="article-link">
                                         <a href="/article/view/${article.token}" class="article-reference">Read the full article</a>

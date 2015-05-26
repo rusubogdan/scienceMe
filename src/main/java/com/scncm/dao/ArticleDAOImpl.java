@@ -126,7 +126,7 @@ public  class ArticleDAOImpl implements ArticleDAO {
                         ") tabel " +
                     "WHERE " +
                             "tabel.content @@ plainto_tsquery(:searchQuery) " +
-                            "ORDER BY ts_rank(tabel.content, to_tsquery(:searchQuery))"
+                            "ORDER BY ts_rank(tabel.content, to_tsquery(:searchQuery)) desc"
             );
             query.setParameter("searchQuery", searchQuery);
             query.setMaxResults(15);
