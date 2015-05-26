@@ -6,7 +6,6 @@ $(document).ready(function(){
 
 var addArticle = {
     init: function () {
-        console.log("ajunge");
 
         $.validator.addMethod(
             "invalidLinkRegex",
@@ -37,7 +36,7 @@ var addArticle = {
 
 
         var add_article_form = $("#bootstrapTagsInputForm").validate({
-//            ignore: ".ignore",
+            ignore: ".bootstrap-tagsinput input",
             // Rules for form validation
             rules : {
 
@@ -65,16 +64,22 @@ var addArticle = {
             click: function () {
 
                 if($("#bootstrapTagsInputForm").valid()){
-                    console.log('este valid');
+//                    console.log('este valid');
                     $('#loadingmessage').removeClass("hidden");
                     $.ajax({
-                        url: "add-article-in-database",
+                        url: "add.do",
                         type: "POST",
                         cache: false,
                         data: $("#bootstrapTagsInputForm").serialize(),
-                        success : function(html){
+                        success : function(response){
                             $('#loadingmessage').addClass("hidden"); // hide the loading message
-                            location.reload();
+
+                            if (response.success == true) {
+                                location.href = response.redirectUrl;
+                            } else {
+
+                            }
+
                         }
                     });
 //                    $.post('add-article-in-database',$("#bootstrapTagsInputForm").serialize()  , function (response) {
@@ -96,7 +101,6 @@ var addArticle = {
             }
         });
 
-        console.log("ajunge2");
     },
 
    addArticleFromForm: function(){

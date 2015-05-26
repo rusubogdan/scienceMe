@@ -7,11 +7,8 @@ $(document).ready(function () {
 });
 
 var carousel = {
-    obj: null,
     init: function () {
-        carousel.obj = $('#articles-carousel');
-
-        carousel.obj.slick({
+        $('#articles-carousel').slick({
             slidesToShow: 1,
             slidesToScroll: 1,
             dots: true,
@@ -22,13 +19,13 @@ var carousel = {
         });
     },
     addArticle: function (html) {
-        carousel.obj.slick('slickAdd/', html);
+        $('#articles-carousel').slick('slickAdd', html);
     },
     removeFirstArticle: function () {
-        carousel.obj.slick('slickRemove', true);
+        $('#articles-carousel').slick('slickRemove', true);
     },
     destroy: function () {
-        carousel.obj.slick('unslick');
+        $('#articles-carousel').slick('unslick');
     }
 
 };
@@ -204,7 +201,7 @@ var wall = {
             function (response) {
 //                list of objects of type article and integer
                 var articlesMap = response;
-                console.log(response);
+//                console.log(response);
                 wall.createNewestArticles(articlesMap, $('#newest-article-container'), $('#sample-article-preview'), true);
                 // for date !! in JS new Date(timestamp).getDay()/getMonth()/getYear
             }
@@ -216,7 +213,7 @@ var wall = {
 
         if (!newest) {
 //            carousel.obj.empty();
-            carousel.obj.find('*').not('#fixed-loader-carousel').remove();
+            $('#articles-carousel').find('*').not('#fixed-loader-carousel').remove();
             carousel.destroy();
             carousel.init();
             carousel.removeFirstArticle();
