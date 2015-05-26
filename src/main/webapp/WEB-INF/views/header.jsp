@@ -19,7 +19,7 @@
                     <input type="text" class="form-control" name="searchQuery" placeholder="Search">
 
                     <div class="input-group-btn">
-                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>
+                        <button type="submit" class="btn btn-default" style="height: 34px;"><span class="glyphicon glyphicon-search"></span>
                         </button>
                     </div>
                 </div>
