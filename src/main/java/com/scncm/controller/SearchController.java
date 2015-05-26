@@ -42,13 +42,13 @@ public class SearchController {
             @RequestParam(value = "searchQuery") String searchQuery) {
         ModelAndView mv = new ModelAndView("searchPage");
 
-       Set<Article> articles = articleService.searchArticles(searchQuery);
+       List<Map> articles = articleService.searchArticles(searchQuery);
 
        if(articles != null){
-           List<Article> articleList = new ArrayList<Article>(articles);
+           List<Map> articleList = new ArrayList<Map>(articles);
            mv.addObject("articleList", articleList);
        }else{
-           return new ModelAndView("redirect:/wall");
+//           return new ModelAndView("redirect:/wall");
        }
 
         mv.addObject("searchQuery", searchQuery);
