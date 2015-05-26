@@ -41,6 +41,12 @@
             <div class="col-md-9 col-centered wall-content-container col-md-pull-1 container">
                 <div class="jumbotron">
 <div class="newest-articles" id="newest-article-container">
+                <c:choose>
+                    <c:when test="${empty articleList}">
+                        <div>Invlid Search string!</div>
+                    </c:when>
+                    <c:otherwise>
+
                         <c:forEach items="${articleList}" var="article">
                         <div id="sample-article-preview" class="article-preview-container">
                             <div class="image-holder" style="background: url(${article.imageLink}) 50% 50% no-repeat;">
@@ -52,9 +58,10 @@
                                 <div class="article-information">
                                     <div class="article-rating">
                                         <span>${article.rating}/5</span>
+                                        <%--<span>${counter}/5</span>--%>
                                     </div>
                                     <div class="article-author">
-                                        <a href="/user/${article.owner.username}" class="author-reference">${article.owner.username}</a>
+                                        <a href="/user/${article.username}" class="author-reference">${article.username}</a>
                                     </div>
                                     <div class="article-link">
                                         <a href="/article/view/${article.token}" class="article-reference">Read the full article</a>
@@ -64,6 +71,8 @@
 
                         </div>
                         </c:forEach>
+                    </c:otherwise>
+                </c:choose>
 </div>
                 </div>
             </div>
