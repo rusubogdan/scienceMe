@@ -32,4 +32,8 @@ public interface ArticleDAO {
     Boolean updateArticle (Article article);
 
     Boolean deleteArticle (Article article);
+
+    Integer verifyIfUserVoteArticle(Integer id_user, Integer id_article);
+
+    void insertOrUpdeteVoteArtcile(Integer user_id, Integer article_id, Integer rating);
 }

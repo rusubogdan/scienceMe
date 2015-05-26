@@ -2,15 +2,12 @@
     /*background-color: red;*/
     border: 1px solid ;
     padding: 50px;
+    background-color: #ffffff;
 }
 
 .container-view-article img{
     float: left;
     margin: 30px;
-}
-
-.container-view-article h1{
-    text-align: center;
 }
 
 
@@ -22,4 +19,30 @@
 .label {
     line-height: 2 !important;
 }
+textarea {
+    resize:vertical ; !important;
+}
+
+/*.error{*/
+    /*display: none;*/
+    /*margin-left: 10px;*/
+/*}*/
+
+/*.error_show{*/
+    /*color: red;*/
+    /*margin-left: 10px;*/
+/*}*/
+
+
+/*input.invalid, textarea.invalid{*/
+    /*border: 2px solid red;*/
+/*}*/
+
+/*input.valid, textarea.valid{*/
+    /*border: 2px solid green;*/
+/*}*/
+
+
+
+
 
