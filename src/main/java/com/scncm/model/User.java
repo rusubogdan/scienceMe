@@ -1,14 +1,12 @@
 package com.scncm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.scncm.helpers.GenderType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.scncm.helpers.GenderType;
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Set;
 
@@ -105,6 +103,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference("UserArticleVote-UserId")
     private Set<UserArticleVote> userArticleVotesSet;
+
+    @JsonIgnore
+    @Column(name = "provider")
+    private String signInProvider;
 
     @JsonIgnore
     public String getFirstName() {
@@ -249,5 +251,13 @@ public class User {
     @JsonProperty
     public void setUserArticleVotesSet(Set<UserArticleVote> userArticleVotesSet) {
         this.userArticleVotesSet = userArticleVotesSet;
+    }
+
+    public String getSignInProvider() {
+        return signInProvider;
+    }
+
+    public void setSignInProvider(String signInProvider) {
+        this.signInProvider = signInProvider;
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.social.security.SocialUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,13 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                     true, true, true, true, getAuthorities(Role.ROLE_RESTRICTED));
         }
 
-        return new User(
+        return new CustomSocialUser(
                 domainUser.getUsername(),
                 domainUser.getPassword(),
-                enabled,
-                accountNonExpired,
-                credentialsNonExpired,
-                accountNonLocked,
+                domainUser.getSignInProvider(),
                 getAuthorities(domainUser.getRole().getRoleId())
         );
     }
@@ -79,5 +77,23 @@ public class CustomUserDetailsService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(role));
         }
         return authorities;
+    }
+
+    private class CustomSocialUser extends SocialUser {
+        private String provider;
+
+        public CustomSocialUser(String username, String password, String provider,
+                                Collection<? extends GrantedAuthority> authorities) {
+            super(username, password, authorities);
+            this.provider = provider;
+        }
+
+        public String getProvider() {
+            return provider;
+        }
+
+        public void setProvider(String provider) {
+            this.provider = provider;
+        }
     }
 }

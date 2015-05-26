@@ -4,10 +4,8 @@ import com.scncm.helpers.AppUtil;
 import com.scncm.helpers.SignUpForm;
 import com.scncm.model.User;
 import com.scncm.service.UserService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -113,6 +112,28 @@ public class SignUpController {
         // Create a new session and add the security context.
         HttpSession session = request.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
+        return new ModelAndView("redirect:/wall");
+    }
+
+    @RequestMapping(value = "/socialRegister/facebook", method = RequestMethod.GET)
+    public ModelAndView doSocialRegister(HttpServletRequest request,
+                                         WebRequest webRequest) {
+
+        // authenticate user and redirect to wall
+        UsernamePasswordAuthenticationToken authRequest =
+                new UsernamePasswordAuthenticationToken("bogdan", "123123");
+
+        // Authenticate the user
+        Authentication authentication = authenticationManager.authenticate(authRequest);
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
+
+        // Create a new session and add the security context.
+        HttpSession session = request.getSession(true);
+        session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
+//        ProviderSignInUtils.handlePostSignUp(registered.getEmail(), webRequest);
 
         return new ModelAndView("redirect:/wall");
     }

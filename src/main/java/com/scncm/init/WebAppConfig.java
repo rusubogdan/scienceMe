@@ -112,5 +112,18 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         resource.setBasename("classpath:messages");
         resource.setDefaultEncoding("UTF-8");
         return resource;
-    }*/
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+
+        messageSource.setBasename("i18n/messages");
+        messageSource.setUseCodeAsDefaultMessage(true);
+
+        return messageSource;
+    }
+
+
+    */
 }

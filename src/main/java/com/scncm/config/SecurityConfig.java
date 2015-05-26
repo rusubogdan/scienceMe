@@ -1,5 +1,6 @@
 package com.scncm.config;
 
+import com.scncm.service.SimpleSocialUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -39,7 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("favicon.ico", "/resources/**", "/j_spring_security_check", "/register/**")
+                    .antMatchers("favicon.ico", "/resources/**", "/j_spring_security_check",
+                            "/register/**", "/socialRegister/facebook", "/socialRegister/facebook/**",
+                            "/auth/**", "/dialog/**")
                         .permitAll()
                 .and()
                     .authorizeRequests()
@@ -57,6 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .passwordParameter("j_password")
                         .loginProcessingUrl("/j_spring_security_check")
                             .permitAll()
+                .and()
+                    .apply(new SpringSocialConfigurer())
                 .and()
                     .logout()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/j_spring_security_logout"))
@@ -83,6 +90,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SocialUserDetailsService socialUserDetailsService() {
+        return new SimpleSocialUserDetailsService(userDetailsService());
     }
 
     @Bean(name="myAuthenticationManager")

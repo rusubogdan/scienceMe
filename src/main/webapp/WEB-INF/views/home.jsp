@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -25,29 +26,46 @@
 </head>
 
 <body>
-<form id="login-form" method="post" action="<c:url value='j_spring_security_check'/>" >
-    <div class="wrap">
-        <div class="avatar">
-            <img alt="logo" src="<c:url value="/resources/img/atom.png"/> ">
+<sec:authorize access="isAnonymous()">
+    <form id="login-form" method="post" action="<c:url value='j_spring_security_check'/>">
+        <div class="wrap">
+            <div class="avatar">
+                <img alt="logo" src="<c:url value="/resources/img/atom.png"/> ">
+            </div>
+            <input type="text" name="j_username" id="j_username" placeholder="username"/>
+
+            <div class="bar">
+                <i></i>
+            </div>
+            <input type="password" name="j_password" id="j_password" placeholder="password"/>
+
+            <button id="sign-in-submit" type="submit" value="Sign in">Sign in</button>
+
+                <%--<div class="bar">--%>
+                <%--<i></i>--%>
+                <%--</div>--%>
+
+            <div id="registerMe" class="custom-wrap wrap change-form">Register</div>
+                <%--<div id="login-facebook" class="custom-wrap wrap fb">Login with Facebook</div>--%>
+
+
         </div>
-        <input type="text" name="j_username" id="j_username" placeholder="username"/>
-        <div class="bar">
-            <i></i>
+    </form>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row social-button-row">
+                <div class="col-lg-4">
+                    <!-- Add Facebook sign in button -->
+                    <a href="${pageContext.request.contextPath}/auth/facebook">
+                        <button class="btn btn-facebook">
+                            <i class="icon-facebook"></i> | Sign in with Facebook
+                        </button>
+                    </a>
+                </div>
+            </div>
         </div>
-        <input type="password" name="j_password" id="j_password" placeholder="password"/>
-
-        <button id="sign-in-submit" type="submit" value="Sign in">Sign in</button>
-
-        <%--<div class="bar">--%>
-            <%--<i></i>--%>
-        <%--</div>--%>
-
-        <div id="registerMe" class="custom-wrap wrap change-form">Register</div>
-        <div id="login-facebook" class="custom-wrap wrap fb">Login with Facebook</div>
-
     </div>
-</form>
-
+</sec:authorize>
 <form id="register-form" method="post" action="<c:url value="/register"/> ">
     <div class="register">
         <div class="avatar">
