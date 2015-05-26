@@ -43,9 +43,6 @@
                         </div>
                         <div class="panel-body">
                             ${loggedInUser.username}
-
-
-
                         </div>
                     </div>
 
@@ -64,7 +61,7 @@
                         <h3 class="panel-title">Register Date</h3>
                     </div>
                     <div class="panel-body">
-                        ${loggedInUser.registerDate}
+                        ${registeredDate}
                     </div>
                 </div>
 
@@ -73,9 +70,12 @@
                         <h3 class="panel-title">Contributions to the site</h3>
                     </div>
                     <div class="panel-body">
-                            <c:forEach items="${userArticles}" var="item">
-                                <a href="/article/view/${item.token}">${item.title}</a><br>
-                            </c:forEach>
+                        <c:if test="${noContribution eq true}">
+                            <span>No contribution yet</span>
+                        </c:if>
+                        <c:forEach items="${userArticles}" var="item">
+                            <a href="/article/view/${item.token}">${item.title}</a><br>
+                        </c:forEach>
                     </div>
                 </div>
 
