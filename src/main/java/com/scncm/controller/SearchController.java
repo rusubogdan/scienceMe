@@ -44,12 +44,12 @@ public class SearchController {
 
        List<Map> articles = articleService.searchArticles(searchQuery);
 
-       if(articles != null){
-           List<Map> articleList = new ArrayList<Map>(articles);
-           mv.addObject("articleList", articleList);
-       }else{
-//           return new ModelAndView("redirect:/wall");
-       }
+//       if(articles != null){
+//           List<Map> articleList = new ArrayList<Map>(articles);
+//       }else{
+////           return new ModelAndView("redirect:/wall");
+//       }
+        mv.addObject("articleList", articles);
 
         mv.addObject("searchQuery", searchQuery);
 //
